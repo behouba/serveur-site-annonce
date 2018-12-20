@@ -1,0 +1,108 @@
+body {
+  height: auto;
+}
+/* top navigation bar styling */
+#first-nav {
+  margin-top: 10px;
+  padding-left: 30px;
+}
+
+.main.menu.fixed {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+  left: 0 !important;
+  width: 100% !important;
+  height: 55px !important;
+}
+#user-menu.ui.pointing.dropdown > .menu {
+  top: 100%;
+  margin-top: 1.5rem;
+}
+#nav-search {
+  width: 500px;
+}
+#location-selector {
+  margin-right: 14px;
+}
+/* end of top navigation bar styling */
+
+/* slider styling */
+#eventsSlide {
+  height: 350px;
+}
+.skdslider {
+  max-height: 350px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.skdslider img {
+  object-fit: cover;
+}
+/* end slider styling */
+
+.ui.label.dropdown .menu {
+  min-width: max-content;
+}
+
+/* ads listing section styling */
+.cardPrice {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 18px;
+  color: #2d97de;
+  margin-bottom: 0.5rem;
+}
+.price {
+  font-weight: 700;
+  margin: 5px 0px;
+}
+.grid-card-img {
+  height: 142px !important;
+  object-fit: cover;
+}
+
+.card-location {
+  position: absolute;
+  left: 1em;
+  bottom: 1em;
+  max-width: 66%;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 13px;
+  line-height: normal;
+  border-radius: 2px;
+  padding: 0 3px 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
+}
+
+.list-card-img {
+  height: 110px !important;
+  object-fit: cover;
+}
+
+/* price limit asid block styling */
+#filter input {
+  width: 50%;
+  border-right-color: lightgray !important;
+}
+
+.left-input {
+  border-radius: 0.28571429rem 0 0 0.28571429rem !important;
+}
+.right-input {
+  border-radius: 0 0.28571429rem 0.28571429rem 0 !important;
+}
+
+/* text troncate */
+
+.troncate {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
