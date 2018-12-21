@@ -49,14 +49,30 @@ var dumpImg = [
 ];
 
 // home vue instance
-var homeApp = new Vue({
+var VueApp = new Vue({
   el: "#home",
   data: {
     slides: slidesData,
     images: dumpImg,
-    isViewGrid: true
+    isViewGrid: true,
+    loginState: 1
   },
   methods: {
+    showEmailRegistraion: function() {
+      this.loginState = 3;
+    },
+    showEmailLogin: function() {
+      this.loginState = 2;
+    },
+    showMainLogin: function() {
+      this.loginState = 1;
+    },
+    showPassRecovery: function() {
+      this.loginState = 4;
+    },
+    showLoginModal: function() {
+      $("#loginModal").modal("show");
+    },
     setViewToGrid: function() {
       this.isViewGrid = true;
       $("#list-view-btn").removeClass("active");
@@ -121,5 +137,13 @@ function initSemanticUI() {
   // function to fire when user change location
   $("#validate-location").click(function() {
     $("#city-name").text(city);
+  });
+
+  $(".menu .item").tab();
+
+  $("#loginModal").modal({
+    onHidden: function() {
+      VueApp.loginState = 1;
+    }
   });
 }

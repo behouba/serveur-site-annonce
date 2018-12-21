@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	// template route
+	// regulars routes
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/:fPath:string", &controllers.FirstPathControler{})
 

@@ -1,0 +1,263 @@
+{{ define "header"}}
+<header id="header">
+  <!-- first nav -->
+  <div class="ui container" id="first-nav">
+    <div class="ui floating dropdown labeled icon" id="location-selector">
+      <i class="location arrow icon"></i>
+      <span class="text" id="city-name">{{ .City }}</span>
+    </div>
+    <div class="ui horizontal link list">
+      <a class="item" href="ads-listing.html"> Annonces </a>
+      <a class="item" href="stores-listing.html"> Boutiques </a>
+      <a class="item"> Trocs </a> <a class="item" href="help.html"> Aide </a>
+    </div>
+
+    <!-- location selection modal -->
+    <div class="ui modal" id="location-modal">
+      <i class="close icon"></i>
+      <div class="header">Choisissez votre ville</div>
+      <div class="image content">
+        <div class="ui fluid search selection dropdown">
+          <input type="hidden" name="gender" /> <i class="dropdown icon"></i>
+          <div class="default text">Gender</div>
+        </div>
+      </div>
+      <div class="actions">
+        <!-- <div class="ui black deny button">Nope</div> -->
+        <div
+          class="ui positive right labeled icon button"
+          id="validate-location"
+        >
+          Choisir <i class="checkmark icon"></i>
+        </div>
+      </div>
+    </div>
+    <!-- end of location selector modal -->
+  </div>
+
+  <!-- second nav -->
+  <div
+    class="ui secondary borderless main menu small sticky"
+    id="sticky-navbar"
+  >
+    <div class="ui container">
+      <div class="header item">
+        <img
+          class="logo"
+          src="https://www.designfreelogoonline.com/wp-content/uploads/2016/03/00106-3D-company-logo-design-free-logo-online-Template-03.png"
+        />
+        Project Name
+      </div>
+      <div class="right menu">
+        <div class="item">
+          <div class="ui right labeled action input" id="nav-search">
+            <div class="ui dropdown label" id="category-select">
+              <div class="text troncate">CATEGORIES</div>
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                {{ range.Categories }}
+                <div class="item">
+                  <i class="dropdown icon"></i> {{ .Name }}
+                  <div class="menu">
+                    {{ range.SubCategories }}
+                    <div class="item">{{ .Name }}</div>
+                    {{ end }}
+                  </div>
+                </div>
+                {{ end }}
+              </div>
+            </div>
+            <input type="text" placeholder="Recherche" />
+            <button class="ui icon button"><i class="search icon"></i></button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="ui primary button">Creer une annonce</div>
+        </div>
+
+        <div class="item">
+          <div class="ui teal button" v-on:click="showLoginModal">
+            Connexion
+          </div>
+        </div>
+
+        <!-- <div class="item">
+          <div class="ui inline pointing dropdown link" id="user-menu">
+            <div class="text">
+              <img
+                class="ui avatar image"
+                src="https://cache3.youla.io/files/images/80_80/5b/e6/5be6f5f3cf2045d381310d1e.jpg"
+              />
+              Jenny Hess
+            </div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item">
+                <i class="grid layout icon"></i> Mes annonces
+              </div>
+              <div class="item"><i class="heart icon"></i> Mes favoris</div>
+              <div class="item"><i class="envelope icon"></i> Mes messages</div>
+              <div class="item"><i class="cog icon"></i> Configuration</div>
+              <div class="item">
+                <i
+                  class="sign-out
+                    icon"
+                ></i>
+                Deconnection
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- login modal -->
+<div class="ui modal mini" id="loginModal">
+  <i class="close icon"></i>
+  <div class="content" v-if="loginState == 1">
+    <h2 class="legend">Connexion</h2>
+    <div class="ui divider"></div>
+    <button class="ui facebook button large fluid">
+      <i class="facebook icon"></i> Facebook
+    </button>
+    <button class="ui google plus button large fluid">
+      <i class="google plus icon"></i> Google Plus
+    </button>
+    <!-- <button class="ui instagram button fluid">
+      <i class="instagram icon"></i> Instagram
+    </button> -->
+    <div class="ui horizontal divider">OU</div>
+    <button class="ui mail button large fluid" v-on:click="showEmailLogin">
+      <i class="mail icon"></i> Se connecter via e-mail
+    </button>
+    <div class="small-text">
+      En vous inscrivant vous reconnaissez avoir lu et accepté
+      <a href="#">Charte de confidentialité et nos Conditions d'utilisation.</a>
+    </div>
+  </div>
+  <div class="content" v-else-if="loginState == 2">
+    <form class="ui form large">
+      <div class="field">
+        <label class="legend">Se connecter via email</label>
+      </div>
+      <div class="ui divider"></div>
+      <div class="field">
+        <label>Adresse e-mail </label>
+        <div class="ui left icon input">
+          <input type="email" placeholder="email" /> <i class="mail icon"></i>
+        </div>
+      </div>
+      <div class="field">
+        <label>Mot de passe</label>
+        <div class="ui left icon input">
+          <input type="password" placeholder="mot de passe" />
+          <i class="lock icon"></i>
+        </div>
+      </div>
+
+      <div class="field">
+        <button class="ui large primary button fluid" type="button">
+          <i class="spinner loading icon"></i> Se connecter
+        </button>
+        <p><a v-on:click="showPassRecovery">Mot de passe oublié ?</a></p>
+      </div>
+      <div class="field">
+        <p>
+          Vous n'avez pas de compte ?
+          <a v-on:click="showEmailRegistraion">Inscription</a>
+        </p>
+        <p>
+          Vous préférez utiliser Facebook ou Google ?
+          <a v-on:click="showMainLogin">Retour</a>
+        </p>
+      </div>
+      <div class="small-text">
+        En vous inscrivant vous reconnaissez avoir lu et accepté
+        <a href="#"
+          >Charte de confidentialité et nos Conditions d'utilisation.</a
+        >
+      </div>
+    </form>
+  </div>
+  <div class="content" v-else-if="loginState == 3">
+    <form class="ui form large">
+      <div class="field"><label class="legend">Inscription</label></div>
+      <div class="ui divider"></div>
+      <div class="field">
+        <label>Créez un pseudo</label>
+        <div class="ui left icon input">
+          <input type="text" /> <i class="user icon"></i>
+        </div>
+      </div>
+      <div class="field">
+        <label>Adresse e-mail</label>
+        <div class="ui left icon input">
+          <input type="email" /> <i class="mail icon"></i>
+        </div>
+      </div>
+      <div class="field">
+        <label>Créez un mot de passe</label>
+        <div class="ui left icon input">
+          <input type="password" /> <i class="lock icon"></i>
+        </div>
+      </div>
+
+      <div class="field">
+        <button class="ui large primary button fluid" type="button">
+          <i class="spinner loading icon"></i> S'inscrire
+        </button>
+      </div>
+      <div class="field">
+        <p>
+          Vous avez déjà un compte ?
+          <a v-on:click="showEmailLogin">Connexion</a>
+        </p>
+        <p>
+          Vous préférez utiliser Facebook ou Google ?
+          <a v-on:click="showMainLogin">Retour</a>
+        </p>
+      </div>
+      <div class="small-text">
+        En vous inscrivant vous reconnaissez avoir lu et accepté
+        <a href="#"
+          >Charte de confidentialité et nos Conditions d'utilisation.</a
+        >
+      </div>
+    </form>
+  </div>
+  <div class="content" v-else-if="loginState == 4">
+    <form class="ui form large">
+      <div class="field">
+        <label class="legend"> Vous avez oublié votre mot de passe ? </label>
+        <div class="ui divider"></div>
+        <p>
+          Pas de problème ! Il vous suffit d'entrer votre adresse e-mail
+          ci-dessous et nous vous enverrons un lien pour le réinitialiser.
+        </p>
+      </div>
+
+      <div class="field">
+        <label>Adresse e-mail</label>
+        <div class="ui left icon input">
+          <input type="email" /> <i class="mail icon"></i>
+        </div>
+      </div>
+      <div class="field">
+        <button class="ui large primary button fluid" type="button">
+          <i class="spinner loading icon"></i> Envoyer
+        </button>
+        <p><a v-on:click="showEmailLogin">Annuler</a></p>
+      </div>
+      <div class="small-text">
+        En vous inscrivant vous reconnaissez avoir lu et accepté
+        <a href="#"
+          >Charte de confidentialité et nos Conditions d'utilisation.</a
+        >
+      </div>
+    </form>
+  </div>
+</div>
+<!-- end login modal -->
+{{ end }}

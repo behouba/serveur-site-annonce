@@ -1,0 +1,21 @@
+{{ define "home-categories" }}
+
+<section class="ui container">
+  <h1 class="ui horizontal divider huge header" style="margin: 35px 0px">
+    Choisissez une catégorie
+  </h1>
+  <div class="ui four column relaxed grid">
+    {{ range.Categories }}
+    <div class="column">
+      <h4 class="ui header">
+        <a href="#">{{ .Name }}</a>
+      </h4>
+      <div class="ui link list">
+        {{ range.SubCategories }} <a class="item">{{ .Name }}</a> {{ end }}
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</section>
+
+{{ end }}

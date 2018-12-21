@@ -20,7 +20,7 @@ body {
   margin-top: 1.5rem;
 }
 #nav-search {
-  width: 500px;
+  width: 580px;
 }
 #location-selector {
   margin-right: 14px;
@@ -101,8 +101,43 @@ body {
 /* text troncate */
 
 .troncate {
-  max-width: 100px;
+  max-width: 130px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* login modal css */
+
+#loginModal button {
+  margin-bottom: 10px;
+}
+#loginModal a:hover {
+  cursor: pointer;
+}
+#loginModal p {
+  font-weight: 500;
+  font-size: 12px;
+}
+#loginModal .small-text {
+  margin-top: 20px;
+  font-size: 11px;
+  text-align: left;
+}
+#loginModal .legend {
+  font-size: 20px;
+  text-align: center;
+}
+@media only screen and (min-width: 1200px) {
+  #loginModal.ui.mini.modal {
+    width: 400px;
+    margin: 0;
+  }
+}
+@media only screen and (min-width: 992px) {
+  #loginModal.ui.mini.modal {
+    width: 400px;
+    margin: 0;
+  }
+}
+/* end of login modal css */
