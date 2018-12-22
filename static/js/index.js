@@ -3,38 +3,20 @@
 // setting Vue delimiters
 Vue.options.delimiters = ["{", "}"];
 
-// variables
-var city;
-
-var cities;
-
 var slidesData = [
   {
     title: "",
     image: "https://cdn.wallpapersafari.com/98/81/sDm6AZ.jpg",
     link: "",
-    desc: ""
+    desc: "",
   },
   {
     title: "",
     image:
       "https://cdn.allwallpaper.in/wallpapers/1680x1050/12708/nature-beach-palm-trees-palms-tropics-1680x1050-wallpaper.jpg",
     link: "",
-    desc: ""
+    desc: "",
   },
-  {
-    title: "",
-    image:
-      "https://www.desktopbackground.org/download/1440x900/2015/12/24/1062181_amazing-beach-desktop-wallpapers_1920x1200_h.jpg",
-    link: "",
-    desc: ""
-  },
-  {
-    title: "",
-    image: "https://s1.1zoom.ru/big0/5/377636-svetik.jpg",
-    link: "",
-    desc: ""
-  }
 ];
 
 var dumpImg = [
@@ -45,7 +27,7 @@ var dumpImg = [
   "https://www.indiewire.com/wp-content/uploads/2015/07/soul-eater-1.jpg",
   "https://media.comicbook.com/2016/12/soul-eater-218746-1280x0.jpg",
   "https://www.gamepretty.com/wp-content/uploads/2018/10/nintendo-switch-6.01-update-01.jpg",
-  "https://images-na.ssl-images-amazon.com/images/I/51qiZgs22mL._SX425_.jpg"
+  "https://images-na.ssl-images-amazon.com/images/I/51qiZgs22mL._SX425_.jpg",
 ];
 
 // home vue instance
@@ -55,9 +37,30 @@ var VueApp = new Vue({
     slides: slidesData,
     images: dumpImg,
     isViewGrid: true,
-    loginState: 1
+    loginState: 3,
+    city: "",
+    cities: "",
+    eRegName: "",
+    eRegEmail: "",
+    eRegPass: "",
   },
   methods: {
+    emaiRegistration: function() {
+      const userData = {
+        name: this.eRegName,
+        email: this.eRegEmail,
+        password: this.eRegPass,
+      };
+      console.log(userData);
+      axios
+        .post("/api/auth/email", userData)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     showEmailRegistraion: function() {
       this.loginState = 3;
     },
@@ -82,27 +85,42 @@ var VueApp = new Vue({
       this.isViewGrid = false;
       $("#grid-view-btn").removeClass("active");
       $("#list-view-btn").addClass("active");
-    }
+    },
   },
   created: function() {
     $("#home").show();
     axios.get("/api/cities").then(res => {
-      cities = res.data;
+      this.cities = res.data;
       initSemanticUI();
     });
-  }
+  },
 });
 
 function initSemanticUI() {
   // categories selection
   $("#category-select").dropdown({
-    allowCategorySelection: true
+    allowCategorySelection: true,
+    onChange: function(value, text, $choice) {
+      console.log(value, text, $choice);
+      var path =
+        $choice[0].getAttribute("data-c-path") === null
+          ? $choice[0].getAttribute("data-sc-path")
+          : $choice[0].getAttribute("data-c-path");
+      console.log(path);
+      window.location.href = path;
+    },
   });
 
+  $("subcat-select").dropdown({
+    onChange: function(value, text, $choice) {
+      console.log(value, text, $choice);
+      console.log($choice[0].attributes.data - sc - path.nodeValue);
+    },
+  });
   // navbar sticky part
   $("#sticky-navbar").sticky({
     context: "body",
-    setSize: false
+    setSize: false,
   });
 
   // user menu dropdown
@@ -110,7 +128,7 @@ function initSemanticUI() {
     action: function(text, value, element) {
       element.click();
     },
-    on: "hover"
+    on: "hover",
   });
 
   // activation of card favoris popup
@@ -128,15 +146,16 @@ function initSemanticUI() {
 
   // location dropdown modal
   $("#location-modal .ui.dropdown").dropdown({
-    values: cities,
+    values: VueApp.cities,
     onChange: function(value, text, $choice) {
-      window.location.href = "/" + value;
-    }
+      VueApp.city = value;
+    },
   });
 
   // function to fire when user change location
   $("#validate-location").click(function() {
-    $("#city-name").text(city);
+    window.location.href = "/" + VueApp.city;
+    // $("#city-name").text(city);
   });
 
   $(".menu .item").tab();
@@ -144,6 +163,6 @@ function initSemanticUI() {
   $("#loginModal").modal({
     onHidden: function() {
       VueApp.loginState = 1;
-    }
+    },
   });
 }

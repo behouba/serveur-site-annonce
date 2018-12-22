@@ -1,0 +1,5 @@
+{
+    "json.format.enable": false,
+    "prettier.trailingComma": "es5",
+    "vetur.format.defaultFormatter.js": "none"
+}

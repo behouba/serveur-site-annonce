@@ -3,10 +3,22 @@ body {
 }
 /* top navigation bar styling */
 #first-nav {
-  margin-top: 10px;
-  padding-left: 30px;
+  padding-top: 10px;
 }
 
+#header {
+  padding-bottom: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+}
+
+#sticky-navbar {
+  margin-top: 7px;
+}
+.logo {
+  margin-right: 5px !important;
+  width: 25px !important;
+  height: 25px !important;
+}
 .main.menu.fixed {
   background-color: #ffffff;
   border: 1px solid #ddd;
@@ -33,7 +45,6 @@ body {
 }
 .skdslider {
   max-height: 350px;
-  margin-top: 10px;
   margin-bottom: 20px;
   overflow: hidden;
 }

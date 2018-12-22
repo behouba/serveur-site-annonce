@@ -4,7 +4,9 @@
   <div class="ui container" id="first-nav">
     <div class="ui floating dropdown labeled icon" id="location-selector">
       <i class="location arrow icon"></i>
-      <span class="text" id="city-name">{{ .City }}</span>
+      <span class="text" id="city-name"
+        >{{ .CityName }} {{ $cityPath := .CityPath }}</span
+      >
     </div>
     <div class="ui horizontal link list">
       <a class="item" href="ads-listing.html"> Annonces </a>
@@ -13,7 +15,7 @@
     </div>
 
     <!-- location selection modal -->
-    <div class="ui modal" id="location-modal">
+    <div class="ui modal tiny" id="location-modal">
       <i class="close icon"></i>
       <div class="header">Choisissez votre ville</div>
       <div class="image content">
@@ -41,10 +43,10 @@
     id="sticky-navbar"
   >
     <div class="ui container">
-      <div class="header item">
+      <div class="header item" style="margin-left: 0px; padding-left:0px;">
         <img
           class="logo"
-          src="https://www.designfreelogoonline.com/wp-content/uploads/2016/03/00106-3D-company-logo-design-free-logo-online-Template-03.png"
+          src="https://upload.wikimedia.org/wikipedia/en/3/39/Pokeball.PNG"
         />
         Project Name
       </div>
@@ -52,15 +54,23 @@
         <div class="item">
           <div class="ui right labeled action input" id="nav-search">
             <div class="ui dropdown label" id="category-select">
-              <div class="text troncate">CATEGORIES</div>
+              <div class="text troncate">{{ .Category }}</div>
               <i class="dropdown icon"></i>
               <div class="menu">
                 {{ range.Categories }}
-                <div class="item">
+                <div
+                  class="item"
+                  data-c-path="/{{ $cityPath }}/{{ .PathName }}"
+                >
                   <i class="dropdown icon"></i> {{ .Name }}
-                  <div class="menu">
+                  <div class="menu" id="subcat-select">
                     {{ range.SubCategories }}
-                    <div class="item">{{ .Name }}</div>
+                    <div
+                      class="item"
+                      data-sc-path="/{{ $cityPath }}/{{ .PathName }}"
+                    >
+                      {{ .Name }}
+                    </div>
                     {{ end }}
                   </div>
                 </div>
@@ -75,7 +85,7 @@
           <div class="ui primary button">Creer une annonce</div>
         </div>
 
-        <div class="item">
+        <div class="item" style="margin-right: 0px; padding-right:0px;">
           <div class="ui teal button" v-on:click="showLoginModal">
             Connexion
           </div>
@@ -181,31 +191,38 @@
       </div>
     </form>
   </div>
+  <!-- email registration form -->
   <div class="content" v-else-if="loginState == 3">
     <form class="ui form large">
       <div class="field"><label class="legend">Inscription</label></div>
       <div class="ui divider"></div>
       <div class="field">
         <label>Créez un pseudo</label>
-        <div class="ui left icon input">
-          <input type="text" /> <i class="user icon"></i>
+        <div class="ui left icon input error">
+          <input type="text" v-model="eRegName" /> <i class="user icon"></i>
         </div>
       </div>
       <div class="field">
         <label>Adresse e-mail</label>
         <div class="ui left icon input">
-          <input type="email" /> <i class="mail icon"></i>
+          <input type="email" v-model="eRegEmail" />
+          <i class="mail icon"></i>
         </div>
       </div>
       <div class="field">
         <label>Créez un mot de passe</label>
         <div class="ui left icon input">
-          <input type="password" /> <i class="lock icon"></i>
+          <input type="password" v-model="eRegPass" />
+          <i class="lock icon"></i>
         </div>
       </div>
 
       <div class="field">
-        <button class="ui large primary button fluid" type="button">
+        <button
+          class="ui large primary button fluid"
+          type="button"
+          v-on:click="emaiRegistration"
+        >
           <i class="spinner loading icon"></i> S'inscrire
         </button>
       </div>
