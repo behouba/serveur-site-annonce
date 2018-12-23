@@ -193,37 +193,65 @@
   </div>
   <!-- email registration form -->
   <div class="content" v-else-if="loginState == 3">
-    <form class="ui form large">
+    <form class="ui form large" id="registrationForm">
       <div class="field"><label class="legend">Inscription</label></div>
       <div class="ui divider"></div>
       <div class="field">
         <label>Créez un pseudo</label>
-        <div class="ui left icon input error">
-          <input type="text" v-model="eRegName" /> <i class="user icon"></i>
+        <div class="ui left icon input">
+          <input type="text" v-model="eRegName" name="name" />
+          <i class="user icon"></i>
+        </div>
+        <div
+          class="ui basic red pointing prompt label transition visible"
+          v-if="requestErrorStatus == 1"
+        >
+          Votre pseud doit contenir au moins 3 charcateres et debuter par une
+          lettre
         </div>
       </div>
       <div class="field">
         <label>Adresse e-mail</label>
         <div class="ui left icon input">
-          <input type="email" v-model="eRegEmail" />
+          <input type="email" v-model="eRegEmail" name="email" />
           <i class="mail icon"></i>
+        </div>
+        <div
+          class="ui basic red pointing prompt label transition visible"
+          v-if="requestErrorStatus == 2"
+        >
+          Cette address email est invalide
+        </div>
+        <div
+          class="ui basic red pointing prompt label transition visible"
+          v-if="requestErrorStatus == 4"
+        >
+          Cette address email est deja utilisée
         </div>
       </div>
       <div class="field">
         <label>Créez un mot de passe</label>
         <div class="ui left icon input">
-          <input type="password" v-model="eRegPass" />
+          <input type="password" v-model="eRegPass" name="password" />
           <i class="lock icon"></i>
+        </div>
+        <div
+          class="ui basic red pointing prompt label transition visible"
+          v-if="requestErrorStatus == 3"
+        >
+          votre mot de passe doit comprendre au moins 4 charcateres
         </div>
       </div>
 
       <div class="field">
         <button
           class="ui large primary button fluid"
-          type="button"
           v-on:click="emaiRegistration"
+          id="registrationBtn"
+          type="button"
         >
-          <i class="spinner loading icon"></i> S'inscrire
+          <!-- <i class="spinner loading icon"></i>  -->
+          S'inscrire
         </button>
       </div>
       <div class="field">
@@ -276,5 +304,6 @@
     </form>
   </div>
 </div>
+
 <!-- end login modal -->
 {{ end }}

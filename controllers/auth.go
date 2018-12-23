@@ -6,17 +6,32 @@ import (
 	"serveur/models"
 )
 
+// Post EmailRegistration handle post request for new user
+// email registration
 func (c *EmailRegistration) Post() {
 	var user models.User
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &user)
 	if err != nil {
 		fmt.Println(err)
 	}
-	err = models.ValidateEmailRegistration(user)
+	registrationError, err := user.ValidateRegistration()
 	if err != nil {
+		fmt.Println(err)
 		c.Ctx.Output.SetStatus(400)
+		c.Data["json"] = registrationError
+		c.ServeJSON()
+		return
 	}
-	fmt.Println(user)
+
+	if err := user.SaveToDB(1); err != nil {
+		fmt.Println(err)
+		if err.Error() == "pq: duplicate key value violates unique constraint \"user_account_email_key\"" {
+			c.Ctx.Output.SetStatus(409)
+		} else {
+			c.Ctx.Output.SetStatus(500)
+		}
+		return
+	}
 	c.Data["json"] = user
 	c.ServeJSON()
 }

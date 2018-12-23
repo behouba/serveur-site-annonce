@@ -43,22 +43,42 @@ var VueApp = new Vue({
     eRegName: "",
     eRegEmail: "",
     eRegPass: "",
+    requestErrorStatus: 0,
   },
   methods: {
     emaiRegistration: function() {
+      $("#registrationBtn").prop("disabled", true);
+      $("#registrationBtn").addClass("loading");
       const userData = {
         name: this.eRegName,
         email: this.eRegEmail,
         password: this.eRegPass,
       };
-      console.log(userData);
       axios
         .post("/api/auth/email", userData)
         .then(res => {
+          $("#registrationBtn").prop("disabled", false);
+          $("#registrationBtn").removeClass("loading");
           console.log(res);
+          this.requestErrorStatus = 0;
         })
         .catch(err => {
-          console.log(err);
+          $("#registrationBtn").prop("disabled", false);
+          $("#registrationBtn").removeClass("loading");
+          console.log(err.response);
+          switch (err.response.status) {
+            case 400:
+              this.requestErrorStatus = err.response.data.errCode;
+              break;
+            case 409:
+              this.requestErrorStatus = 4;
+              console.log("email address already in use");
+              break;
+            case 500:
+              console.log("serveur side error");
+              break;
+          }
+          //
         });
     },
     showEmailRegistraion: function() {
