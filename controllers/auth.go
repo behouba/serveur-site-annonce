@@ -14,6 +14,7 @@ func (c *EmailRegistration) Post() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	registrationError, err := user.ValidateRegistration()
 	if err != nil {
 		fmt.Println(err)
@@ -32,6 +33,46 @@ func (c *EmailRegistration) Post() {
 		}
 		return
 	}
+
+	err = user.CreateSession(c.Ctx.Input.Context)
+	if err != nil {
+		fmt.Println(err)
+		c.Ctx.Output.SetStatus(500)
+		return
+	}
 	c.Data["json"] = user
 	c.ServeJSON()
+}
+
+//
+
+func (c *EmailLoginController) Post() {
+	var user models.User
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &user)
+	if err != nil {
+		fmt.Println(err)
+		c.Ctx.Output.SetStatus(401)
+		return
+	}
+
+	err = user.Authenticate()
+	if err != nil {
+		fmt.Println(err)
+		c.Ctx.Output.SetStatus(401)
+		return
+	}
+
+	err = user.CreateSession(c.Ctx.Input.Context)
+	if err != nil {
+		fmt.Println(err)
+		c.Ctx.Output.SetStatus(500)
+		return
+	}
+	c.Data["json"] = user
+	c.ServeJSON()
+}
+
+func (c *LogoutController) Delete() {
+	// c.SetSecureCookie(cookieSecret, cookieName, "")
+	c.Finish()
 }

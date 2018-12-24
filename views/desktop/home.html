@@ -11,7 +11,7 @@
     />
     <link href="/static/css/skdslider.css" rel="stylesheet" />
 
-    <title>Site d'annonce</title>
+    <title>Bienvenu sur votre site d'annonce</title>
   </head>
   <script
     src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -21,22 +21,12 @@
   <script src="/static/js/semantic.min.js"></script>
   <script src="/static/js/skdslider.min.js"></script>
   <script src="/static/js/axios.min.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $("#eventsSlide").skdslider({
-        slideSelector: ".slide",
-        delay: 5000,
-        animationSpeed: 2000,
-        animationType: "fading",
-      });
-    });
-  </script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script></script>
 
   <link rel="stylesheet" href="/static/css/index.css" />
   <body>
-    <div id="home" style="display:none">
+    <div id="home">
       <!-- header -->
       {{ template "header" . }}
       <!-- end of header -->
@@ -49,10 +39,12 @@
       <!-- end of all categories display -->
 
       <!-- ads listing section -->
-      {{ template "ads-listing"}}
+      {{ template "ads-listing" }}
       <!-- end of ads listing section -->
     </div>
     <!-- home end -->
   </body>
   <script src="/static/js/index.js"></script>
+  <script src="/static/js/home-slider.js"></script>
+  <script src="/static/js/listing.js"></script>
 </html>

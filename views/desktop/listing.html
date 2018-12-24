@@ -21,21 +21,11 @@
   <script src="/static/js/semantic.min.js"></script>
   <script src="/static/js/skdslider.min.js"></script>
   <script src="/static/js/axios.min.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $("#eventsSlide").skdslider({
-        slideSelector: ".slide",
-        delay: 5000,
-        animationSpeed: 2000,
-        animationType: "fading"
-      });
-    });
-  </script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 
   <link rel="stylesheet" href="/static/css/index.css" />
   <body>
-    <div id="home" style="display:none">
+    <div id="home">
       <!-- header -->
       {{ template "header" . }}
       <!-- end of header -->
@@ -55,4 +45,5 @@
     <!-- home end -->
   </body>
   <script src="/static/js/index.js"></script>
+  <script src="/static/js/listing.js"></script>
 </html>

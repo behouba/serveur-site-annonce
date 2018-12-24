@@ -27,3 +27,11 @@ type SubCategoryControler struct {
 type EmailRegistration struct {
 	beego.Controller
 }
+
+type EmailLoginController struct {
+	beego.Controller
+}
+
+type LogoutController struct {
+	beego.Controller
+}

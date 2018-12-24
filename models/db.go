@@ -9,11 +9,13 @@ import (
 )
 
 var (
-	host     = beego.AppConfig.String("dbhost")
-	port     = 5432
-	user     = beego.AppConfig.String("dbuser")
-	password = beego.AppConfig.String("dbpassword")
-	dbname   = beego.AppConfig.String("dbname")
+	cookieSecret = beego.AppConfig.String("secret")
+	cookieName   = "__connexion"
+	host         = beego.AppConfig.String("dbhost")
+	port         = 5432
+	user         = beego.AppConfig.String("dbuser")
+	password     = beego.AppConfig.String("dbpassword")
+	dbname       = beego.AppConfig.String("dbname")
 )
 
 // Db is a pointer to database connexion object
