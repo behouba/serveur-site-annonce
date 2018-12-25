@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/css/semantic.min.css"
+    />
+    <link rel="stylesheet" href="/static/css/index.css" />
+
+    <title>{{ .User.Name }}</title>
+  </head>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"
+  ></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/semantic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
+  <body>
+    <div>
+      {{ template "desktop/components/header.html" .}}
+      <div class="ui grid container" id="my-account">
+        <div class="four wide column">
+          <div class="ui vertical large pointing fluid menu">
+            <a class="item" href="/profile/32"> Mes annonces </a>
+            <a class="item" href="/profile/32/messenger"> Messages </a>
+            <a class="item" href="/profile/32/favoris"> Favoris </a>
+            <a class="item" href="#"> Alerte </a>
+            <a class="item" href="#"> Evaluations </a>
+            <a class="item active" href="/profile/32/settings">
+              Configuration
+            </a>
+          </div>
+
+          {{ template "desktop/components/profile-card.html" .User}}
+        </div>
+
+        <!-- right section display selcted menu content -->
+        <div class="twelve wide column" style="margin-bottom:50px">
+          <!-- messages section -->
+          <div class="ui divider section"></div>
+          <section>
+            <!--
+              class 'loading' make form in loading state, class success show success message
+            -->
+            <div class="ui form">
+              <div class="ui success message">
+                <div class="header">Modifications enregisté avec success</div>
+                <p>You're all signed up for the newsletter.</p>
+              </div>
+              <div class="inline fields">
+                <div class="four wide field">
+                  <label>Photo de profile</label>
+                </div>
+                <div class="twelve wide field">
+                  <img
+                    class="ui small circular image"
+                    src="https://59.img.avito.st/avatar/social/256x256/4789950259.jpg"
+                  />
+                  <div class="ui dropdown" id="profilePicUpdate">
+                    <div class="text">Modifier votre photo</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                      <div class="item">
+                        <i class="camera icon"></i>Prendre une photo
+                      </div>
+                      <div class="item">
+                        <i class="upload icon"></i> Telecharger une photo
+                      </div>
+                      <div class="item">
+                        <i class="trash icon"></i> Supprimer la photo
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline fields">
+                <div class="four wide field">
+                  <label>Nom d'utilisateur</label>
+                </div>
+                <div class="twelve wide field">
+                  <input type="text" value="N'dri charles" />
+                </div>
+              </div>
+              <div class="inline fields">
+                <div class="four wide field">
+                  <label>Lieu de residence</label>
+                </div>
+                <div class="twelve wide field">
+                  <select class="ui fluid search dropdown" id="selectLocation">
+                    <option value="">Choisisez votre ville</option>
+                    <option value="ABJ">Abidjan</option>
+                    <option value="YK">Yamoussoukro</option>
+                    <option value="BK">Bouaké</option>
+                  </select>
+                </div>
+              </div>
+              <div class="inline fields">
+                <div class="four wide field"><label>Téléphone</label></div>
+                <div class="twelve wide field">
+                  <input type="tel" value="+225 45 00 16 85" />
+                </div>
+              </div>
+              <div class="inline fields">
+                <div class="four wide field"><label>Adrresse email</label></div>
+                <div class="twelve wide field">
+                  <input type="email" value="behouba@gmail.com" />
+                </div>
+              </div>
+              <div class="inline fields">
+                <div class="four wide field"></div>
+                <div class="twelve wide field">
+                  <div class="ui segment fluid">
+                    <div class="field">
+                      <div class="ui toggle checkbox">
+                        <input
+                          type="checkbox"
+                          name="gift"
+                          tabindex="0"
+                          class="hidden"
+                        />
+                        <label>Recevoir des notifications par email</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline fields">
+                <div class="four wide field"></div>
+                <div class="twelve wide field">
+                  <div class="ui button primary small" tabindex="0">
+                    Enregister les modifications
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- end of ads listing items -->
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/static/js/index.js"></script>
+  <script src="/static/js/profile.js"></script>
+</html>

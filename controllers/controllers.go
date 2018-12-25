@@ -35,3 +35,19 @@ type EmailLoginController struct {
 type LogoutController struct {
 	beego.Controller
 }
+
+type ProfileControler struct {
+	beego.Controller
+}
+
+type ProfileFavoritesControler struct {
+	beego.Controller
+}
+
+type ProfileMessengerControler struct {
+	beego.Controller
+}
+
+type ProfileSettingsControler struct {
+	beego.Controller
+}

@@ -44,8 +44,10 @@ func (c *EmailRegistration) Post() {
 	c.ServeJSON()
 }
 
-//
-
+// Post method of EmailLoginController
+// expect user json data in request body
+// authenticate user and create new session
+// for user
 func (c *EmailLoginController) Post() {
 	var user models.User
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &user)
@@ -72,7 +74,8 @@ func (c *EmailLoginController) Post() {
 	c.ServeJSON()
 }
 
+// Delete handler for when user send request to logout
 func (c *LogoutController) Delete() {
-	// c.SetSecureCookie(cookieSecret, cookieName, "")
+	models.DestroySession(c.Ctx.Input.Context)
 	c.Finish()
 }

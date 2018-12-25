@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	cookieSecret = beego.AppConfig.String("secret")
-	cookieName   = "__connexion"
+	CookieSecret = beego.AppConfig.String("secret")
+	UserCookie   = "__connexion"
+	GuestCookie  = "__guest"
 	host         = beego.AppConfig.String("dbhost")
 	port         = 5432
 	user         = beego.AppConfig.String("dbuser")

@@ -101,7 +101,7 @@ func (user *User) CreateSession(c *context.Context) (err error) {
 	if err != nil {
 		return
 	}
-	c.SetSecureCookie(cookieSecret, cookieName, accessToken)
+	c.SetSecureCookie(CookieSecret, UserCookie, accessToken)
 	return
 }
 
@@ -130,4 +130,8 @@ func (user *User) GetData(accessToken string) (err error) {
 		return
 	}
 	return
+}
+
+func DestroySession(c *context.Context) {
+	c.SetSecureCookie(CookieSecret, UserCookie, "")
 }

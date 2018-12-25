@@ -1,4 +1,3 @@
-{{ define "header"}}
 <header id="header">
   <!-- first nav -->
   <div class="ui container" id="first-nav">
@@ -43,13 +42,13 @@
     id="sticky-navbar"
   >
     <div class="ui container">
-      <div class="header item" style="margin-left: 0px; padding-left:0px;">
+      <a class="header item" style="margin-left: 0px; padding-left:0px;" href="/">
         <img
           class="logo"
           src="https://upload.wikimedia.org/wikipedia/en/3/39/Pokeball.PNG"
         />
         Project Name
-      </div>
+      </a>
       <div class="right menu">
         <div class="item">
           <div class="ui right labeled action input" id="nav-search">
@@ -92,13 +91,13 @@
               {{ .User.Name }}
             </div>
             <i class="dropdown icon"></i>
-            <div class="menu">
-              <div class="item">
+            <div class="ui large menu">
+              <a class="item" href="/profile/32">
                 <i class="grid layout icon"></i> Mes annonces
-              </div>
-              <div class="item"><i class="heart icon"></i> Mes favoris</div>
-              <div class="item"><i class="envelope icon"></i> Mes messages</div>
-              <div class="item"><i class="cog icon"></i> Configuration</div>
+            </a>
+              <a class="item" href="/profile/32/favoris"><i class="heart icon"></i> Mes favoris</a>
+              <a class="item" href="/profile/32/messenger"><i class="envelope icon"></i> Mes messages</a>
+              <a class="item" href="/profile/32/settings"><i class="cog icon"></i> Configuration</a>
               <div class="item" v-on:click="logout">
                 <i
                   class="sign-out
@@ -328,5 +327,3 @@
     </div>
   </div>
 </header>
-
-{{ end }}

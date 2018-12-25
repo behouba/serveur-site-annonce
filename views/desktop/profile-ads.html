@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/css/semantic.min.css"
+    />
+    <link rel="stylesheet" href="/static/css/index.css" />
+
+    <title>{{ .User.Name }}</title>
+  </head>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"
+  ></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/semantic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
+  <body>
+    <div>
+      {{ template "desktop/components/header.html" .}}
+      <div class="ui grid container" id="my-account">
+        <div class="four wide column">
+          <div class="ui vertical large pointing fluid menu">
+            <a class="item active" href="/profile/32"> Mes annonces </a>
+            <a class="item" href="/profile/32/messenger"> Messages </a>
+            <a class="item" href="/profile/32/favoris"> Favoris </a>
+            <a class="item" href="#"> Alerte </a>
+            <a class="item" href="#"> Evaluations </a>
+            <a class="item" href="/profile/32/settings"> Configuration </a>
+          </div>
+
+          {{ template "desktop/components/profile-card.html" .User }}
+        </div>
+
+        <!-- right section display selcted menu content -->
+        <div class="twelve wide column">
+          {{ template "desktop/components/profile-listing.html"}}
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/static/js/index.js"></script>
+  <script src="/static/js/profile.js"></script>
+</html>

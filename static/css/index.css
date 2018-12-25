@@ -11,6 +11,10 @@ body {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04);
 }
 
+#header .header.item:hover {
+  background: none;
+}
+
 #sticky-navbar {
   margin-top: 7px;
 }
@@ -152,3 +156,39 @@ body {
   }
 }
 /* end of login modal css */
+
+/* profile-ads style */
+#my-account {
+  margin-top: 50px;
+}
+.ui.rating {
+  margin: 10px 0px;
+}
+
+/* ad listing item styling */
+.cardPrice {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 18px;
+  color: #2d97de;
+  margin-bottom: 0.5rem;
+}
+.price {
+  font-weight: 700;
+  margin: 5px 0px;
+}
+.list-card-img {
+  height: 110px !important;
+  object-fit: cover;
+}
+.text-right {
+  text-align: right;
+}
+
+#selectLocation.ui.form .inline.field > .selection.dropdown,
+.ui.form .inline.fields .field > .selection.dropdown {
+  width: 100%;
+}
+
+/* end of ad listing item styling */
+/* end of profile-ads style */

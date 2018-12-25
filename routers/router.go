@@ -12,7 +12,10 @@ func init() {
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/:city:string/", &controllers.CityControler{})
 	beego.Router("/:city:string/:category:string/", &controllers.CategoryControler{})
-	// beego.Router("/:city:string/:category:string/:subcategory:string", &controllers.SubCategoryControler{})
+	beego.Router("/profile/:id:int", &controllers.ProfileControler{})
+	beego.Router("/profile/:id:int/favoris/", &controllers.ProfileFavoritesControler{})
+	beego.Router("/profile/:id:int/messenger/", &controllers.ProfileMessengerControler{})
+	beego.Router("/profile/:id:int/settings/", &controllers.ProfileSettingsControler{})
 
 	// api's routes
 	beego.Router("/api/cities", &controllers.FetchCities{})
@@ -23,5 +26,6 @@ func init() {
 	beego.Router("/api/auth/logout", &controllers.LogoutController{})
 
 	// filters
-	beego.InsertFilter("/*", beego.BeforeRouter, GolabalFilter)
+	beego.InsertFilter("/*", beego.BeforeRouter, golabalFilter)
+	beego.InsertFilter("/profile/*", beego.BeforeRouter, profileFilter)
 }

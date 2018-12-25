@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/css/semantic.min.css"
+    />
+    <link rel="stylesheet" href="/static/css/index.css" />
+
+    <title>{{ .User.Name }}</title>
+  </head>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"
+  ></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/semantic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
+  <body>
+    <div>
+      {{ template "desktop/components/header.html" .}}
+      <div class="ui grid container" id="my-account">
+        <div class="four wide column">
+          <div class="ui vertical large pointing fluid menu">
+            <a class="item" href="/profile/32"> Mes annonces </a>
+            <a class="item" href="/profile/32/messenger"> Messages </a>
+            <a class="item active" href="/profile/32/favoris"> Favoris </a>
+            <a class="item" href="#"> Alerte </a>
+            <a class="item" href="#"> Evaluations </a>
+            <a class="item" href="/profile/32/settings"> Configuration </a>
+          </div>
+
+          {{ template "desktop/components/profile-card.html" .User}}
+        </div>
+
+        <!-- right section display selcted menu content -->
+        <div class="twelve wide column">
+          <!-- favorites ads section -->
+          <section>
+            <div>
+              <div class="ui checkbox mini" id="selectAllFav">
+                <input type="checkbox" tabindex="0" class="hidden" />
+                <label>Tous selectionner</label>
+              </div>
+              <!-- <button class="ui tiny button">Loading</button> -->
+              <button
+                class="ui mini right floated button inverted red disabled"
+              >
+                <i class="trash icon"></i> Supprimer la selection
+              </button>
+              <div class="ui section divider"></div>
+            </div>
+            <div class="ui divided items">
+              <div class="item" v-for="(img, index) in images">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="0" class="hidden" />
+                </div>
+                <a class="image">
+                  <img
+                    class="ui image list-card-img"
+                    v-bind:class="{disabled: index % 2 === 0}"
+                    :src="img"
+                  />
+                </a>
+                <div class="content">
+                  <div class="cardPrice">
+                    <i class="like icon"></i>Sony PS4 Pro 1 To + Disque
+                  </div>
+                  <div class="price">150.000 FCFA</div>
+                  <div class="meta">
+                    <span class="cinema">13 novembre 08:07</span>
+                  </div>
+
+                  <div class="meta" v-if="index % 2 === 0">
+                    <span class="cinema" style="color: red"
+                      >Cette annonce a été supprimée par l'annonceur</span
+                    >
+                  </div>
+                  <div class="description text-right"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- end of ads listing items -->
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/static/js/index.js"></script>
+  <script src="/static/js/profile.js"></script>
+</html>

@@ -1,0 +1,113 @@
+<div class="ui secondary pointing menu">
+  <a class="item active" id="onlineAds" v-on:click="showActiv"> Actives </a>
+  <a class="item" id="offlineAds" v-on:click="showNonActiv"> Non actives </a>
+</div>
+<section v-if="showActivesAds">
+  <!-- ads listing items -->
+  <div class="ui fluid">
+    <div class="ui divided items">
+      <div class="item" v-for="i in images">
+        <a class="image"> <img class="list-card-img" :src="i" /> </a>
+        <div class="content">
+          <a class="cardPrice">Sony PS4 Pro 1 To + Disque</a>
+          <div class="price">150.000 FCFA</div>
+          <div class="meta"><span class="cinema">13 novembre 08:07</span></div>
+          <div class="description text-right">
+            <button class="ui mini inverted button secondary">
+              <i class="edit icon"></i>Modifier
+            </button>
+            <button
+              class="ui mini button inverted red"
+              v-on:click="showRemoveAdModal(i)"
+            >
+              <i class="close icon"></i>Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- remove ad modal -->
+  <div class="ui modal" id="removeAdModal">
+    <i class="close icon"></i>
+    <!-- put ad title and price here -->
+    <div class="header">Sony PS4 Pro 1 To + Disque</div>
+    <div class="image content">
+      <div class="ui small image"><img :src="adToRemove" /></div>
+      <div class="description">
+        <div class="ui header">We've auto-chosen a profile image for you.</div>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore
+          quaerat unde aspernatur velit nihil vel esse quibusdam aperiam
+          accusantium sapiente rerum minus, inventore ipsum earum laudantium
+          quas a sint? Necessitatibus.
+        </p>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui yellow medium button">
+        <i class="power off icon"></i> j'ai vendu gráce au site
+      </div>
+
+      <div class="ui red right medium button">
+        <i class="trash icon"></i> je supprime sans raison
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- non actives ads section -->
+<section v-else>
+  <div class="ui fluid">
+    <div class="ui divided items">
+      <div class="item" v-for="i in images">
+        <a class="image">
+          <img class="ui image disabled list-card-img" :src="i" />
+        </a>
+        <div class="content">
+          <div class="cardPrice">Sony PS4 Pro 1 To + Disque</div>
+          <div class="price">150.000 FCFA</div>
+          <div class="meta"><span class="cinema">13 novembre 08:07</span></div>
+          <div class="description text-right">
+            <!--
+                        pour les particulier pas besoin de desactivation d'annonce et reactivation
+                      -->
+            <!--
+                        <button
+                          class="ui mini inverted button green"
+                          v-on:click="showAdReactivationModal"
+                        >
+                          Mettre en ligne
+                        </button>
+                        <button
+                          class="ui mini button inverted red"
+                          v-on:click="showRemoveAdModal(i)"
+                        >
+                          <i class="close icon"></i>Supprimer
+                        </button>
+                      -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- reactivate ad modal -->
+    <div class="ui modal tiny" id="adReactivationModal">
+      <i class="close icon"></i>
+      <div class="header">Profile Picture</div>
+      <div class="content">
+        <div class="description">
+          <div class="ui header">Message de confirmation.</div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui black deny button">Annuler</div>
+        <div class="ui positive right labeled icon button">
+          Oui, je confirme <i class="checkmark icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- messages section -->
+<!-- end of ads listing items -->
