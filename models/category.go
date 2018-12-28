@@ -7,12 +7,12 @@ import (
 
 // Category struct represent each category element
 type Category struct {
-	ParentID      sql.NullInt64
-	CategoryID    int
-	Name          string
-	PathName      string
-	Fields        []sql.NullString
-	SubCategories []Category
+	ParentID      sql.NullInt64    `json:"parent_id"`
+	CategoryID    int              `json:"id"`
+	Name          string           `json:"name"`
+	PathName      string           `json:"path_name"`
+	Fields        []sql.NullString `json:"fields"`
+	SubCategories []Category       `json:"sub_categories"`
 }
 
 // CategoryMap map each category PathName with Name
@@ -34,7 +34,7 @@ func getAllCategories() (categories []Category, err error) {
 		}
 		CategoryMap[cat.PathName] = cat.Name
 		if cat.CategoryID != 5 {
-			cat.SubCategories, err = getCategories(cat.CategoryID)
+			cat.SubCategories, err = GetCategories(cat.CategoryID)
 		}
 		if err != nil {
 			fmt.Println(err)
@@ -45,7 +45,7 @@ func getAllCategories() (categories []Category, err error) {
 	return
 }
 
-func getCategories(id int) (categories []Category, err error) {
+func GetCategories(id int) (categories []Category, err error) {
 	var res *sql.Rows
 	res, err = Db.Query("SELECT category_id, name, path_name FROM category WHERE parent_id=$1 ORDER BY category_id", id)
 	if err != nil {

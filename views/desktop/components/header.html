@@ -11,6 +11,7 @@
       <a class="item" href="ads-listing.html"> Annonces </a>
       <a class="item" href="stores-listing.html"> Boutiques </a>
       <a class="item"> Trocs </a> <a class="item" href="help.html"> Aide </a>
+      <a class="item"> Trocs </a> <a class="item" href="https://html.gridbootstrap.com/vert/ad-post.html"> Mettre en noir ou autres couleur sombre </a>
     </div>
 
     <!-- location selection modal -->
@@ -37,12 +38,13 @@
   </div>
 
   <!-- second nav -->
-  <div
-    class="ui secondary borderless main menu small sticky"
-    id="sticky-navbar"
-  >
+  <div class="ui secondary borderless main menu sticky" id="sticky-navbar">
     <div class="ui container">
-      <a class="header item" style="margin-left: 0px; padding-left:0px;" href="/">
+      <a
+        class="header item"
+        style="margin-left: 0px; padding-left:0px;"
+        href="/"
+      >
         <img
           class="logo"
           src="https://upload.wikimedia.org/wikipedia/en/3/39/Pokeball.PNG"
@@ -81,7 +83,7 @@
           </div>
         </div>
         <div class="item">
-          <div class="ui primary button">Creer une annonce</div>
+          <a class="ui primary button" href="/create/">Creer une annonce</a>
         </div>
         {{ if .User }}
         <div class="item">
@@ -92,12 +94,18 @@
             </div>
             <i class="dropdown icon"></i>
             <div class="ui large menu">
-              <a class="item" href="/profile/32">
+              <a class="item" href="/profile">
                 <i class="grid layout icon"></i> Mes annonces
-            </a>
-              <a class="item" href="/profile/32/favoris"><i class="heart icon"></i> Mes favoris</a>
-              <a class="item" href="/profile/32/messenger"><i class="envelope icon"></i> Mes messages</a>
-              <a class="item" href="/profile/32/settings"><i class="cog icon"></i> Configuration</a>
+              </a>
+              <a class="item" href="/profile/messenger"
+                ><i class="envelope icon"></i> Mes messages</a
+              >
+              <a class="item" href="/profile/favoris"
+                ><i class="heart icon"></i> Mes favoris</a
+              >
+              <a class="item" href="/profile/settings"
+                ><i class="cog icon"></i> Configuration</a
+              >
               <div class="item" v-on:click="logout">
                 <i
                   class="sign-out
@@ -148,8 +156,12 @@
               </div>
               <div class="ui divider"></div>
               <div class="ui error message">
-                  <p>Votre adresse e-mail ou votre mot de passe est incorrect. Merci de réessayer ou de cliquer sur le lien « Mot de passe oublié ? » ci-dessous.</p>
-                </div>
+                <p>
+                  Votre adresse e-mail ou votre mot de passe est incorrect.
+                  Merci de réessayer ou de cliquer sur le lien « Mot de passe
+                  oublié ? » ci-dessous.
+                </p>
+              </div>
               <div class="field">
                 <label>Adresse e-mail </label>
                 <div class="ui left icon input">

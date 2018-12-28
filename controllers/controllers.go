@@ -51,3 +51,23 @@ type ProfileMessengerControler struct {
 type ProfileSettingsControler struct {
 	beego.Controller
 }
+
+type AdvertControler struct {
+	beego.Controller
+}
+
+type ProfileAlertsControler struct {
+	beego.Controller
+}
+
+type AdvertiserControler struct {
+	beego.Controller
+}
+
+type CreateAdvertControler struct {
+	beego.Controller
+}
+
+type FetchCategoryController struct {
+	beego.Controller
+}

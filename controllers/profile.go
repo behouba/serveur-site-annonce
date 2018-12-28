@@ -15,3 +15,7 @@ func (c *ProfileMessengerControler) Get() {
 func (c *ProfileSettingsControler) Get() {
 	c.TplName = "desktop/profile-settings.html"
 }
+
+func (c *ProfileAlertsControler) Get() {
+	c.TplName = "desktop/profile-alert.html"
+}

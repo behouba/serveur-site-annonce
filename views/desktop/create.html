@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/css/semantic.min.css"
+    />
+    <link rel="stylesheet" href="/static/css/index.css" />
+    <title>Create ad</title>
+  </head>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"
+  ></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/semantic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <style>
+    .ui.form .inline.field > .selection.dropdown,
+    .ui.form .inline.fields .field > .selection.dropdown {
+      width: 100%;
+    }
+    label {
+      font-size: 14px;
+      font-weight: normal;
+    }
+  </style>
+  <body>
+    <div class="ui container" id="create">
+      <div class="ui grid" style="margin-top: 15px" v-if="!ok">
+        <div class="five wide column">
+          <div
+            class="ui vertical large pointing menu fluid"
+            v-if="categoriesL1.length > 0"
+          >
+            <div class="header item">Selectionner une categorie</div>
+            <a
+              class="item"
+              v-for="c in categoriesL1"
+              v-on:click="selectCategoryL1(c)"
+              :class="{active:c == selectedCategoryL1}"
+              >{ c.name }</a
+            >
+          </div>
+          <div style="height:500px" v-else>
+            <div class="ui active loader"></div>
+          </div>
+        </div>
+        <div class="five wide column">
+          <div
+            class="ui vertical large pointing menu fluid"
+            v-if="categoriesL2.length > 0"
+          >
+            <!-- <div class="header item">Selectionner une sous-categorie</div> -->
+            <a
+              class="item"
+              v-for="c in categoriesL2"
+              v-on:click="selectCategoryL2(c)"
+              :class="{active:c == selectedCategoryL2}"
+              >{ c.name }</a
+            >
+          </div>
+          <!-- <div><div class="ui active loader"></div></div> -->
+        </div>
+        <div class="five wide column">
+          <div
+            class="ui vertical large pointing menu fluid"
+            v-if="categoriesL3.length > 0"
+          >
+            <!-- <div class="header item">Selectionner une sous-categorie</div> -->
+            <a
+              class="item"
+              v-for="c in categoriesL3"
+              v-on:click="selectCategoryL3(c)"
+              >{ c.name }</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- create new advert form -->
+      <div class="ui grid" style="margin-top:30px;" v-else>
+        <div class="twelve wide column">
+          <div class="ui form small">
+            <div class="ui grid">
+              <div class="four wide column"><label>Categorie</label></div>
+              <div class="twelve wide column field">
+                <div class="ui large breadcrumb">
+                  <a class="section" v-on:click="backToCategories"
+                    >{ selectedCategoryL1.name }</a
+                  >
+                  <span class="divider">/</span>
+                  <a class="section" v-on:click="backToCategories"
+                    >{ selectedCategoryL2.name }</a
+                  >
+                  <span class="divider" v-if="selectedCategoryL3">/</span>
+                  <a
+                    class="section"
+                    v-if="selectedCategoryL3"
+                    v-on:click="backToCategories"
+                  >
+                    {selectedCategoryL3.name}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="ui grid">
+              <div class="four wide column"><label>Type d'annonce</label></div>
+              <div class="six wide column field">
+                <div class="ui selection dropdown">
+                  <input type="hidden" name="gender" />
+                  <i class="dropdown icon"></i>
+                  <div class="default text">Type d'annonce</div>
+                  <div class="menu">
+                    <div class="item" data-value="1">Male</div>
+                    <div class="item" data-value="0">Female</div>
+                  </div>
+                </div>
+              </div>
+              <div class="six wide column field"></div>
+            </div>
+            <div class="ui grid">
+              <div class="four wide column">
+                <label>Titre de l'annonce</label>
+              </div>
+              <div class="twelve wide column field"><input type="text" /></div>
+            </div>
+            <div class="ui grid">
+              <div class="four wide column">
+                <label>Description de l'annonce</label>
+              </div>
+              <div class="twelve wide column field">
+                <textarea name="" id="" cols="10" rows="5"></textarea>
+              </div>
+            </div>
+            <div class="ui grid">
+              <div class="four wide column"><label>Prix</label></div>
+              <div class="five wide column field">
+                <div class="ui right labeled input">
+                  <!-- <label for="amount" class="ui label">$</label> -->
+                  <input type="text" placeholder="Prix" id="amount" />
+                  <div class="ui basic label">FCFA</div>
+                </div>
+              </div>
+            </div>
+            <div class="ui grid">
+              <div class="four wide column"><label>Addresse</label></div>
+              <div class="twelve wide column field"><input type="text" /></div>
+            </div>
+            <div class="ui grid">
+              <div class="four wide column"></div>
+              <div class="twelve wide column field">
+                <textarea name="" id="" cols="10" rows="5"></textarea>
+              </div>
+            </div>
+            <div class="ui grid">
+              <div class="four wide column">
+                <label>Ajouter des photos</label>
+              </div>
+              <div class="twelve wide column field">
+                <textarea name="" id="" cols="10" rows="5"></textarea>
+              </div>
+            </div>
+            <div class="ui grid">
+              <div class="four wide column"><label>Téléphone</label></div>
+              <div class="five wide column field">
+                <input type="text" placeholder="+225" id="amount" />
+              </div>
+            </div>
+            <div class="ui section divider"></div>
+            <div class="ui grid">
+              <div class="sixteen wide column">
+                <button
+                  class="ui right labeled icon button right floated primary"
+                >
+                  <i class="right arrow icon"></i>Suivant
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- <script src="/static/js/index.js"></script> -->
+  <script>
+    Vue.options.delimiters = ["{", "}"];
+    var createApp = new Vue({
+      el: "#create",
+      data: {
+        categoriesL1: [],
+        categoriesL2: [],
+        categoriesL3: [],
+        selectedCategoryL1: undefined,
+        selectedCategoryL2: undefined,
+        selectedCategoryL3: undefined,
+        ok: false,
+      },
+      methods: {
+        selectCategoryL1: function(c) {
+          this.categoriesL2 = [];
+          this.categoriesL3 = [];
+          console.log(c);
+          // set value for current selected categorie
+          this.selectedCategoryL1 = c;
+          axios
+            .get("/api/categories/" + c.id)
+            .then(res => {
+              this.categoriesL2 = res.data !== null ? res.data : [];
+              console.log(this.categoriesL2);
+            })
+            .catch(err => {
+              console.log(err.response);
+            });
+        },
+        selectCategoryL2: function(c) {
+          console.log(c);
+          // set value for current selected second layer categorie (sub-category)
+          this.selectedCategoryL2 = c;
+          axios
+            .get("/api/categories/" + c.id)
+            .then(res => {
+              if (res.data === null) {
+                this.ok = true;
+                this.categoriesL3 = [];
+              } else {
+                this.categoriesL3 = res.data;
+              }
+              console.log(this.categoriesL3);
+            })
+            .catch(err => {
+              console.log(err.response);
+            });
+        },
+        selectCategoryL3: function(c) {
+          console.log(c);
+          // set value for current selected second layer categorie (sub-category)
+          this.selectedCategoryL3 = c;
+          this.ok = true;
+        },
+        backToCategories: function() {
+          this.selectedCategoryL3 = null;
+          this.ok = false;
+        },
+      },
+      created: function() {
+        axios
+          .get("/api/categories/")
+          .then(res => {
+            this.categoriesL1 = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        console.log("created !!!!");
+      },
+    });
+    $(".ui.dropdown").dropdown();
+  </script>
+</html>

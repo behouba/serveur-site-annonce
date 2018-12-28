@@ -6,9 +6,6 @@ import (
 
 // Get method of MainController handle request for home page
 func (c *MainController) Get() {
-	c.Data["CityName"] = "Choisissez votre localité"
-	c.Data["CityPath"] = "civ"
-	c.Data["Category"] = "CATEGORIES"
 	c.TplName = "desktop/home.html"
 }
 
@@ -21,7 +18,6 @@ func (c *CityControler) Get() {
 		c.Abort("404")
 	}
 	c.Data["CityName"] = cityName
-	c.Data["Category"] = "CATEGORIES"
 	c.Data["CityPath"] = c.Ctx.Input.Param(":city")
 	c.TplName = "desktop/home.html"
 }

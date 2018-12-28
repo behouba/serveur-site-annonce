@@ -23,28 +23,32 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 
   <body>
-    <div>
-      {{ template "desktop/components/header.html" .}}
-      <div class="ui grid container" id="my-account">
+    {{ template "desktop/components/header.html" .}}
+    <div class="ui container" id="my-account">
+      <div class="ui grid">
         <div class="four wide column">
+          <!-- account menu -->
           <div class="ui vertical large pointing fluid menu">
             <a class="item" href="/profile"> Mes annonces </a>
             <a class="item" href="/profile/messenger"> Messages </a>
-            <a class="item active" href="/profile/favoris"> Favoris </a>
-            <a class="item" href="/profile/alerts"> Alerte </a>
+            <a class="item" href="/profile/favoris"> Favoris </a>
+            <a class="item active" href="/profile/alerts"> Alertes </a>
             <a class="item" href="#"> Evaluations </a>
             <a class="item" href="/profile/settings"> Configuration </a>
           </div>
+          <!-- end of account menu -->
 
+          <!-- user description card -->
           {{ template "desktop/components/profile-card.html" .User}}
+          <!-- end of user description card -->
         </div>
 
         <!-- right section display selcted menu content -->
         <div class="twelve wide column">
-          <!-- favorites ads section -->
+          <!-- messages section -->
           <section>
             <div>
-              <div class="ui checkbox mini" id="selectAllFav">
+              <div class="ui checkbox mini" id="selectAllAlert">
                 <input type="checkbox" tabindex="0" class="hidden" />
                 <label>Tous selectionner</label>
               </div>
@@ -61,26 +65,21 @@
                 <div class="ui checkbox">
                   <input type="checkbox" tabindex="0" class="hidden" />
                 </div>
-                <a class="image">
-                  <img
-                    class="ui image list-card-img"
-                    v-bind:class="{disabled: index % 2 === 0}"
-                    :src="img"
-                  />
-                </a>
                 <div class="content">
                   <div class="cardPrice">
-                    <i class="like icon"></i>Sony PS4 Pro 1 To + Disque
+                    Lenovo IdeaPad 320 → Electronique Grand Public / Ordinateurs
+                    Portables
+                    <div class="ui toggle checkbox right floated">
+                      <label>Recevoir par email</label>
+                      <input type="checkbox" tabindex="0" class="hidden" />
+                    </div>
                   </div>
-                  <div class="price">150.000 FCFA</div>
+                  <div class="price">
+                    Uniquement avec photos, Uniquement avec livraison, Prix ​​8
+                    000 - 15 000 roubles .
+                  </div>
                   <div class="meta">
-                    <span class="cinema">13 novembre 08:07</span>
-                  </div>
-
-                  <div class="meta" v-if="index % 2 === 0">
-                    <span class="cinema" style="color: red"
-                      >Cette annonce a été supprimée par l'annonceur</span
-                    >
+                    <span class="cinema">Yamoussoukro</span>
                   </div>
                   <div class="description text-right"></div>
                 </div>
@@ -92,6 +91,37 @@
       </div>
     </div>
   </body>
-  <script src="/static/js/index.js"></script>
-  <script src="/static/js/profile.js"></script>
+  <script>
+    var dumpImg = [
+      "https://scontent-frt3-1.cdninstagram.com/vp/3f3221c8ef1499170f6fb4cf1fdc1b3a/5C921356/t51.2885-15/e35/45510151_2352295998132462_5450872102550480899_n.jpg",
+      "https://www.gamepretty.com/wp-content/uploads/2018/10/nintendo-switch-6.01-update-01.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/51qiZgs22mL._SX425_.jpg",
+    ];
+
+    var myAccountApp = new Vue({
+      el: "#my-account",
+      data: {
+        images: dumpImg,
+        adToRemove: "",
+      },
+      methods: {
+        showRemoveAdModal(ad) {
+          this.adToRemove = ad;
+          $("#removeAdModal").modal("show");
+        },
+      },
+    });
+  </script>
+  <script>
+    $("#removeAdModal").modal();
+    $(".ui.rating")
+      .rating({
+        initialRating: 5,
+        maxRating: 5,
+      })
+      .rating("disable");
+    $(".ui.checkbox").checkbox();
+
+    $("#selectAllAlert").checkbox();
+  </script>
 </html>

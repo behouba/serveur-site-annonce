@@ -1,6 +1,11 @@
 body {
   height: auto;
 }
+
+.container {
+  min-width: 1000px;
+}
+
 /* top navigation bar styling */
 #first-nav {
   padding-top: 10px;
@@ -26,7 +31,7 @@ body {
 .main.menu.fixed {
   background-color: #ffffff;
   border: 1px solid #ddd;
-  box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
   left: 0 !important;
   width: 100% !important;
   height: 55px !important;
@@ -160,6 +165,7 @@ body {
 /* profile-ads style */
 #my-account {
   margin-top: 50px;
+  margin-bottom: 50px;
 }
 .ui.rating {
   margin: 10px 0px;

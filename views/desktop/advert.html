@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <!-- semanti-ui css -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/css/semantic.min.css"
+    />
+    <!-- lightgallery css file -->
+    <link
+      rel="stylesheet"
+      href="/static/lightgallery/dist/css/lightgallery.min.css"
+    />
+    <!-- lightslider css file -->
+    <link rel="stylesheet" href="/static/css/lightslider.css" />
+
+    <link rel="stylesheet" href="/static/css/index.css" />
+  </head>
+  <!-- jquery -->
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"
+  ></script>
+  <!-- lightslider main javascript file import -->
+  <script src="/static/js/lightslider.js"></script>
+  <!-- semantic ui main js file -->
+  <script src="/static/js/semantic.min.js"></script>
+  <!-- vuejs cdn -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="/static/js/axios.min.js"></script>
+  <style>
+    #lightgallery {
+      width: 100%;
+    }
+    #ad-detail {
+      margin-top: 50px;
+    }
+    #ad-info-left {
+      height: 1000px;
+    }
+    #seller-info .button {
+      margin: 10px 0px;
+    }
+    #seller-info .meta {
+      margin-bottom: 15px;
+    }
+    #ad-description {
+      margin-top: 20px;
+    }
+    ul {
+      list-style: none outside none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+    li {
+      display: block;
+      float: left;
+      margin-right: 6px;
+      cursor: pointer;
+    }
+    #lightSlider img {
+      display: block;
+      height: auto;
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+    }
+    .lSPager.lSGallery li {
+      height: 50px;
+    }
+    .lSPager.lSGallery img {
+      object-fit: cover;
+    }
+    #seller-info.ui.rating {
+      margin-top: 15px;
+    }
+    .ad-desc-text {
+      font-size: 1.28571429rem;
+      float: left;
+    }
+    .map {
+      height: 250px;
+      background-color: lightgray;
+    }
+    #similar-ads {
+      height: 400px;
+      background: lightgray;
+    }
+    .text-center {
+      text-align: center !important;
+    }
+    .modal-image {
+      margin: 15px 0px;
+    }
+    .modal-footer {
+      margin: 20px 0px;
+    }
+  </style>
+  <body>
+    {{ template "desktop/components/header.html" .}}
+    <div class="ui container" id="ad-detail">
+      <div class="ui grid">
+        <div class="row">
+          <div class="column">
+            <h1 class="ui header">Nintendo Switch édition Super Mario</h1>
+            <p>№ 1457435464, posté le 2 décembre à 23:04</p>
+            <button
+              class="ui small positive  button"
+              v-if="isFavorite"
+              v-on:click="toggleAddFavorite"
+            >
+              <i class="icon heart"></i> Retirer des favoris
+            </button>
+            <button
+              class="ui small basic button"
+              v-on:click="toggleAddFavorite"
+              v-else
+            >
+              <i class="icon heart"></i>Ajouter a mes favoris
+            </button>
+          </div>
+        </div>
+        <div class="twelve wide column" id="ad-info-left">
+          <section>
+            <div id="lightgallery">
+              <ul id="lightSlider">
+                <!--
+                  should format image in order for them to look well 'data-thumb' for images thumbnail and 'data-src' for main image
+                -->
+                <li v-for="i in images" :data-src="i" :data-thumb="i">
+                  <img :src="i" />
+                </li>
+              </ul>
+            </div>
+          </section>
+          <div class="ui grid" id="ad-description">
+            <div class="four wide column"><h3>Addrres:</h3></div>
+            <div class="twelve wide column">
+              <p class="ad-desc-text">Abidjan, Cocody Riviera</p>
+              <button
+                class="ui right floated basic button mini"
+                v-on:click="showMap=!showMap"
+              >
+                <i class="icon map"></i> Voir sur la carte
+              </button>
+            </div>
+            <div class="four wide column" v-if="showMap"></div>
+            <div class="twelve wide column map" v-if="showMap"></div>
+            <div class="four wide column"><h3>Publié le :</h3></div>
+            <div class="twelve wide column">
+              <p class="ad-desc-text">20 février 2017</p>
+            </div>
+            <div class="four wide column"><h3>Condition :</h3></div>
+            <div class="twelve wide column">
+              <p class="ad-desc-text">Occasion</p>
+            </div>
+            <div class="four wide column"><h3>Description :</h3></div>
+            <div class="twelve wide column">
+              <p class="ad-desc-text">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
+                doloremque iure, temporibus fugit numquam iste pariatur ratione
+                ullam aperiam totam earum dignissimos suscipit, delectus aliquid
+                cupiditate minima quia repellendus excepturi!
+              </p>
+            </div>
+            <div class="four wide column"><h3>Partager :</h3></div>
+            <div class="twelve wide column">
+              <button class="ui circular facebook icon button">
+                <i class="facebook icon"></i>
+              </button>
+              <button class="ui circular twitter icon button">
+                <i class="twitter icon"></i>
+              </button>
+              <button class="ui circular linkedin icon button">
+                <i class="linkedin icon"></i>
+              </button>
+              <button class="ui circular google plus icon button">
+                <i class="google plus icon"></i>
+              </button>
+              <button class="ui right floated basic button mini red">
+                <i class="exclamation triangle icon"></i> Signaler cette annonce
+              </button>
+            </div>
+          </div>
+          <div class="ui grid">
+            <div class="sixteen wide column">
+              <div id="similar-ads"><h1>Annonces similaires</h1></div>
+            </div>
+          </div>
+        </div>
+        <div class="four wide column">
+          <div class="ui sticky" id="seller-info">
+            <div class="ui cards">
+              <div class="card">
+                <div class="content">
+                  <h2 class="ui header">150.000 FCFA</h2>
+                  <div class="ui items">
+                    <div class="item">
+                      <a class="ui tiny circular image">
+                        <!-- user thumb image avatar style -->
+                        <img
+                          src="https://semantic-ui.com/images/avatar2/large/matthew.png"
+                        />
+                      </a>
+                      <div class="content">
+                        <a class="header">Seller name</a>
+                        <div class="ui star large rating"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="meta">
+                    <p>Derniere activité depuis il y a 3 jours</p>
+                  </div>
+                  <div
+                    class="fluid ui animated fade button primary"
+                    tabindex="0"
+                  >
+                    <div
+                      class="visible content"
+                      v-on:click="showSellerInfoModal"
+                    >
+                      Afficher le téléphone
+                    </div>
+                    <div
+                      class="hidden content"
+                      v-on:click="showSellerInfoModal"
+                    >
+                      45001685
+                    </div>
+                  </div>
+                  <button class="fluid ui button primary">
+                    Ecrire un message
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- seller info modal box -->
+          <div class="ui modal mini text-center" id="seller-info-modal">
+            <i class="close icon"></i>
+            <div class="header"><h1 class="">45 00 16 85</h1></div>
+            <div class="modal-image">
+              <a class="ui circular small image" href="#">
+                <img
+                  src="https://semantic-ui.com/images/avatar/large/chris.jpg"
+                />
+              </a>
+            </div>
+            <div class="description">
+              <div class="ui header"><a href="#">Seller name</a></div>
+              <div class="ui star large rating"></div>
+            </div>
+            <div class="ui divider"></div>
+            <div class="modal-footer">
+              Ne vous contentez pas d'un paiement anticipé si vous n'êtes pas
+              sûr de la fiabilité du vendeur.
+            </div>
+          </div>
+          <!-- end of seller info modal box -->
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <!--
+    vuejs instance initiated first important for jquery plugin to work properly
+  -->
+  <script>
+    var dumpImg = [
+      "https://scontent-frt3-1.cdninstagram.com/vp/3f3221c8ef1499170f6fb4cf1fdc1b3a/5C921356/t51.2885-15/e35/45510151_2352295998132462_5450872102550480899_n.jpg",
+      "https://svetofor.info/images/detailed/133/sony-ps4-igrovaya-pristavka-sony-playstation-4-pro-1tb-chernyy-igra-fifa-18-icon-edition-1.jpg",
+      "http://pa1.narvii.com/6630/24663444ead34a17b3ed0031e183b0b16595dcc7_hq.gif",
+      "https://i.ytimg.com/vi/9vx69Pe7Ncs/maxresdefault.jpg",
+      "https://www.indiewire.com/wp-content/uploads/2015/07/soul-eater-1.jpg",
+      "https://media.comicbook.com/2016/12/soul-eater-218746-1280x0.jpg",
+      "https://www.gamepretty.com/wp-content/uploads/2018/10/nintendo-switch-6.01-update-01.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/51qiZgs22mL._SX425_.jpg",
+    ];
+    var adDetailApp = new Vue({
+      el: "#ad-detail",
+      data: {
+        images: dumpImg,
+        showMap: false,
+        isFavorite: false,
+      },
+      methods: {
+        showSellerInfoModal: function() {
+          $("#seller-info-modal").modal("show");
+        },
+        toggleAddFavorite: function() {
+          this.isFavorite = !this.isFavorite;
+        },
+      },
+    });
+  </script>
+  <script src="/static/js/index.js"></script>
+  <!-- lightgallery library javascript and plugin import require jquery -->
+  <script src="/static/lightgallery/dist/js/lightgallery.min.js"></script>
+  <script src="/static/lightgallery/modules/lg-thumbnail.min.js"></script>
+  <script src="/static/lightgallery/modules/lg-fullscreen.min.js"></script>
+  <script src="/static/lightgallery/modules/lg-zoom.min.js"></script>
+
+  <!-- lightgallery library initialisation -->
+
+  <script type="text/javascript">
+    $("#sticky-navbar").removeAttr("id");
+    $(document).ready(function() {
+      $("#lightSlider").lightGallery();
+    });
+
+    function displayMap() {
+      $("#map-box").toggle();
+    }
+  </script>
+
+  <!-- lightSlider library initialisation -->
+  <script type="text/javascript">
+    $("#lightSlider").lightSlider({
+      gallery: true,
+      item: 1,
+      loop: true,
+      slideMargin: 0,
+      thumbItem: 9,
+    });
+  </script>
+
+  <script>
+    $("#seller-info").sticky({
+      context: "#ad-info-left",
+      offset: 20,
+    });
+    $(".ui.rating")
+      .rating({
+        initialRating: 3,
+        maxRating: 5,
+      })
+      .rating("disable");
+    $("#seller-info-modal").modal();
+  </script>
+</html>

@@ -28,14 +28,12 @@
       <div class="ui grid container" id="my-account">
         <div class="four wide column">
           <div class="ui vertical large pointing fluid menu">
-            <a class="item" href="/profile/32"> Mes annonces </a>
-            <a class="item" href="/profile/32/messenger"> Messages </a>
-            <a class="item" href="/profile/32/favoris"> Favoris </a>
+            <a class="item" href="/profile"> Mes annonces </a>
+            <a class="item" href="/profile/messenger"> Messages </a>
+            <a class="item" href="/profile/favoris"> Favoris </a>
             <a class="item" href="#"> Alerte </a>
             <a class="item" href="#"> Evaluations </a>
-            <a class="item active" href="/profile/32/settings">
-              Configuration
-            </a>
+            <a class="item active" href="/profile/settings"> Configuration </a>
           </div>
 
           {{ template "desktop/components/profile-card.html" .User}}

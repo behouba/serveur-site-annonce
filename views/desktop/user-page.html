@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../semantic/dist/semantic.min.css"
+    />
+
+    <title>My account</title>
+  </head>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"
+  ></script>
+  <script src="../../semantic/dist/semantic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
+  <style>
+    #my-account {
+      margin-top: 50px;
+    }
+    .ui.rating {
+      margin: 10px 0px;
+    }
+
+    /* ad listing item styling */
+    .cardPrice {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 18px;
+      color: #2d97de;
+      margin-bottom: 0.5rem;
+    }
+    .price {
+      font-weight: 700;
+      margin: 5px 0px;
+    }
+    .list-card-img {
+      height: 110px !important;
+      object-fit: cover;
+    }
+    .text-right {
+      text-align: right;
+    }
+    .card-location {
+      position: absolute;
+      left: 1em;
+      bottom: 1em;
+      max-width: 66%;
+      background-color: rgba(0, 0, 0, 0.2);
+      color: #fff;
+      font-size: 13px;
+      line-height: normal;
+      border-radius: 2px;
+      padding: 0 3px 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      z-index: 2;
+    }
+    .grid-card-img {
+      height: 142px !important;
+      object-fit: cover;
+    }
+    .list-card-img {
+      height: 110px !important;
+      object-fit: cover;
+    }
+    /* end of ad listing item styling */
+  </style>
+  <body>
+    <div class="ui container" id="my-account">
+      <div class="ui grid stackable">
+        <div class="four wide column">
+          <!-- user description card -->
+          <div class="ui card ui sticky" id="user-info-card">
+            <div class="image">
+              <img
+                src="https://semantic-ui.com/images/avatar2/large/matthew.png"
+              />
+            </div>
+            <div class="content">
+              <div class="header center aligned">Matt Giampietro</div>
+              <div class="meta center aligned">Membre depuis 2013</div>
+              <div class="center aligned">
+                <div class="ui star large rating"></div>
+              </div>
+              <div>
+                <button class="ui button basic fluid mini">
+                  <i class="like icon"></i>Suivre
+                </button>
+                <button
+                  class="ui button fluid basic mini"
+                  style="margin-top:5px"
+                >
+                  <i class="edit icon"></i>Evaluer
+                </button>
+              </div>
+            </div>
+            <div class="extra content center aligned">
+              <a>
+                <i class="exclamation triangle icon"></i> Signaler un abus
+              </a>
+            </div>
+          </div>
+          <!-- end of user description card -->
+        </div>
+
+        <!-- right section display selcted menu content -->
+        <div class="twelve wide column" id="user-ads">
+          <div class="ui secondary pointing menu">
+            <a class="item active" id="onlineAds" v-on:click="showActiv">
+              Actives
+            </a>
+            <a class="item" id="offlineAds" v-on:click="showNonActiv">
+              Non actives
+            </a>
+          </div>
+          <!-- ads listing items -->
+          <section v-if="showActivesAds">
+            <!-- non actives ads section -->
+            <div class="ui four column grid">
+              <div class="column" v-for="i in images">
+                <div class="ui fluid card raised link">
+                  <a class="image" :href="i" target="blank">
+                    <img :src="i" class="grid-card-img" />
+                    <div class="img-overlay card-location">Yamoussoukro</div>
+                  </a>
+                  <div class="content">
+                    <a class="cardPrice">Sony PS4 Pro 1 To + Disque</a>
+                    <div class="price">150.000 FCFA</div>
+                    <div class="meta">
+                      <span class="date">13 novembre 08:07</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- non actives ads section -->
+          <section v-else>
+            <div class="ui four column grid">
+              <div class="column" v-for="i in images">
+                <div class="ui fluid card">
+                  <a class="image" :href="i" target="blank">
+                    <img :src="i" class="ui image disabled grid-card-img" />
+                    <div class="img-overlay card-location">Yamoussoukro</div>
+                  </a>
+                  <div class="content">
+                    <div class="cardPrice">Sony PS4 Pro 1 To + Disque</div>
+                    <div class="price">150.000 FCFA</div>
+                    <div class="meta">
+                      <span class="date">13 novembre 08:07</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- messages section -->
+          <section></section>
+          <!-- end of ads listing items -->
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    var dumpImg = [
+      "https://scontent-frt3-1.cdninstagram.com/vp/3f3221c8ef1499170f6fb4cf1fdc1b3a/5C921356/t51.2885-15/e35/45510151_2352295998132462_5450872102550480899_n.jpg",
+      "https://svetofor.info/images/detailed/133/sony-ps4-igrovaya-pristavka-sony-playstation-4-pro-1tb-chernyy-igra-fifa-18-icon-edition-1.jpg",
+      "http://pa1.narvii.com/6630/24663444ead34a17b3ed0031e183b0b16595dcc7_hq.gif",
+      "https://i.ytimg.com/vi/9vx69Pe7Ncs/maxresdefault.jpg",
+      "https://www.indiewire.com/wp-content/uploads/2015/07/soul-eater-1.jpg",
+      "https://media.comicbook.com/2016/12/soul-eater-218746-1280x0.jpg",
+      "https://www.gamepretty.com/wp-content/uploads/2018/10/nintendo-switch-6.01-update-01.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/51qiZgs22mL._SX425_.jpg",
+    ];
+
+    var myAccountApp = new Vue({
+      el: "#my-account",
+      data: {
+        images: dumpImg,
+        showActivesAds: true,
+      },
+      methods: {
+        showActiv() {
+          $("#offlineAds").removeClass("active");
+          $("#onlineAds").addClass("active");
+          this.showActivesAds = true;
+        },
+        showNonActiv() {
+          $("#onlineAds").removeClass("active");
+          $("#offlineAds").addClass("active");
+          this.showActivesAds = false;
+        },
+      },
+    });
+  </script>
+  <script>
+    $(".ui.rating")
+      .rating({
+        initialRating: 5,
+        maxRating: 5,
+      })
+      .rating("disable");
+    $("#user-info-card").sticky({
+      context: "#user-ads",
+      offset: 20,
+    });
+  </script>
+</html>
