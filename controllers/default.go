@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"serveur/models"
 )
 
@@ -9,17 +10,23 @@ func (c *MainController) Get() {
 	c.TplName = "desktop/home.html"
 }
 
-// Get method of CityControler
-// handle request to show ads related to
-// a specific city
-func (c *CityControler) Get() {
-	cityName := models.CitiesMap[c.Ctx.Input.Param(":city")]
+// Get method of FPathController
+// handle request related to specific location or specific store
+func (c *FPathController) Get() {
+	cityName := models.CitiesMap[c.Ctx.Input.Param(":fPath")]
 	if cityName == "" {
-		c.Abort("404")
+		store, err := models.GetStore(c.Ctx.Input.Param(":fPath"))
+		if err != nil {
+			fmt.Println(err)
+			c.Abort("404")
+		}
+		c.Data["StoreName"] = store.Name
+		c.TplName = "desktop/on-store.html"
+	} else {
+		c.Data["CityName"] = cityName
+		c.Data["CityPath"] = c.Ctx.Input.Param(":fPath")
+		c.TplName = "desktop/home.html"
 	}
-	c.Data["CityName"] = cityName
-	c.Data["CityPath"] = c.Ctx.Input.Param(":city")
-	c.TplName = "desktop/home.html"
 }
 
 // Get method of FetchCities serve json

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{ template "desktop/components/head.html" .}}
+  </head>
+
+  <style>
+    #my-account {
+      margin-top: 50px;
+    }
+    .ui.rating {
+      margin: 10px 0px;
+    }
+
+    /* ad listing item styling */
+    .cardPrice {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 18px;
+      color: #2d97de;
+      margin-bottom: 0.5rem;
+    }
+    .price {
+      font-weight: 700;
+      margin: 5px 0px;
+    }
+    .list-card-img {
+      height: 110px !important;
+      object-fit: cover;
+    }
+    .text-right {
+      text-align: right;
+    }
+    /* end of ad listing item styling */
+  </style>
+  <body>
+    <div class="ui container" id="my-account">
+      <div class="ui grid">
+        <div class="four wide column">
+          <!-- account menu -->
+          <div class="ui vertical large pointing fluid menu">
+            <a class="item active" href="/store/actives"> Mes annonces </a>
+            <a class="item" href="/store/stats"> Statistiques </a>
+            <a class="item" href="/store/messenger"> Messages </a>
+            <a class="item" href="/store/favoris"> Favoris </a>
+            <a class="item" href="/store/settings"> Configuration </a>
+          </div>
+          <!-- end of account menu -->
+        </div>
+
+        <!-- right section display selcted menu content -->
+        <div class="twelve wide column">
+          <div class="ui secondary pointing menu">
+            <a class="item active" id="onlineAds"> Actives </a>
+            <a class="item" id="offlineAds" href="/store/inactives">
+              Non actives
+            </a>
+          </div>
+          <!-- message for store owners -->
+          <div class="ui info message">
+            <i class="close icon"></i>
+            <div class="header">Was this what you wanted?</div>
+            <ul class="list">
+              <li>It's good to see you again.</li>
+              <li>Did you know it's been a while?</li>
+            </ul>
+          </div>
+          <!-- message for store owners -->
+          <div class="ui grid">
+            <div class="eleven wide column">
+              <!-- searching bar -->
+              <div class="ui right action left icon input fluid">
+                <i class="search icon"></i>
+                <input type="text" placeholder="Search..." />
+                <select class="ui selection dropdown">
+                  <option value="all">All</option>
+                  <option selected="" value="articles">Articles</option>
+                  <option value="products">Products</option>
+                </select>
+                <!-- <div class="ui button">Search</div> -->
+              </div>
+              <!-- end of searching bar -->
+            </div>
+            <div class="five wide column">
+              <div class="ui selection dropdown fluid" id="sorting-drodown">
+                <input type="hidden" name="gender" />
+                <i class="dropdown icon"></i>
+                <div class="default text">Par default</div>
+                <div class="menu">
+                  <div class="item" data-value="0">Par default</div>
+                  <div class="item" data-value="1">Nouveauté</div>
+                  <div class="item" data-value="2">Prix croissant</div>
+                  <div class="item" data-value="3">Prix decroissant</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ui section divider"></div>
+          <div>
+            <div class="ui checkbox mini" id="selectAllAds">
+              <input type="checkbox" tabindex="0" class="hidden" />
+              <label>Tous selectionner</label>
+            </div>
+            <!-- <button class="ui tiny button">Loading</button> -->
+            <button class="ui mini right floated button inverted red disabled">
+              <i class="trash icon"></i> Supprimer la selection
+            </button>
+          </div>
+          <div class="ui section divider"></div>
+          <section>
+            <!-- ads listing items -->
+            <div class="ui fluid">
+              <div class="ui divided items">
+                <div class="item" v-for="i in images">
+                  <div class="ui checkbox">
+                    <input type="checkbox" tabindex="0" class="hidden" />
+                  </div>
+                  <a class="image"> <img class="list-card-img" :src="i" /> </a>
+                  <div class="content">
+                    <a class="cardPrice">Sony PS4 Pro 1 To + Disque</a>
+                    <div class="price">150.000 FCFA</div>
+                    <div class="meta">
+                      <span class="cinema">13 novembre 08:07</span>
+                    </div>
+                    <div class="description text-right">
+                      <button
+                        class="ui mini inverted button green"
+                        data-tooltip="Voir la popularité de l'annonce"
+                        data-position="top center"
+                      >
+                        <i class="chart line icon"></i>Apercu
+                      </button>
+                      <button
+                        class="ui mini inverted button secondary"
+                        data-tooltip="Modifier l'annonce"
+                        data-position="top center"
+                      >
+                        <i class="edit icon"></i>Modifier
+                      </button>
+                      <button
+                        class="ui mini button inverted yellow"
+                        data-tooltip="Retirer l'annonce sans la supprimer"
+                        data-position="top center"
+                      >
+                        <i class="close icon"></i>Desactiver
+                      </button>
+                      <button
+                        class="ui mini button red"
+                        data-tooltip="Supprimer definitivement cette annonce"
+                        data-position="top center"
+                      >
+                        <i class="trash icon"></i>Supprimer
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- remove ad modal -->
+            <div class="ui modal" id="removeAdModal">
+              <i class="close icon"></i>
+              <!-- put ad title and price here -->
+              <div class="header">Sony PS4 Pro 1 To + Disque</div>
+              <div class="image content">
+                <div class="ui small image"><img :src="adToRemove" /></div>
+                <div class="description">
+                  <div class="ui header">
+                    We've auto-chosen a profile image for you.
+                  </div>
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Dolore quaerat unde aspernatur velit nihil vel esse
+                    quibusdam aperiam accusantium sapiente rerum minus,
+                    inventore ipsum earum laudantium quas a sint?
+                    Necessitatibus.
+                  </p>
+                </div>
+              </div>
+              <div class="actions">
+                <div class="ui yellow medium button">
+                  <i class="power off icon"></i> j'ai vendu gráce au site
+                </div>
+
+                <div class="ui red right medium button">
+                  <i class="trash icon"></i> je supprime sans raison
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- messages section -->
+          <section></section>
+          <!-- end of ads listing items -->
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    var dumpImg = [
+      "https://scontent-frt3-1.cdninstagram.com/vp/3f3221c8ef1499170f6fb4cf1fdc1b3a/5C921356/t51.2885-15/e35/45510151_2352295998132462_5450872102550480899_n.jpg",
+      "https://svetofor.info/images/detailed/133/sony-ps4-igrovaya-pristavka-sony-playstation-4-pro-1tb-chernyy-igra-fifa-18-icon-edition-1.jpg",
+      "http://pa1.narvii.com/6630/24663444ead34a17b3ed0031e183b0b16595dcc7_hq.gif",
+      "https://i.ytimg.com/vi/9vx69Pe7Ncs/maxresdefault.jpg",
+      "https://www.indiewire.com/wp-content/uploads/2015/07/soul-eater-1.jpg",
+      "https://media.comicbook.com/2016/12/soul-eater-218746-1280x0.jpg",
+      "https://www.gamepretty.com/wp-content/uploads/2018/10/nintendo-switch-6.01-update-01.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/51qiZgs22mL._SX425_.jpg",
+    ];
+
+    var myAccountApp = new Vue({
+      el: "#my-account",
+      data: {
+        images: dumpImg,
+        adToRemove: "",
+        showActivesAds: true,
+      },
+      methods: {
+        showRemoveAdModal(ad) {
+          this.adToRemove = ad;
+          $("#removeAdModal").modal("show");
+        },
+        showAdReactivationModal() {
+          $("#adReactivationModal").modal("show");
+        },
+      },
+    });
+  </script>
+  <script>
+    $("#removeAdModal").modal();
+    $(".ui.rating")
+      .rating({
+        initialRating: 5,
+        maxRating: 5,
+      })
+      .rating("disable");
+    $(".ui.checkbox").checkbox();
+
+    $("#selectAllMsg").checkbox();
+    $(".ui.dropdown").dropdown();
+  </script>
+</html>

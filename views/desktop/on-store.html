@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{ template "desktop/components/head.html" .}}
+  </head>
+
+  <style>
+    #store-header {
+      height: 250px;
+      background: lightgray;
+      background-image: url(https://static01.nyt.com/images/2008/02/06/business/smallbusiness/shoe600.jpg);
+      background-size: contain;
+      border-bottom: 2px solid lightgray;
+    }
+    #store-small-pic {
+      position: relative;
+      top: 150px;
+      width: 200px;
+      height: 200px;
+    }
+    #store-small-pic img {
+      width: 100%;
+      height: 100%;
+      font-size: 0.92857143rem;
+      object-fit: cover;
+      border: 1px solid lightgray;
+      /* border-radius: 50%; */
+      -webkit-box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, 0.12),
+        0 2px 10px 0 rgba(34, 36, 38, 0.15);
+      box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, 0.12),
+        0 2px 10px 0 rgba(34, 36, 38, 0.15);
+    }
+    #store-info {
+      height: 70px;
+      margin-left: 210px;
+      padding: 20px 5px;
+      border-bottom: 1px solid lightgray;
+    }
+    #store-info h1 {
+      float: left;
+    }
+    /* #store-info button {
+      float: right;
+    } */
+
+    /* ads listing section styling */
+    .cardPrice {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 18px;
+      color: #2d97de;
+      margin-bottom: 0.5rem;
+    }
+    .price {
+      font-weight: 700;
+      margin: 5px 0px;
+    }
+    .grid-card-img {
+      height: 142px !important;
+      object-fit: cover;
+    }
+
+    .card-location {
+      position: absolute;
+      left: 1em;
+      bottom: 1em;
+      max-width: 66%;
+      background-color: rgba(0, 0, 0, 0.2);
+      color: #fff;
+      font-size: 13px;
+      line-height: normal;
+      border-radius: 2px;
+      padding: 0 3px 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      z-index: 2;
+    }
+
+    .list-card-img {
+      height: 110px !important;
+      object-fit: cover;
+    }
+  </style>
+  <body>
+    <div id="store">
+      <div id="store-header" class="ui container fluid">
+        <div class="ui container">
+          <div id="store-small-pic">
+            <img
+              src="https://store.lamarzocco.com/wp-content/uploads/2015/06/store.png"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="ui container">
+        <div id="store-info">
+          <h1>{{ .StoreName }}</h1>
+          <button
+            class="ui button primary right floated"
+            data-tooltip="Partagez l'addresse de la boutique"
+            data-inverted=""
+          >
+            <i class="share square outline icon"></i>Partager
+          </button>
+          <button
+            class="ui button primary right floated"
+            data-tooltip="abonnez vous et recevez des notification sur l'acitvité de la boutique"
+            data-inverted=""
+          >
+            <i class="bell outline icon"></i>S'abonner
+          </button>
+        </div>
+      </div>
+      <div class="ui container" style="margin-top: 60px">
+        <div>
+          <div class="ui large verticale list">
+            <div class="item">
+              <i class="marker icon"></i>
+              <div class="content">Abidjan, Adjamé mosqué</div>
+            </div>
+            <div class="item">
+              <i class="phone icon"></i>
+              <div class="content">+225 45 00 16 85</div>
+            </div>
+            <div class="item">
+              <i class="th icon"></i>
+              <div class="content">23 Annonces</div>
+            </div>
+            <div class="item">
+              <i class="facebook icon"></i>
+              <div class="content">
+                <a href="https://www.facebook.com/Udacity/"
+                  >https://www.facebook.com/Udacity/</a
+                >
+              </div>
+            </div>
+            <div class="item">
+              <i class="instagram icon"></i>
+              <div class="content">
+                <a href="https://www.facebook.com/Udacity/"
+                  >https://www.instagram.com/Udacity/</a
+                >
+              </div>
+            </div>
+            <div class="item">
+              <i class="linkify icon"></i>
+              <div class="content">
+                <a href="https://www.udacity.com/">https://www.udacity.com/</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui container" style="margin-top: 30px">
+        <div class="ui grid">
+          <div class="sixteen wide column">
+            <div>
+              <h1 style="text-align:center">
+                Message de bienvenu sur la boutique
+              </h1>
+            </div>
+            <div class="ui section divider"></div>
+          </div>
+          <div class="twelve wide column">
+            <div class="ui action input fluid">
+              <input type="text" placeholder="Rechercher..." />
+              <select class="ui selection dropdown" id="selectCategory">
+                <option value="all">All</option>
+                <option selected="" value="articles">Articles</option>
+                <option value="products">Products</option>
+              </select>
+              <div class="ui button basic">Recherche</div>
+            </div>
+            <div class="ui secondary  menu">
+              <div class="header item" style="padding-left: 0px;">
+                <h2>Toutes les annonces</h2>
+              </div>
+              <div class="right menu">
+                <!--
+                  <div class="item">
+                    <div class="ui basic buttons icon">
+                      <button
+                        class="ui button active"
+                        id="grid-view-btn"
+                        v-on:click="setViewToGrid"
+                      >
+                        <i class="th icon"></i>
+                      </button>
+                      <button
+                        class="ui button"
+                        id="list-view-btn"
+                        v-on:click="setViewToList"
+                      >
+                        <i class="list icon"></i>
+                      </button>
+                    </div>
+                  </div>
+                -->
+                <div class="item" style="padding-right: 0px">
+                  <div class="ui selection dropdown" id="sorting-drodown">
+                    <input type="hidden" name="gender" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Par default</div>
+                    <div class="menu">
+                      <div class="item" data-value="0">Par default</div>
+                      <div class="item" data-value="1">Nouveauté</div>
+                      <div class="item" data-value="2">Prix croissant</div>
+                      <div class="item" data-value="3">Prix decroissant</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- advert card listing -->
+
+            <!-- ad grid view -->
+
+            <div class="ui four column grid" v-if="isViewGrid">
+              <div class="column" v-for="i in images">
+                <div class="ui fluid card raised link">
+                  <a class="image" :href="i" target="blank">
+                    <img :src="i" class="grid-card-img" />
+                    <div class="img-overlay card-location">Yamoussoukro</div>
+                  </a>
+                  <div class="content">
+                    <a class="cardPrice">Sony PS4 Pro 1 To + Disque</a>
+                    <div class="price">150.000 FCFA</div>
+                    <div class="meta">
+                      <span class="date">13 novembre 08:07</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ad list view -->
+            <div class="ui divided link items" v-else>
+              <div class="item" v-for="i in images">
+                <a class="image"> <img class="list-card-img" :src="i" /> </a>
+                <div class="content">
+                  <a class="cardPrice">Sony PS4 Pro 1 To + Disque</a>
+                  <div class="price">150.000 FCFA</div>
+
+                  <div class="meta">
+                    <span class="cinema">Yamoussoukro</span>
+                  </div>
+                  <div class="meta">
+                    <span class="cinema">13 novembre 08:07</span>
+                  </div>
+                  <div class="description"><p></p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="four wide column"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    var dumpImg = [
+      "https://scontent-frt3-1.cdninstagram.com/vp/3f3221c8ef1499170f6fb4cf1fdc1b3a/5C921356/t51.2885-15/e35/45510151_2352295998132462_5450872102550480899_n.jpg",
+      "https://svetofor.info/images/detailed/133/sony-ps4-igrovaya-pristavka-sony-playstation-4-pro-1tb-chernyy-igra-fifa-18-icon-edition-1.jpg",
+      "http://pa1.narvii.com/6630/24663444ead34a17b3ed0031e183b0b16595dcc7_hq.gif",
+      "https://i.ytimg.com/vi/9vx69Pe7Ncs/maxresdefault.jpg",
+      "https://www.indiewire.com/wp-content/uploads/2015/07/soul-eater-1.jpg",
+      "https://media.comicbook.com/2016/12/soul-eater-218746-1280x0.jpg",
+      "https://www.gamepretty.com/wp-content/uploads/2018/10/nintendo-switch-6.01-update-01.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/51qiZgs22mL._SX425_.jpg",
+    ];
+
+    var storeView = new Vue({
+      el: "#store",
+      data: {
+        images: dumpImg,
+        isViewGrid: true,
+      },
+      methods: {
+        setViewToGrid: function() {
+          this.isViewGrid = true;
+          $("#list-view-btn").removeClass("active");
+          $("#grid-view-btn").addClass("active");
+        },
+        setViewToList: function() {
+          this.isViewGrid = false;
+          $("#grid-view-btn").removeClass("active");
+          $("#list-view-btn").addClass("active");
+        },
+      },
+    });
+  </script>
+
+  <script>
+    $("#selectCategory").dropdown();
+    $("#sorting-drodown").dropdown();
+  </script>
+</html>

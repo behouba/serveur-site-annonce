@@ -8,7 +8,7 @@ type MainController struct {
 	beego.Controller
 }
 
-type CityControler struct {
+type FPathController struct {
 	beego.Controller
 }
 
@@ -69,5 +69,36 @@ type CreateAdvertControler struct {
 }
 
 type FetchCategoryController struct {
+	beego.Controller
+}
+
+type ChatRoomController struct {
+	beego.Controller
+}
+type StoresListController struct {
+	beego.Controller
+}
+
+type StoreOnControler struct {
+	beego.Controller
+}
+
+type StoreOffControler struct {
+	beego.Controller
+}
+
+type StoreFavoritesControler struct {
+	beego.Controller
+}
+
+type StoreMessengerControler struct {
+	beego.Controller
+}
+
+type StoreSettingsControler struct {
+	beego.Controller
+}
+
+type StoreStatsControler struct {
 	beego.Controller
 }

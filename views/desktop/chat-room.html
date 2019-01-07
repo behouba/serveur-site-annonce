@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/css/semantic.min.css"
+    />
+
+    <title>Chat avec...</title>
+  </head>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"
+  ></script>
+  <script src="/static/js/semantic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
+  <style>
+    #chat {
+      margin-top: 50px;
+    }
+    #chat-wrapper {
+      width: 100%;
+      height: 500px;
+      margin-top: 14px 16px;
+    }
+    #chat-header {
+      position: relative;
+      top: 0px;
+      background: lightgray;
+      padding: 8px;
+      display: box;
+      display: -webkit-box;
+    }
+    .chat-ad {
+      width: 50%;
+    }
+    .user {
+      width: 50%;
+    }
+    .user-name {
+      float: right;
+    }
+    #chat-messages {
+      height: 350px;
+      overflow-y: scroll;
+      padding: 10px;
+      border: 1px solid lightgray;
+    }
+    #chat-input {
+      background-color: #f7f7fa;
+      position: relative;
+      padding: 10px 60px 10px 30px !important;
+      border: 1px solid #d8d8d8;
+      border-top: 0;
+    }
+    #chat-input textarea {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      padding: 12px 17px;
+      width: 100%;
+      height: 44px;
+      overflow: hidden;
+      background-color: #fff;
+      font-size: 15px;
+      vertical-align: middle;
+      color: #000;
+      margin: 0;
+      box-sizing: border-box;
+      box-shadow: inset 0 1px 1px rgba(142, 142, 142, 0.2);
+      border: 1px solid #d8d8d8;
+      border-radius: 2px;
+      display: inline-block;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      outline: 0;
+      line-height: 20px;
+      resize: none;
+    }
+    #file-btn {
+      position: absolute;
+      left: 5px;
+      top: 10px;
+    }
+    #send-btn {
+      position: absolute;
+      right: 11px;
+      top: 15px;
+      font-weight: 700;
+    }
+
+    /* messages box styling */
+    .msg {
+      margin-bottom: 20px;
+    }
+    .my-msg {
+      text-align: right;
+    }
+    .msg-content {
+      position: relative;
+      display: inline-block;
+      vertical-align: top;
+      max-width: 70%;
+    }
+
+    .received-msg:hover .msg-text-datetime,
+    .my-msg:hover .msg-text-datetime {
+      visibility: visible;
+    }
+    .msg-text {
+      border-radius: 8px;
+      background-color: #f0f0f0;
+      text-align: left;
+      position: relative;
+      padding: 10px 15px;
+      display: block;
+      font-size: 14px;
+      word-wrap: break-word;
+      /* white-space: pre-wrap; */
+    }
+
+    .my-msg-text {
+      background-color: #d9f3ff;
+    }
+    .msg-datetime {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #858585;
+    }
+
+    .msg-text-datetime {
+      left: 100%;
+      white-space: nowrap;
+      height: 18px;
+      position: absolute;
+      visibility: hidden;
+      top: 0;
+      bottom: 0;
+      padding: 0 10px;
+      margin: auto;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      font-size: 11px;
+    }
+    .my-msg .msg-text-datetime {
+      left: auto;
+      right: 100%;
+    }
+    /* end of messages box content styling */
+  </style>
+  <body>
+    <div class="ui container" id="chat">
+      <div class="ui grid">
+        <div class="four wide column">
+          <!-- account menu -->
+          <div class="ui vertical large pointing fluid menu">
+            <a class="item" href="/profile"> Mes annonces </a>
+            <a class="item active" href="/profile/messenger"> Messages </a>
+            <a class="item" href="/profile/favoris"> Favoris </a>
+            <a class="item" href="#"> Alerte </a>
+            <a class="item" href="#"> Evaluations </a>
+            <a class="item" href="/profile/settings"> Configuration </a>
+          </div>
+          <!-- end of account menu -->
+
+          <!-- user description card -->
+          <div class="ui card">
+            <div class="content">
+              <div class="center aligned header">N'DRI CHARLES</div>
+              <div class="center aligned description">
+                <img
+                  class="ui circular tiny image"
+                  src="https://semantic-ui.com/images/avatar/small/jenny.jpg"
+                />
+              </div>
+              <div class="center aligned">
+                <div class="ui star large rating"></div>
+              </div>
+              <div class="center aligned description">
+                <!--
+                  <p>
+                    Jenny is a student studying Media Management at the New School
+                  </p>
+                -->
+                <p>Suivi par 5 personnes</p>
+                <p>10 Abonnements</p>
+              </div>
+            </div>
+            <!-- <div class="extra content"></div> -->
+          </div>
+          <!-- end of user description card -->
+        </div>
+
+        <!-- right section display selcted menu content -->
+        <div class="twelve wide column">
+          <!-- chat room section -->
+          <section id="chat-room">
+            <div>
+              <button
+                class="ui left labeled icon button basic"
+                v-on:click="backToMsg()"
+              >
+                <i class="left arrow icon"></i> Retour
+              </button>
+              <button class="ui right floated button inverted red">
+                <i class="trash icon"></i> Supprimer la conversation
+              </button>
+            </div>
+            <div class="ui divider"></div>
+            <div id="chat-wrapper">
+              <div id="chat-header">
+                <div class="chat-ad">
+                  <div class="ui image tiny left floated">
+                    <img :src="images[3]" />
+                  </div>
+                  <div class="ui left floated">
+                    <a class="header">Titre de l'annonce</a>
+                    <div class="meta"><span>150.000 FCFA</span></div>
+                    <div class="meta"><span>Abidjan</span></div>
+                  </div>
+                </div>
+                <div class="user">
+                  <div class="ui image mini circular right floated">
+                    <img :src="images[0]" />
+                  </div>
+                  <div class="user-name">
+                    <a class="header">Jhon Doe</a>
+                    <p>en ligne</p>
+                  </div>
+                </div>
+              </div>
+              <div id="chat-messages">
+                <div v-for="i in 10">
+                  <div class="msg-datetime">22 mars</div>
+                  <div class="my-msg msg">
+                    <div class="msg-content">
+                      <time class="msg-text-datetime msg-datetime"
+                        >22 mars 14:06</time
+                      >
+                      <span class="msg-text my-msg-text">bonjour Monsieur</span>
+                    </div>
+                    <div class="msg-status"></div>
+                  </div>
+                  <div class="received-msg msg">
+                    <div class="msg-content">
+                      <time class="msg-text-datetime msg-datetime"
+                        >22 mars 14:06</time
+                      >
+                      <span class="msg-text">Bonjour comment allez vous?</span>
+                    </div>
+                    <div class="msg-status"></div>
+                  </div>
+                </div>
+              </div>
+              <div id="chat-input">
+                <textarea
+                  name=""
+                  id=""
+                  rows="3"
+                  placeholder="Ecrivez votre message..."
+                ></textarea>
+                <button class="circular ui icon button primary" id="send-btn">
+                  <i class="paper plane icon"></i>
+                </button>
+              </div>
+            </div>
+          </section>
+          <!-- chat room box -->
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    var dumpImg = [
+      "https://scontent-frt3-1.cdninstagram.com/vp/3f3221c8ef1499170f6fb4cf1fdc1b3a/5C921356/t51.2885-15/e35/45510151_2352295998132462_5450872102550480899_n.jpg",
+      "https://svetofor.info/images/detailed/133/sony-ps4-igrovaya-pristavka-sony-playstation-4-pro-1tb-chernyy-igra-fifa-18-icon-edition-1.jpg",
+      "http://pa1.narvii.com/6630/24663444ead34a17b3ed0031e183b0b16595dcc7_hq.gif",
+      "https://i.ytimg.com/vi/9vx69Pe7Ncs/maxresdefault.jpg",
+      "https://www.indiewire.com/wp-content/uploads/2015/07/soul-eater-1.jpg",
+      "https://media.comicbook.com/2016/12/soul-eater-218746-1280x0.jpg",
+      "https://www.gamepretty.com/wp-content/uploads/2018/10/nintendo-switch-6.01-update-01.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/51qiZgs22mL._SX425_.jpg",
+    ];
+
+    var chatApp = new Vue({
+      el: "#chat",
+      data: {
+        images: dumpImg,
+        allMsgSelected: false,
+      },
+      methods: {
+        backToMsg() {
+          window.history.back();
+        },
+      },
+    });
+  </script>
+  <script>
+    $(".ui.rating")
+      .rating({
+        initialRating: 5,
+        maxRating: 5,
+      })
+      .rating("disable");
+    $(".ui.checkbox").checkbox();
+
+    $("#selectAllMsg").checkbox();
+    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+    $("textarea").focus();
+  </script>
+</html>

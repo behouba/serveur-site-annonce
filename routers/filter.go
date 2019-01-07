@@ -29,6 +29,6 @@ func golabalFilter(ctx *context.Context) {
 func profileFilter(ctx *context.Context) {
 	user := ctx.Input.GetData("User")
 	if user == nil {
-		ctx.Redirect(403, "/")
+		ctx.Redirect(401, "/")
 	}
 }

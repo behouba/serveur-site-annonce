@@ -47,13 +47,13 @@ func getAllCategories() (categories []Category, err error) {
 
 func GetCategories(id int) (categories []Category, err error) {
 	var res *sql.Rows
-	res, err = Db.Query("SELECT category_id, name, path_name FROM category WHERE parent_id=$1 ORDER BY category_id", id)
+	res, err = Db.Query("SELECT category_id, name, path_name, parent_id FROM category WHERE parent_id=$1 ORDER BY category_id", id)
 	if err != nil {
 		return
 	}
 	for res.Next() {
 		subCat := Category{}
-		err := res.Scan(&subCat.CategoryID, &subCat.Name, &subCat.PathName)
+		err := res.Scan(&subCat.CategoryID, &subCat.Name, &subCat.PathName, &subCat.ParentID)
 		if err != nil {
 			fmt.Println(err)
 		}

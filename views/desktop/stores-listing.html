@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/css/semantic.min.css"
+    />
+    <link rel="stylesheet" href="/static/css/index.css" />
+
+    <title>Document</title>
+  </head>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"
+  ></script>
+  <script src="/static/js/axios.min.js"></script>
+  <script src="/static/js/semantic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <style>
+    #stores-listing {
+      margin-top: 30px;
+    }
+  </style>
+  <body>
+    <!-- header -->
+    {{ template "desktop/components/header.html" .}}
+    <!-- end of header -->
+    <div class="ui container">
+      <div id="stores-listing" class="ui grid">
+        <div class="twelve wide column">
+          <div class="ui items divided">
+            <div class="item" v-for="i in 15">
+              <div class="image">
+                <img
+                  src="https://i.ytimg.com/vi/9vx69Pe7Ncs/maxresdefault.jpg"
+                />
+              </div>
+              <div class="content">
+                <a class="header">Nom de la boutique</a>
+                <div class="meta"><span>Description de la boutique</span></div>
+                <div class="description"><p>Vehicules</p></div>
+                <div class="extra">123 Annonces</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="four wide column">4</div>
+      </div>
+    </div>
+  </body>
+  <script>
+    var storesListingApp = new Vue({
+      el: "#stores-listing",
+      data: {},
+    });
+  </script>
+
+  <script src="/static/js/index.js"></script>
+</html>
