@@ -38,10 +38,10 @@
   </style>
   <body>
     <div class="ui container" id="create">
-      <!-- create new advert form -->
+      <!-- create new form form -->
       <div class="ui grid" style="margin-top:30px;">
         <div class="twelve wide column">
-          <div class="ui form">
+          <div class="ui form" id="newAdForm">
             <div class="ui grid">
               <div class="four wide column"><label>Categorie</label></div>
               <div class="twelve wide column field">
@@ -58,32 +58,34 @@
                     <!-- <div class="divider"></div> -->
                     {{ if eq .Name "SERVICES"}}
                     <div class="item" data-value="{{ .CategoryID }}">
-                      {{ .Name}}
+                      {{ .Name }}
                     </div>
                     {{ end }} {{ range.SubCategories }}
                     <div class="item" data-value="{{ .CategoryID }}">
-                      {{ .Name}}
+                      {{ .Name }}
                     </div>
                     {{ end }} {{ end }}
                   </div>
                 </div>
               </div>
             </div>
-            <div class="ui grid">
+            <div class="ui grid" v-if="form.showTypes">
               <div class="four wide column"><label>Type d'annonce</label></div>
-              <div class="six wide column field">
-                <div class="ui dropdown selection" id="ad-type">
-                  <input type="hidden" name="gender" />
-                  <i class="dropdown icon"></i>
-                  <div class="default text">Type d'annonce</div>
-                  <div class="menu">
-                    <div class="item" data-value="0">Recherche</div>
-                    <div class="item" data-value="1">Vente</div>
-                    <div class="item" data-value="2">Troc</div>
+              <div class="twelve wide column field">
+                <div class="inline fields">
+                  <div class="field" v-for="opt in form.typesOptions">
+                    <div class="ui radio checkbox">
+                      <input
+                        type="radio"
+                        name="frequency"
+                        :checked="opt.id == adTypeId"
+                        :value="opt.id"
+                      />
+                      <label>{opt.name}</label>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="six wide column field"></div>
             </div>
             <!-- <div class="ui grid">
               <div class="four wide column"><label>Condition </label></div>
@@ -100,15 +102,9 @@
               </div>
               <div class="six wide column field"></div>
             </div> -->
-            <div class="ui grid" v-if="formID === 2">
+            <div class="ui grid">
               <div class="four wide column">
-                <label>Intitulé du poste</label>
-              </div>
-              <div class="twelve wide column field"><input type="text" /></div>
-            </div>
-            <div class="ui grid" v-else>
-              <div class="four wide column">
-                <label>Titre de l'annonce</label>
+                <label>{ form.titleLabel || "Titre de l'annonce" }</label>
               </div>
               <div class="twelve wide column field"><input type="text" /></div>
             </div>
@@ -120,40 +116,17 @@
                 <textarea name="" id="" cols="10" rows="5"></textarea>
               </div>
             </div>
-            <div class="ui grid" v-if="formID === 2">
-              <div class="four wide column"><label>Salaire</label></div>
-              <div class="five wide column field">
-                <div class="ui right labeled input">
-                  <input type="text" placeholder="Prix" id="amount" />
-                  <div class="ui basic label">FCFA</div>
-                </div>
-              </div>
-            </div>
-            <div class="ui grid" v-else-if="formID === 4">
-              <div class="four wide column"><label>Loyer</label></div>
-              <div class="five wide column field">
-                <div class="ui right labeled input">
-                  <input type="text" placeholder="Prix" id="amount" />
-                  <div class="ui basic label">FCFA</div>
-                </div>
-              </div>
-            </div>
-            <div class="ui grid" v-else-if="formID === 5">
+            <div class="ui grid" v-if="form.showPrice">
               <div class="four wide column">
-                <label>Coût du service </label>
+                <label>{form.priceLabel}</label>
               </div>
               <div class="five wide column field">
                 <div class="ui right labeled input">
-                  <input type="text" placeholder="Prix" id="amount" />
-                  <div class="ui basic label">FCFA</div>
-                </div>
-              </div>
-            </div>
-            <div class="ui grid" v-else-if="formID === 1">
-              <div class="four wide column"><label>Prix</label></div>
-              <div class="five wide column field">
-                <div class="ui right labeled input">
-                  <input type="text" placeholder="Prix" id="amount" />
+                  <input
+                    type="text"
+                    :placeholder="form.priceLabel"
+                    id="amount"
+                  />
                   <div class="ui basic label">FCFA</div>
                 </div>
               </div>
@@ -202,19 +175,70 @@
   <!-- <script src="/static/js/index.js"></script> -->
   <script>
     Vue.options.delimiters = ["{", "}"];
+
     var createApp = new Vue({
       el: "#create",
-      data: {},
-      methods: {},
-      created: function() {},
-    });
-
-    $("#category-select").dropdown({
-      onChange: function(value, text, $choice) {
-        console.log(value, text, $choice);
-        createApp.selectCategoryL1(Number(value));
+      data: {
+        categories: [],
+        form: {},
+        formID: 0,
+        showTypes: false,
+        adTypeId: 1,
+      },
+      methods: {
+        setForm1: function() {},
+      },
+      created: function() {
+        axios
+          .get("/api/categories/")
+          .then(res => {
+            console.log(res.data);
+            this.categories = res.data;
+            init();
+          })
+          .catch(err => {
+            console.log(err.message);
+          });
       },
     });
-    $(".ui.dropdown").dropdown();
+
+    function init() {
+      $(".ui.dropdown").dropdown();
+
+      $("#category-select").dropdown({
+        onChange: function(value, text, $choice) {
+          var catId = Number(value);
+          axios
+            .get("/api/form/?formId=" + catId)
+            .then(res => {
+              console.log(res.data);
+              createApp.form = res.data !== null ? res.data : {};
+              setTimeout(() => {
+                reloadCheckbox();
+              }, 1000);
+            })
+            .catch(err => {
+              console.log(err.message);
+            });
+        },
+      });
+
+      reloadCheckbox();
+    }
+
+    function reloadCheckbox() {
+      $(".ui.checkbox").checkbox({
+        onChange: function() {
+          var adType = $("input[name=frequency]:checked").val();
+          console.log(adType);
+          createApp.adTypeId = adType;
+          if (adType == 2 || adType == 4) {
+            createApp.form.showPrice = false;
+          } else {
+            createApp.form.showPrice = true;
+          }
+        },
+      });
+    }
   </script>
 </html>

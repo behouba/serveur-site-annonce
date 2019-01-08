@@ -40,6 +40,7 @@ func init() {
 	// api's routes
 	beego.Router("/api/cities", &controllers.FetchCities{})
 	beego.Router("/api/categories/?:id", &controllers.FetchCategoryController{})
+	beego.Router("/api/form/?:formId", &controllers.CategoryFormController{})
 	// authentification api routes
 	beego.Router("/api/auth/email_reg", &controllers.EmailRegistration{})
 	beego.Router("/api/auth/email_login", &controllers.EmailLoginController{})

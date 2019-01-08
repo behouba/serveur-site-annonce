@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"serveur/models"
 	"strconv"
 )
@@ -12,5 +13,16 @@ func (c *FetchCategoryController) Get() {
 	} else {
 		c.Data["json"], _ = models.GetCategories(id)
 	}
+	c.ServeJSON()
+}
+
+func (c *CategoryFormController) Get() {
+	id, err := strconv.Atoi(c.Ctx.Input.Query("formId"))
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	rawJSON, err := models.GetFormState(id)
+	c.Data["json"] = rawJSON
 	c.ServeJSON()
 }

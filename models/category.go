@@ -20,10 +20,9 @@ var CategoryMap = make(map[string]string)
 
 func getAllCategories() (categories []Category, err error) {
 	var res *sql.Rows
-	res, err = Db.Query("SELECT category_id, name, path_name FROM category WHERE parent_id is NULL ORDER BY name")
+	res, err = Db.Query("SELECT category_id, name, path_name FROM category WHERE parent_id is NULL ORDER BY category_id")
 
 	if err != nil {
-		fmt.Println(err)
 		return
 	}
 	for res.Next() {

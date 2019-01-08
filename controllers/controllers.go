@@ -102,3 +102,7 @@ type StoreSettingsControler struct {
 type StoreStatsControler struct {
 	beego.Controller
 }
+
+type CategoryFormController struct {
+	beego.Controller
+}
