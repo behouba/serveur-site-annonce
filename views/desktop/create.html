@@ -29,19 +29,29 @@
       font-size: 14px;
       font-weight: normal;
     }
-    .ui.dropdown .menu > .header {
+    #category-select.ui.dropdown .menu > .header {
       font-size: 1.2rem;
     }
-    .ui.selection.dropdown .menu {
+    #category-select.ui.selection.dropdown .menu {
       max-height: 35.028571rem;
     }
   </style>
   <body>
-    <div class="ui container" id="create">
+    <div class="ui container" id="create" style="display:none">
       <!-- create new form form -->
       <div class="ui grid" style="margin-top:30px;">
         <div class="twelve wide column">
           <div class="ui form" id="newAdForm">
+             <!--advert title -->
+             <div class="ui grid">
+                <div class="four wide column">
+                  <label>{ form.titleLabel || "Titre de l'annonce" }</label>
+                </div>
+                <div class="twelve wide column field">
+                  <input type="text" v-model="data.title" />
+                </div>
+              </div>
+              <!-- adverts categories -->
             <div class="ui grid">
               <div class="four wide column"><label>Categorie</label></div>
               <div class="twelve wide column field">
@@ -69,51 +79,326 @@
                 </div>
               </div>
             </div>
-            <div class="ui grid" v-if="form.showTypes">
+            <!-- advert type -->
+            <div class="ui grid" v-if="form.showAdTypes">
               <div class="four wide column"><label>Type d'annonce</label></div>
-              <div class="twelve wide column field">
-                <div class="inline fields">
-                  <div class="field" v-for="opt in form.typesOptions">
-                    <div class="ui radio checkbox">
-                      <input
-                        type="radio"
-                        name="frequency"
-                        :checked="opt.id == adTypeId"
-                        :value="opt.id"
-                      />
-                      <label>{opt.name}</label>
+              <div class="six wide column field">
+                  <div class="ui selection dropdown" id="adType">
+                      <input type="hidden" name="gender" />
+                      <i class="dropdown icon"></i>
+                      <div class="default text">Choisissez une categorie</div>
+                      <div class="menu">
+                        <div class="item" data-value="0">
+                          Choisissez une categorie
+                        </div>
+                        <div
+                          v-for="c in form.typesOptions"
+                          class="item"
+                          :data-value="c.id"
+                        >
+                          {c.label}
+                        </div>
+                      </div>
+                    </div>
+              </div>
+            </div>
+           
+            <!-- advert properties-->
+
+            <!-- clothing properties -->
+            <div v-if="propState == props.clothing">
+              <div class="ui grid">
+                <div class="four wide column"><label>Cateogrie</label></div>
+                <div class="six wide column field">
+                  <div class="ui selection dropdown" id="clothingTypes">
+                    <input type="hidden" name="clothingtype" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Choisissez une categorie</div>
+                    <div class="menu">
+                      <div class="item" data-value="0">
+                        Choisissez une categorie
+                      </div>
+                      <div
+                        v-for="c in form.clothingTypes"
+                        class="item"
+                        :data-value="c.id"
+                      >
+                        {c.label}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+              <div class="ui grid">
+                <div class="four wide column">
+                  <label>Choisissez une taille</label>
+                </div>
+                <div class="six wide column field">
+                  <div class="ui selection dropdown" id="vSizes">
+                    <input type="hidden" name="gender" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Taille</div>
+                    <div class="menu">
+                      <div class="item" data-value="0">
+                        Choisissez une taille
+                      </div>
+                      <div
+                        v-for="s in form.clothingSizes"
+                        :data-value="s"
+                        class="item"
+                      >
+                        {s}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+            </div>
+            <!-- men and women -->
+            <div v-else-if="propState == props.gender">
+              <div class="ui grid">
+                <div class="four wide column"><label>Cateogrie</label></div>
+                <div class="six wide column field">
+                  <div class="ui selection dropdown">
+                    <input type="hidden" name="gender" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Choisissez une categorie</div>
+                    <div class="menu">
+                      <div class="item" data-value="0">
+                        Choisissez une categorie
+                      </div>
+                      <div
+                        v-for="c in form.genders"
+                        class="item"
+                        :data-value="c.id"
+                      >
+                        {c.label}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+            </div>
+            <!-- men and women -->
+            <div v-else-if="propState == props.services">
+              <div class="ui grid">
+                <div class="four wide column"><label>Domaine d'áctivité</label></div>
+                <div class="six wide column field">
+                  <div class="ui selection dropdown">
+                    <input type="hidden" name="gender" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Choisissez une categorie</div>
+                    <div class="menu">
+                      <div class="item" data-value="0">
+                        Choisissez une categorie
+                      </div>
+                      <div
+                        v-for="c in form.services"
+                        class="item"
+                        :data-value="c.id"
+                      >
+                        {c.label}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+            </div>
+            <!-- shoes properties -->
+            <div v-else-if="propState == props.shoes">
+              <div class="ui grid">
+                <div class="four wide column"><label>Cateogrie</label></div>
+                <div class="six wide column field">
+                  <div class="ui selection dropdown">
+                    <input type="hidden" name="gender" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Choisissez une categorie</div>
+                    <div class="menu">
+                      <div class="item" data-value="0">
+                        Choisissez une categorie
+                      </div>
+                      <div
+                        v-for="c in form.clothingTypes"
+                        class="item"
+                        :data-value="c.id"
+                      >
+                        {c.label}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+              <div class="ui grid">
+                <div class="four wide column">
+                  <label>Choisissez une pointure</label>
+                </div>
+                <div class="six wide column field">
+                  <div class="ui selection dropdown" id="vSizes">
+                    <input type="hidden" name="gender" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Taille</div>
+                    <div class="menu">
+                      <div class="item" data-value="0">
+                        Choisissez une taille
+                      </div>
+                      <div
+                        v-for="s in form.shoesSizes"
+                        :data-value="s"
+                        class="item"
+                      >
+                        {s}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+            </div>
+            <!-- housing properties -->
+            <div v-else-if="propState == props.housing">
+              <div class="ui grid">
+                <div class="four wide column"><label>Type de bien</label></div>
+                <div class="six wide column field">
+                  <div class="ui selection dropdown" id="housingTypes">
+                    <input type="hidden" name="gender" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Choisissez une categorie</div>
+                    <div class="menu">
+                      <div class="item" data-value="0">
+                        Choisissez une categorie
+                      </div>
+                      <div
+                        v-for="c in form.housingTypes"
+                        class="item"
+                        :data-value="c.id"
+                      >
+                        {c.label}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+              <div class="ui grid">
+                <div class="four wide column">
+                  <label>Nombres de pieces</label>
+                </div>
+                <div class="six wide column field">
+                  <div class="ui input">
+                    <input type="text" />
+                    <!-- <div class="ui basic label">Km</div> -->
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+            </div>
+            <!-- cars properties -->
+            <div v-else-if="propState == props.cars">
+              <div class="ui grid">
+                <div class="four wide column"><label>Marque</label></div>
+                <div class="six wide column field">
+                  <div class="ui search selection dropdown" id="car-brand">
+                    <input type="hidden" name="carModel" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Choisissez une marque</div>
+                    <div class="menu">
+                      <div class="item" data-value="0">
+                        Choisissez une marque
+                      </div>
+                      <div v-for="m in form.carsBrands" class="item" data-value="m">
+                        {m}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+              <div class="ui grid">
+                <div class="four wide column">
+                  <label>Année de fabrication</label>
+                </div>
+                <div class="six wide column field">
+                  <div class="ui search selection dropdown" id="year">
+                    <input type="hidden" name="gender" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">
+                      Choisissez l'année de fabrication
+                    </div>
+                    <div class="menu">
+                      <div class="item" data-value="0">
+                        Choisissez l'année de fabrication
+                      </div>
+                      <div v-for="y in form.carsYears" class="item" data-value="0">
+                        {y}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+              <div class="ui grid">
+                <div class="four wide column"><label>Kilométrage</label></div>
+                <div class="five wide column field">
+                  <div class="ui right labeled input">
+                    <input type="text" id="amount" />
+                    <div class="ui basic label">Km</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--moto properties-->
+            <div v-else-if="propState == props.moto">
+                <div class="ui grid">
+                  <div class="four wide column">
+                    <label>Année de fabrication</label>
+                  </div>
+                  <div class="six wide column field">
+                    <div class="ui search selection dropdown" id="year">
+                      <input type="hidden" name="gender" />
+                      <i class="dropdown icon"></i>
+                      <div class="default text">
+                        Choisissez l'année de fabrication
+                      </div>
+                      <div class="menu">
+                        <div class="item" data-value="0">
+                          Choisissez l'année de fabrication
+                        </div>
+                        <div v-for="y in form.carsYears" class="item" data-value="0">
+                          {y}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="six wide column field"></div>
+                </div>
+                <div class="ui grid">
+                  <div class="four wide column"><label>Kilométrage</label></div>
+                  <div class="five wide column field">
+                    <div class="ui right labeled input">
+                      <input type="text" id="amount" />
+                      <div class="ui basic label">Km</div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- <div class="ui grid">
-              <div class="four wide column"><label>Condition </label></div>
-              <div class="six wide column field">
-                <div class="ui selection dropdown">
-                  <input type="hidden" name="gender" />
-                  <i class="dropdown icon"></i>
-                  <div class="default text">Type d'annonce</div>
-                  <div class="menu">
-                    <div class="item" data-value="1">Male</div>
-                    <div class="item" data-value="0">Female</div>
-                  </div>
-                </div>
-              </div>
-              <div class="six wide column field"></div>
-            </div> -->
-            <div class="ui grid">
-              <div class="four wide column">
-                <label>{ form.titleLabel || "Titre de l'annonce" }</label>
-              </div>
-              <div class="twelve wide column field"><input type="text" /></div>
-            </div>
+            <!--end of advert properties-->
             <div class="ui grid">
               <div class="four wide column">
                 <label>Description de l'annonce</label>
               </div>
               <div class="twelve wide column field">
-                <textarea name="" id="" cols="10" rows="5"></textarea>
+                <textarea
+                  name=""
+                  id=""
+                  cols="10"
+                  rows="5"
+                  v-model="data.description"
+                ></textarea>
               </div>
             </div>
             <div class="ui grid" v-if="form.showPrice">
@@ -125,6 +410,7 @@
                   <input
                     type="text"
                     :placeholder="form.priceLabel"
+                    v-model="data.price"
                     id="amount"
                   />
                   <div class="ui basic label">FCFA</div>
@@ -142,7 +428,9 @@
             <div class="ui section divider"></div>
             <div class="ui grid">
               <div class="four wide column"><label>Addresse</label></div>
-              <div class="twelve wide column field"><input type="text" /></div>
+              <div class="twelve wide column field">
+                <input type="text" v-model="data.addr" />
+              </div>
             </div>
             <div class="ui grid">
               <div class="four wide column"></div>
@@ -154,7 +442,12 @@
             <div class="ui grid">
               <div class="four wide column"><label>Téléphone</label></div>
               <div class="five wide column field">
-                <input type="text" placeholder="+225" id="amount" />
+                <input
+                  type="text"
+                  placeholder="+225"
+                  id="amount"
+                  v-model="data.tel"
+                />
               </div>
             </div>
             <div class="ui section divider"></div>
@@ -162,6 +455,7 @@
               <div class="sixteen wide column">
                 <button
                   class="ui right labeled icon button right floated primary"
+                  v-on:click="advertJSON()"
                 >
                   <i class="right arrow icon"></i>Suivant
                 </button>
@@ -173,72 +467,5 @@
     </div>
   </body>
   <!-- <script src="/static/js/index.js"></script> -->
-  <script>
-    Vue.options.delimiters = ["{", "}"];
-
-    var createApp = new Vue({
-      el: "#create",
-      data: {
-        categories: [],
-        form: {},
-        formID: 0,
-        showTypes: false,
-        adTypeId: 1,
-      },
-      methods: {
-        setForm1: function() {},
-      },
-      created: function() {
-        axios
-          .get("/api/categories/")
-          .then(res => {
-            console.log(res.data);
-            this.categories = res.data;
-            init();
-          })
-          .catch(err => {
-            console.log(err.message);
-          });
-      },
-    });
-
-    function init() {
-      $(".ui.dropdown").dropdown();
-
-      $("#category-select").dropdown({
-        onChange: function(value, text, $choice) {
-          var catId = Number(value);
-          axios
-            .get("/api/form/?formId=" + catId)
-            .then(res => {
-              console.log(res.data);
-              createApp.form = res.data !== null ? res.data : {};
-              setTimeout(() => {
-                reloadCheckbox();
-              }, 1000);
-            })
-            .catch(err => {
-              console.log(err.message);
-            });
-        },
-      });
-
-      reloadCheckbox();
-    }
-
-    function reloadCheckbox() {
-      $(".ui.checkbox").checkbox({
-        onChange: function() {
-          var adType = $("input[name=frequency]:checked").val();
-          console.log(adType);
-          createApp.adTypeId = adType;
-          if (adType == 2 || adType == 4) {
-            createApp.form.showPrice = false;
-          } else {
-            createApp.form.showPrice = true;
-          }
-        },
-      });
-    }
-  </script>
+  <script src="/static/js/create.js"></script>
 </html>
