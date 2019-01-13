@@ -101,7 +101,7 @@ function clearPropState() {
   $("#car-brand").dropdown("clear");
 }
 function init() {
-  $(".ui.dropdown").dropdown();
+  // $(".ui.dropdown").dropdown();
   $("#clothingTypes").dropdown();
   $("#vSizes").dropdown();
   $("#car-brand").dropdown();
