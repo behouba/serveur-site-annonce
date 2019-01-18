@@ -41,11 +41,11 @@
       <!-- create new form form -->
       <div class="ui grid" style="margin-top:30px;">
         <div class="twelve wide column">
-          <div class="ui form" id="newAdForm">
+          <div class="ui form small" id="newAdForm">
              <!--advert title -->
              <div class="ui grid">
                 <div class="four wide column">
-                  <label>{ form.titleLabel || "Titre de l'annonce" }</label>
+                  <label>Titre de l'annonce</label>
                 </div>
                 <div class="twelve wide column field">
                   <input type="text" v-model="data.title" />
@@ -83,26 +83,12 @@
             <div class="ui grid" v-if="form.showAdTypes">
               <div class="four wide column"><label>Type d'annonce</label></div>
               <div class="six wide column field">
-                  <div class="ui selection dropdown" id="adType">
-                      <input type="hidden" name="gender" />
-                      <i class="dropdown icon"></i>
-                      <div class="default text">Choisissez une categorie</div>
-                      <div class="menu">
-                        <div class="item" data-value="0">
-                          Choisissez une categorie
-                        </div>
-                        <div
-                          v-for="c in form.typesOptions"
-                          class="item"
-                          :data-value="c.id"
-                        >
-                          {c.label}
-                        </div>
-                      </div>
-                    </div>
+                <select class="propSelect" name="" id="adTypes" v-on:change="adTypeChange">
+                  <option value="0">--</option>
+                  <option v-for="c in form.typesOptions" :value="c.id">{c.label}</option>
+                </select>
               </div>
             </div>
-           
             <!-- advert properties-->
 
             <!-- clothing properties -->
@@ -110,23 +96,10 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Cateogrie</label></div>
                 <div class="six wide column field">
-                  <div class="ui selection dropdown" id="clothingTypes">
-                    <input type="hidden" name="clothingtype" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Choisissez une categorie</div>
-                    <div class="menu">
-                      <div class="item" data-value="0">
-                        Choisissez une categorie
-                      </div>
-                      <div
-                        v-for="c in form.clothingTypes"
-                        class="item"
-                        :data-value="c.id"
-                      >
-                        {c.label}
-                      </div>
-                    </div>
-                  </div>
+                  <select class="propSelect" name="" id="clothingGender" v-on:change="genderChange">
+                      <option value="0">--</option>
+                    <option v-for="c in form.clothingTypes" :value="c.id">{c.label}</option>
+                  </select>
                 </div>
                 <div class="six wide column field"></div>
               </div>
@@ -135,23 +108,10 @@
                   <label>Choisissez une taille</label>
                 </div>
                 <div class="six wide column field">
-                  <div class="ui selection dropdown" id="vSizes">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Taille</div>
-                    <div class="menu">
-                      <div class="item" data-value="0">
-                        Choisissez une taille
-                      </div>
-                      <div
-                        v-for="s in form.clothingSizes"
-                        :data-value="s"
-                        class="item"
-                      >
-                        {s}
-                      </div>
-                    </div>
-                  </div>
+                  <select class="propSelect" name="" id="clothingSizes">
+                      <option value="0">--</option>
+                    <option v-for="s in form.clothingSizes" :value="s">{s}</option>
+                  </select>
                 </div>
                 <div class="six wide column field"></div>
               </div>
@@ -161,23 +121,10 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Cateogrie</label></div>
                 <div class="six wide column field">
-                  <div class="ui selection dropdown">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Choisissez une categorie</div>
-                    <div class="menu">
-                      <div class="item" data-value="0">
-                        Choisissez une categorie
-                      </div>
-                      <div
-                        v-for="c in form.genders"
-                        class="item"
-                        :data-value="c.id"
-                      >
-                        {c.label}
-                      </div>
-                    </div>
-                  </div>
+                  <select class="propSelect" name="" id="">
+                      <option value="0">--</option>
+                    <option v-for="c in form.genders" :value="c.id">{c.label}</option>
+                  </select>
                 </div>
                 <div class="six wide column field"></div>
               </div>
@@ -187,23 +134,10 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Domaine d'áctivité</label></div>
                 <div class="six wide column field">
-                  <div class="ui selection dropdown">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Choisissez une categorie</div>
-                    <div class="menu">
-                      <div class="item" data-value="0">
-                        Choisissez une categorie
-                      </div>
-                      <div
-                        v-for="c in form.services"
-                        class="item"
-                        :data-value="c.id"
-                      >
-                        {c.label}
-                      </div>
-                    </div>
-                  </div>
+                  <select class="propSelect" name="" id="">
+                      <option value="0">--</option>
+                    <option v-for="c in form.services"  :value="c.id"> {c.label}</option>
+                  </select>               
                 </div>
                 <div class="six wide column field"></div>
               </div>
@@ -213,23 +147,10 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Cateogrie</label></div>
                 <div class="six wide column field">
-                  <div class="ui selection dropdown">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Choisissez une categorie</div>
-                    <div class="menu">
-                      <div class="item" data-value="0">
-                        Choisissez une categorie
-                      </div>
-                      <div
-                        v-for="c in form.clothingTypes"
-                        class="item"
-                        :data-value="c.id"
-                      >
-                        {c.label}
-                      </div>
-                    </div>
-                  </div>
+                    <select class="propSelect" name="" id="">
+                        <option value="0">--</option>
+                        <option v-for="c in form.clothingTypes"  :value="c.id"> {c.label}</option>
+                      </select> 
                 </div>
                 <div class="six wide column field"></div>
               </div>
@@ -238,23 +159,10 @@
                   <label>Choisissez une pointure</label>
                 </div>
                 <div class="six wide column field">
-                  <div class="ui selection dropdown" id="vSizes">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Taille</div>
-                    <div class="menu">
-                      <div class="item" data-value="0">
-                        Choisissez une taille
-                      </div>
-                      <div
-                        v-for="s in form.shoesSizes"
-                        :data-value="s"
-                        class="item"
-                      >
-                        {s}
-                      </div>
-                    </div>
-                  </div>
+                    <select class="propSelect" name="" id="">
+                        <option value="0">--</option>
+                        <option v-for="s in form.shoesSizes"  :value="s"> {s}</option>
+                      </select> 
                 </div>
                 <div class="six wide column field"></div>
               </div>
@@ -264,27 +172,14 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Type de bien</label></div>
                 <div class="six wide column field">
-                  <div class="ui selection dropdown" id="housingTypes">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Choisissez une categorie</div>
-                    <div class="menu">
-                      <div class="item" data-value="0">
-                        Choisissez une categorie
-                      </div>
-                      <div
-                        v-for="c in form.housingTypes"
-                        class="item"
-                        :data-value="c.id"
-                      >
-                        {c.label}
-                      </div>
-                    </div>
-                  </div>
+                    <select class="propSelect" name="" id="housingTypes" v-on:change="changeHousingType">
+                        <option value="0">--</option>
+                        <option v-for="c in form.housingTypes"  :value="c.id"> {c.label}</option>
+                      </select> 
                 </div>
                 <div class="six wide column field"></div>
               </div>
-              <div class="ui grid">
+              <div class="ui grid" v-if="form.showHousingRoom">
                 <div class="four wide column">
                   <label>Nombres de pieces</label>
                 </div>
@@ -302,19 +197,10 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Marque</label></div>
                 <div class="six wide column field">
-                  <div class="ui search selection dropdown" id="car-brand">
-                    <input type="hidden" name="carModel" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Choisissez une marque</div>
-                    <div class="menu">
-                      <div class="item" data-value="0">
-                        Choisissez une marque
-                      </div>
-                      <div v-for="m in form.carsBrands" class="item" data-value="m">
-                        {m}
-                      </div>
-                    </div>
-                  </div>
+                  <select class="propSelect" name="" id="">
+                      <option value="0">--</option>
+                    <option v-for="m in form.carsBrands" :value="m.value">{m.label}</option>
+                  </select>
                 </div>
                 <div class="six wide column field"></div>
               </div>
@@ -323,21 +209,10 @@
                   <label>Année de fabrication</label>
                 </div>
                 <div class="six wide column field">
-                  <div class="ui search selection dropdown" id="year">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">
-                      Choisissez l'année de fabrication
-                    </div>
-                    <div class="menu">
-                      <div class="item" data-value="0">
-                        Choisissez l'année de fabrication
-                      </div>
-                      <div v-for="y in form.carsYears" class="item" data-value="0">
-                        {y}
-                      </div>
-                    </div>
-                  </div>
+                  <select class="propSelect" name="" id="">
+                      <option value="0">--</option>
+                    <option v-for="y in form.carsYears" :value="y">{y}</option>
+                  </select>
                 </div>
                 <div class="six wide column field"></div>
               </div>
@@ -345,7 +220,7 @@
                 <div class="four wide column"><label>Kilométrage</label></div>
                 <div class="five wide column field">
                   <div class="ui right labeled input">
-                    <input type="text" id="amount" />
+                    <input type="text" />
                     <div class="ui basic label">Km</div>
                   </div>
                 </div>
@@ -358,21 +233,10 @@
                     <label>Année de fabrication</label>
                   </div>
                   <div class="six wide column field">
-                    <div class="ui search selection dropdown" id="year">
-                      <input type="hidden" name="gender" />
-                      <i class="dropdown icon"></i>
-                      <div class="default text">
-                        Choisissez l'année de fabrication
-                      </div>
-                      <div class="menu">
-                        <div class="item" data-value="0">
-                          Choisissez l'année de fabrication
-                        </div>
-                        <div v-for="y in form.carsYears" class="item" data-value="0">
-                          {y}
-                        </div>
-                      </div>
-                    </div>
+                    <select class="propSelect" name="" id="">
+                        <option value="0">--</option>
+                      <option v-for="y in form.carsYears" :value="y">{y}</option>
+                    </select>
                   </div>
                   <div class="six wide column field"></div>
                 </div>
@@ -411,7 +275,6 @@
                     type="text"
                     :placeholder="form.priceLabel"
                     v-model="data.price"
-                    id="amount"
                   />
                   <div class="ui basic label">FCFA</div>
                 </div>
@@ -445,7 +308,6 @@
                 <input
                   type="text"
                   placeholder="+225"
-                  id="amount"
                   v-model="data.tel"
                 />
               </div>

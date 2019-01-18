@@ -16,6 +16,292 @@ var optionT1 = [
   {id: 4, label: "Don"},
 ];
 var optionT2 = [{id: 1, label: "Vente"}, {id: 2, label: "Recherche"}];
+var carsBrands = [
+  {
+    value: "ACURA",
+    label: "Acura",
+  },
+  {
+    value: "ALFA",
+    label: "Alfa Romeo",
+  },
+  {
+    value: "AMC",
+    label: "AMC",
+  },
+  {
+    value: "ASTON",
+    label: "Aston Martin",
+  },
+  {
+    value: "AUDI",
+    label: "Audi",
+  },
+  {
+    value: "AVANTI",
+    label: "Avanti",
+  },
+  {
+    value: "BENTL",
+    label: "Bentley",
+  },
+  {
+    value: "BMW",
+    label: "BMW",
+  },
+  {
+    value: "BUICK",
+    label: "Buick",
+  },
+  {
+    value: "CAD",
+    label: "Cadillac",
+  },
+  {
+    value: "CHEV",
+    label: "Chevrolet",
+  },
+  {
+    value: "CHRY",
+    label: "Chrysler",
+  },
+  {
+    value: "DAEW",
+    label: "Daewoo",
+  },
+  {
+    value: "DAIHAT",
+    label: "Daihatsu",
+  },
+  {
+    value: "DATSUN",
+    label: "Datsun",
+  },
+  {
+    value: "DELOREAN",
+    label: "DeLorean",
+  },
+  {
+    value: "DODGE",
+    label: "Dodge",
+  },
+  {
+    value: "EAGLE",
+    label: "Eagle",
+  },
+  {
+    value: "FER",
+    label: "Ferrari",
+  },
+  {
+    value: "FIAT",
+    label: "FIAT",
+  },
+  {
+    value: "FISK",
+    label: "Fisker",
+  },
+  {
+    value: "FORD",
+    label: "Ford",
+  },
+  {
+    value: "FREIGHT",
+    label: "Freightliner",
+  },
+  {
+    value: "GEO",
+    label: "Geo",
+  },
+  {
+    value: "GMC",
+    label: "GMC",
+  },
+  {
+    value: "HONDA",
+    label: "Honda",
+  },
+  {
+    value: "AMGEN",
+    label: "HUMMER",
+  },
+  {
+    value: "HYUND",
+    label: "Hyundai",
+  },
+  {
+    value: "INFIN",
+    label: "Infiniti",
+  },
+  {
+    value: "ISU",
+    label: "Isuzu",
+  },
+  {
+    value: "JAG",
+    label: "Jaguar",
+  },
+  {
+    value: "JEEP",
+    label: "Jeep",
+  },
+  {
+    value: "KIA",
+    label: "Kia",
+  },
+  {
+    value: "LAM",
+    label: "Lamborghini",
+  },
+  {
+    value: "LAN",
+    label: "Lancia",
+  },
+  {
+    value: "ROV",
+    label: "Land Rover",
+  },
+  {
+    value: "LEXUS",
+    label: "Lexus",
+  },
+  {
+    value: "LINC",
+    label: "Lincoln",
+  },
+  {
+    value: "LOTUS",
+    label: "Lotus",
+  },
+  {
+    value: "MAS",
+    label: "Maserati",
+  },
+  {
+    value: "MAYBACH",
+    label: "Maybach",
+  },
+  {
+    value: "MAZDA",
+    label: "Mazda",
+  },
+  {
+    value: "MCLAREN",
+    label: "McLaren",
+  },
+  {
+    value: "MB",
+    label: "Mercedes-Benz",
+  },
+  {
+    value: "MERC",
+    label: "Mercury",
+  },
+  {
+    value: "MERKUR",
+    label: "Merkur",
+  },
+  {
+    value: "MINI",
+    label: "MINI",
+  },
+  {
+    value: "MIT",
+    label: "Mitsubishi",
+  },
+  {
+    value: "NISSAN",
+    label: "Nissan",
+  },
+  {
+    value: "OLDS",
+    label: "Oldsmobile",
+  },
+  {
+    value: "PEUG",
+    label: "Peugeot",
+  },
+  {
+    value: "PLYM",
+    label: "Plymouth",
+  },
+  {
+    value: "PONT",
+    label: "Pontiac",
+  },
+  {
+    value: "POR",
+    label: "Porsche",
+  },
+  {
+    value: "RAM",
+    label: "RAM",
+  },
+  {
+    value: "REN",
+    label: "Renault",
+  },
+  {
+    value: "RR",
+    label: "Rolls-Royce",
+  },
+  {
+    value: "SAAB",
+    label: "Saab",
+  },
+  {
+    value: "SATURN",
+    label: "Saturn",
+  },
+  {
+    value: "SCION",
+    label: "Scion",
+  },
+  {
+    value: "SMART",
+    label: "smart",
+  },
+  {
+    value: "SRT",
+    label: "SRT",
+  },
+  {
+    value: "STERL",
+    label: "Sterling",
+  },
+  {
+    value: "SUB",
+    label: "Subaru",
+  },
+  {
+    value: "SUZUKI",
+    label: "Suzuki",
+  },
+  {
+    value: "TESLA",
+    label: "Tesla",
+  },
+  {
+    value: "TOYOTA",
+    label: "Toyota",
+  },
+  {
+    value: "TRI",
+    label: "Triumph",
+  },
+  {
+    value: "VOLKS",
+    label: "Volkswagen",
+  },
+  {
+    value: "VOLVO",
+    label: "Volvo",
+  },
+  {
+    value: "YUGO",
+    label: "Yugo",
+  },
+];
 var obj = {
   showAdTypes: false,
   typesOptions: optionT1,
@@ -23,6 +309,7 @@ var obj = {
   description: "",
   showPrice: true,
   priceLabel: "Prix",
+  showHousingRoom: false,
   clothingTypes: [
     {id: 1, label: "Femmes"},
     {id: 2, label: "Hommes"},
@@ -36,13 +323,26 @@ var obj = {
   ],
   shoesSizes: makeShoesSizes(),
   genders: [{id: 1, label: "Feminin"}, {id: 2, label: "Masculin"}],
+  menClothingSizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL et plus"],
+  womenClothingSizes: [32, 34, 36, 38, 40, 42, 44, 46, 48, "50 et plus"],
+  childClothingSizes: [
+    "3 ans",
+    "4 ans",
+    "5 ans",
+    "6 ans",
+    "8 ans",
+    "10 ans",
+    "12 ans",
+    "14 ans",
+    "16 ans",
+  ],
   services: [
     {id: 1, label: "Cours a domicile"},
     {id: 2, label: "Cours a domicile"},
     {id: 3, label: "Cours a domicile"},
   ],
   carsYears: makeYearsArray(),
-  carsBrands: ["Toyota", "Tata", "Nissan", "Hyundai"],
+  carsBrands: carsBrands,
   housingTypes: [
     {id: 1, label: "Maison"},
     {id: 2, label: "Appartement"},
@@ -57,6 +357,7 @@ var createApp = new Vue({
     prevPropState: simple,
     props: {simple, cars, clothing, shoes, gender, services, housing, moto},
     categories: [],
+    categoryId: null,
     form: obj,
     data: {},
     adTypeId: 1,
@@ -64,6 +365,44 @@ var createApp = new Vue({
   methods: {
     advertJSON: function() {
       console.log(this.data);
+    },
+    adTypeChange: function() {
+      var adTypeId = Number($("#adTypes").val());
+      console.log(adTypeId == 2);
+      if (adTypeId == 2 || adTypeId == 4) {
+        this.propState = simple;
+        this.form.showPrice = false;
+        console.log(adTypeId, "simple");
+      } else {
+        console.log(createApp.categoryId);
+        setPropState(this);
+        this.form.showPrice = true;
+        console.log(adTypeId, "cars");
+      }
+      this.data.adTypeId = adTypeId;
+    },
+    genderChange: function() {
+      var genderId = Number($("#clothingGender").val());
+      this.form.clothingSizes = this.setClothingSize(genderId);
+      console.log(genderId, this.form.clothingSizes);
+    },
+    setClothingSize: function(c) {
+      switch (c) {
+        case 1:
+          return this.form.womenClothingSizes;
+        case 2:
+          return this.form.menClothingSizes;
+        case 3:
+          return this.form.childClothingSizes;
+      }
+    },
+    changeHousingType: function() {
+      this.data.housingTypeId = Number($("#housingTypes").val());
+      if (this.data.housingTypeId != 3) {
+        this.form.showHousingRoom = true;
+      } else {
+        this.form.showHousingRoom = false;
+      }
     },
   },
   created() {
@@ -81,69 +420,21 @@ var createApp = new Vue({
   },
 });
 
-function setClothingSize(c) {
-  switch (c) {
-    case 1:
-      return ["taille", "dames", "ici"];
-    case 2:
-      return ["taille", "hommes", "ici"];
-    case 3:
-      return ["taille", "enfants", "ici"];
-  }
+function resetPropsValues() {
+  $(".propSelect").prop("selectedIndex", 0);
+  createApp.data = {};
 }
 
-function loadDropdown() {
-  $(".ui.dropdown").dropdown();
-}
-function clearPropState() {
-  $("#clothingTypes").dropdown("clear");
-  $("#vSizes").dropdown("clear");
-  $("#car-brand").dropdown("clear");
-}
 function init() {
-  // $(".ui.dropdown").dropdown();
-  $("#clothingTypes").dropdown();
-  $("#vSizes").dropdown();
-  $("#car-brand").dropdown();
-
-  $("#clothingTypes").dropdown({
-    onChange: function(value, text, $choice) {
-      createApp.form.vTypeId = Number(value);
-      createApp.form.clothingSizes = setClothingSize(createApp.form.vTypeId);
-      console.log(createApp.form.clothingSizes);
-      reload();
-    },
-  });
-
   $("#category-select").dropdown({
     onChange: function(value, text, $choice) {
-      createApp.data.categoryId = Number(value);
-      console.log(createApp.data.categoryId);
+      createApp.categoryId = Number(value);
       createApp.form.typesOptions = optionT1;
+      console.log(createApp.categoryId);
       setPropState(createApp);
-      reload();
+      resetPropsValues();
     },
   });
-  $("#adType").dropdown({
-    onChange: function(value, text, $choice) {
-      var adTypeId = Number(value);
-      console.log(adTypeId);
-      if (adTypeId == 2 || adTypeId == 4) {
-        createApp.propState = 1;
-        createApp.form.showPrice = false;
-      } else {
-        setPropState(createApp);
-        createApp.form.showPrice = true;
-      }
-      createApp.data.adTypeId = adTypeId;
-    },
-  });
-}
-
-function reload() {
-  setTimeout(() => {
-    init();
-  }, 200);
 }
 
 function makeYearsArray() {
@@ -166,7 +457,7 @@ function makeShoesSizes() {
 }
 
 function setPropState(app) {
-  switch (app.data.categoryId) {
+  switch (app.categoryId) {
     case 20: // moto
       app.propState = moto;
       app.form.typesOptions = optionT2;
@@ -199,7 +490,7 @@ function setPropState(app) {
       break;
     case 58:
     case 60:
-      app.propState = 1;
+      app.propState = simple;
       app.form.showAdTypes = false;
       app.form.showPrice = true;
       app.form.priceLabel = "Salaire";
@@ -216,10 +507,12 @@ function setPropState(app) {
       app.form.showPrice = false;
       break;
     case 69:
+    case 70:
+      app.propState = simple;
       app.form.showAdTypes = false;
       break;
     default:
-      app.propState = 1;
+      app.propState = simple;
       app.form.showAdTypes = true;
       app.form.showPrice = true;
       app.form.priceLabel = "Prix";
