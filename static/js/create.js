@@ -17,6 +17,7 @@ $(document).ready(function() {
   var createApp = new Vue({
     el: "#create",
     data: {
+      cities: [],
       propState: simple,
       prevPropState: simple,
       props: {simple, cars, clothing, shoes, gender, services, housing, moto},
@@ -76,6 +77,15 @@ $(document).ready(function() {
     },
     created() {
       axios
+        .get("/api/cities")
+        .then(res => {
+          this.cities = res.data;
+          console.log(this.cities);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      axios
         .get("/api/form/json_content")
         .then(res => {
           $("#create").show();
@@ -94,6 +104,46 @@ $(document).ready(function() {
     // createApp.data = {};
   }
 
+  $("#phoneNumberInput").on("input", function() {
+    createApp.data.tel = phoneNumberFormater(createApp.data.tel);
+  });
+
+  function phoneNumberFormater(value) {
+    var f = value.replace(/\D/g, "");
+    switch (f.length) {
+      case 3:
+        f = f.replace(/(\d{2})(\d{1})/, "$1-$2");
+        break;
+      case 4:
+        f = f.replace(/(\d{2})(\d{2})/, "$1-$2");
+        break;
+      case 5:
+        f = f.replace(/(\d{2})(\d{2})(\d{1})/, "$1-$2-$3");
+        break;
+      case 6:
+        f = f.replace(/(\d{2})(\d{2})(\d{2})/, "$1-$2-$3");
+        break;
+      case 7:
+        f = f.replace(/(\d{2})(\d{2})(\d{2})(\d{1})/, "$1-$2-$3-$4");
+        break;
+      case 8:
+        f = f.replace(/(\d{2})(\d{2})(\d{2})(\d{2})/, "$1-$2-$3-$4");
+        break;
+    }
+    // f = f.replace(/(\d{2})(\d{2})(\d{2})(\d{1})/, "$1-$2-$3-$4");
+    return f;
+  }
+
+  $(document).on("input", "#ad-price", function() {
+    createApp.data.price = moneyFormater(createApp.data.price);
+    // $("#ad-price").val(moneyFormater(this.value))
+  });
+  function moneyFormater(x) {
+    console.log(x.length);
+    var val = x.replace(/\D/g, "");
+    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   function init() {
     initPriceTips();
     $("#category-select").dropdown({
@@ -105,6 +155,12 @@ $(document).ready(function() {
         setPropState(createApp);
         resetPropsValues();
         createApp.data.attributes = {};
+      },
+    });
+
+    $("#cityPicker .ui.dropdown").dropdown({
+      onChange: function(value, text, $choice) {
+        createApp.data.cityId = Number(value);
       },
     });
   }
@@ -191,7 +247,7 @@ $(document).ready(function() {
     setTimeout(() => {
       $("#ad-price").popup({
         on: "focus",
-        position: "bottom center",
+        position: "bottom left",
         title: "Comment mettre un prix sur l'annonce?",
         content:
           "Quelques information sur comment ecrire le titre de l'annonce etc prix...",
@@ -215,16 +271,16 @@ $(document).ready(function() {
 
   $("#ad-title").popup({
     on: "focus",
-    position: "right center",
-    title: "My favorite dog",
+    position: "bottom left",
+    title: "Comment choisir le titre de mon annonce?",
     content:
-      "Quelques information sur comment ecrire le titre de l'annonce etc titre...",
+      "Quelques information sur comment ecrire le titre de l'annonce etc titre",
     variation: "wide",
   });
 
   $("#descritpion").popup({
     on: "focus",
-    position: "right center",
+    position: "bottom left",
     title: "Comment decrire l'annonce?",
     content:
       "Quelques information sur comment ecrire le titre de l'annonce etc descr...",
@@ -291,6 +347,7 @@ $(document).ready(function() {
       }
     } catch (err) {
       console.log(err);
+      alert("une erreur s'est produite");
     }
   }
 

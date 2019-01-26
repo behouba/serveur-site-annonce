@@ -39,9 +39,9 @@
     }
   </style>
   <body>
-    <div class="ui container" id="create" style="display:none">
+    <div class="ui text container" id="create" style="display:none">
       <!-- create new form form -->
-      <div class="ui grid" style="margin-top:30px;">
+      <div class="ui grid" style="margin-top:30px; margin-bottom: 45px">
         <div class="twelve wide column">
           <div class="ui form small" id="newAdForm">
              <!--advert title -->
@@ -50,7 +50,7 @@
                   <label>Titre de l'annonce</label>
                 </div>
                 <div class="twelve wide column field">
-                  <input type="text" v-model="data.title" id="ad-title"/>
+                  <input type="text" v-model="data.title" id="ad-title" maxlength="50"/>
                 </div>
               </div>
               <!-- adverts categories -->
@@ -220,7 +220,7 @@
               </div>
               <div class="ui grid">
                 <div class="four wide column"><label>Kilométrage</label></div>
-                <div class="five wide column field">
+                <div class="six wide column field">
                   <div class="ui right labeled input">
                     <input type="text" v-model="data.attributes.carKm"/>
                     <div class="ui basic label">Km</div>
@@ -262,8 +262,9 @@
                   name=""
                   id="descritpion"
                   cols="10"
-                  rows="5"
+                  rows="8"
                   v-model="data.description"
+                  maxlength="4000"
                 ></textarea>
               </div>
             </div>
@@ -278,6 +279,7 @@
                     :placeholder="form.priceLabel"
                     v-model="data.price"
                     id="ad-price"
+                    maxlength="12"
                     data-content="You can use me to enter data"
                   />
                   <div class="ui basic label">FCFA</div>
@@ -289,6 +291,7 @@
                 </button>
               </div> -->
             </div>
+            <div class="ui section divider"></div>
             <div class="ui grid">
               <div class="four wide column">
                 <label>Ajouter des photos</label>
@@ -318,27 +321,28 @@
               </div>
             </div>
             <div class="ui section divider"></div>
-            <div class="ui grid">
-              <div class="four wide column"><label>Addresse</label></div>
-              <div class="twelve wide column field">
-                <input type="text" v-model="data.addr" />
-              </div>
-            </div>
-            <div class="ui grid">
-              <div class="four wide column"></div>
-              <div class="twelve wide column field">
-                <textarea name="" id="" cols="10" rows="5"></textarea>
+            <div class="ui grid" id="cityPicker">
+              <div class="four wide column"><label>Ville</label></div>
+              <div class="six wide column field">
+                    <select class="ui search dropdown">
+                        <option value="0">--</option>
+                        <option v-for="c in cities" :value="c.CityID">{c.name}</option>
+                    </select>
               </div>
             </div>
 
             <div class="ui grid">
               <div class="four wide column"><label>Téléphone</label></div>
-              <div class="five wide column field">
-                <input
-                  type="text"
-                  placeholder="+225"
-                  v-model="data.tel"
-                />
+              <div class="six wide column field">
+                <div class="ui left labeled input">
+                    <div class="ui basic label">+255</div>
+                  <input
+                    type="text"
+                    v-model="data.tel"
+                    id="phoneNumberInput"
+                    maxlength="11"
+                  />
+                </div>
               </div>
             </div>
             <div class="ui section divider"></div>
