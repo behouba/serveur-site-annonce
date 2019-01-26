@@ -17,12 +17,10 @@ func (c *FetchCategoryController) Get() {
 }
 
 func (c *CategoryFormController) Get() {
-	id, err := strconv.Atoi(c.Ctx.Input.Query("formId"))
+	rawJSON, err := models.GetFormContent()
 	if err != nil {
 		log.Println(err)
-		return
 	}
-	rawJSON, err := models.GetFormState(id)
 	c.Data["json"] = rawJSON
 	c.ServeJSON()
 }

@@ -10,6 +10,8 @@
       href="/static/css/semantic.min.css"
     />
     <link rel="stylesheet" href="/static/css/index.css" />
+    <link rel="stylesheet" href="/static/css/uploader.css">
+    <link rel="stylesheet" href="/static/css/uploader-icon.css">
     <title>Create ad</title>
   </head>
   <script
@@ -33,7 +35,7 @@
       font-size: 1.2rem;
     }
     #category-select.ui.selection.dropdown .menu {
-      max-height: 35.028571rem;
+      max-height: 30.028571rem;
     }
   </style>
   <body>
@@ -48,7 +50,7 @@
                   <label>Titre de l'annonce</label>
                 </div>
                 <div class="twelve wide column field">
-                  <input type="text" v-model="data.title" />
+                  <input type="text" v-model="data.title" id="ad-title"/>
                 </div>
               </div>
               <!-- adverts categories -->
@@ -108,7 +110,7 @@
                   <label>Choisissez une taille</label>
                 </div>
                 <div class="six wide column field">
-                  <select class="propSelect" name="" id="clothingSizes">
+                  <select class="propSelect" name="" id="clothingSizes" v-model="data.attributes.clothingSize">
                       <option value="0">--</option>
                     <option v-for="s in form.clothingSizes" :value="s">{s}</option>
                   </select>
@@ -121,7 +123,7 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Cateogrie</label></div>
                 <div class="six wide column field">
-                  <select class="propSelect" name="" id="">
+                  <select class="propSelect" name="" id="" v-model="data.attributes.genderId">
                       <option value="0">--</option>
                     <option v-for="c in form.genders" :value="c.id">{c.label}</option>
                   </select>
@@ -134,7 +136,7 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Domaine d'áctivité</label></div>
                 <div class="six wide column field">
-                  <select class="propSelect" name="" id="">
+                  <select class="propSelect" name="" id="" v-model="data.attributes.serviceId">
                       <option value="0">--</option>
                     <option v-for="c in form.services"  :value="c.id"> {c.label}</option>
                   </select>               
@@ -147,7 +149,7 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Cateogrie</label></div>
                 <div class="six wide column field">
-                    <select class="propSelect" name="" id="">
+                    <select class="propSelect" name="" id="" v-model="data.attributes.genderId">
                         <option value="0">--</option>
                         <option v-for="c in form.clothingTypes"  :value="c.id"> {c.label}</option>
                       </select> 
@@ -159,7 +161,7 @@
                   <label>Choisissez une pointure</label>
                 </div>
                 <div class="six wide column field">
-                    <select class="propSelect" name="" id="">
+                    <select class="propSelect" name="" id="" v-model="data.attributes.shoesSize">
                         <option value="0">--</option>
                         <option v-for="s in form.shoesSizes"  :value="s"> {s}</option>
                       </select> 
@@ -172,7 +174,7 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Type de bien</label></div>
                 <div class="six wide column field">
-                    <select class="propSelect" name="" id="housingTypes" v-on:change="changeHousingType">
+                    <select class="propSelect" name="" id="housingTypes" v-on:change="changeHousingType" v-model="data.attributes.housingTypeId">
                         <option value="0">--</option>
                         <option v-for="c in form.housingTypes"  :value="c.id"> {c.label}</option>
                       </select> 
@@ -185,7 +187,7 @@
                 </div>
                 <div class="six wide column field">
                   <div class="ui input">
-                    <input type="text" />
+                    <input type="text" v-model="data.attributes.housingRoomNumber"/>
                     <!-- <div class="ui basic label">Km</div> -->
                   </div>
                 </div>
@@ -197,7 +199,7 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Marque</label></div>
                 <div class="six wide column field">
-                  <select class="propSelect" name="" id="">
+                  <select class="propSelect" name="" id="" v-model="data.attributes.carBrand">
                       <option value="0">--</option>
                     <option v-for="m in form.carsBrands" :value="m.value">{m.label}</option>
                   </select>
@@ -209,7 +211,7 @@
                   <label>Année de fabrication</label>
                 </div>
                 <div class="six wide column field">
-                  <select class="propSelect" name="" id="">
+                  <select class="propSelect" name="" id="" v-model="data.attributes.carYear">
                       <option value="0">--</option>
                     <option v-for="y in form.carsYears" :value="y">{y}</option>
                   </select>
@@ -220,7 +222,7 @@
                 <div class="four wide column"><label>Kilométrage</label></div>
                 <div class="five wide column field">
                   <div class="ui right labeled input">
-                    <input type="text" />
+                    <input type="text" v-model="data.attributes.carKm"/>
                     <div class="ui basic label">Km</div>
                   </div>
                 </div>
@@ -233,7 +235,7 @@
                     <label>Année de fabrication</label>
                   </div>
                   <div class="six wide column field">
-                    <select class="propSelect" name="" id="">
+                    <select class="propSelect" name="" id="" v-model="data.attributes.motoYear">
                         <option value="0">--</option>
                       <option v-for="y in form.carsYears" :value="y">{y}</option>
                     </select>
@@ -244,7 +246,7 @@
                   <div class="four wide column"><label>Kilométrage</label></div>
                   <div class="five wide column field">
                     <div class="ui right labeled input">
-                      <input type="text" id="amount" />
+                      <input type="text" v-model="data.attributes.motoKm" />
                       <div class="ui basic label">Km</div>
                     </div>
                   </div>
@@ -258,7 +260,7 @@
               <div class="twelve wide column field">
                 <textarea
                   name=""
-                  id=""
+                  id="descritpion"
                   cols="10"
                   rows="5"
                   v-model="data.description"
@@ -269,23 +271,50 @@
               <div class="four wide column">
                 <label>{form.priceLabel}</label>
               </div>
-              <div class="five wide column field">
+              <div class="six wide column field">
                 <div class="ui right labeled input">
                   <input
                     type="text"
                     :placeholder="form.priceLabel"
                     v-model="data.price"
+                    id="ad-price"
+                    data-content="You can use me to enter data"
                   />
                   <div class="ui basic label">FCFA</div>
                 </div>
               </div>
+              <!-- <div class="five wide column field">
+                <button class="ui icon button">
+                  <i class="question circle outline icon"></i>
+                </button>
+              </div> -->
             </div>
             <div class="ui grid">
               <div class="four wide column">
                 <label>Ajouter des photos</label>
               </div>
               <div class="twelve wide column field">
-                <textarea name="" id="" cols="10" rows="5"></textarea>
+                  <div id="images-area">
+                    <div class="fileuploader fileuploader-theme-thumbnails">
+                      <div class="fileuploader-items">
+                        <ul class="fileuploader-items-list" id="img-list">
+                          <li class="fileuploader-thumbnails-input" id="upload-item">
+                            <div class="fileuploader-thumbnails-input-inner upload-button">
+                              <i>+</i>
+                              <!-- <div class="upload-button">Upload Image</div> -->
+                            </div>
+                            <input
+                              class="file-upload"
+                              type="file"
+                              name="files[]"
+                              multiple
+                              accept="image/*"
+                            />
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
             <div class="ui section divider"></div>
@@ -327,7 +356,9 @@
         </div>
       </div>
     </div>
+
   </body>
   <!-- <script src="/static/js/index.js"></script> -->
+  
   <script src="/static/js/create.js"></script>
 </html>

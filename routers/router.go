@@ -4,6 +4,7 @@ import (
 	"serveur/controllers"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/plugins/cors"
 )
 
 func init() {
@@ -37,10 +38,12 @@ func init() {
 	// new advert creation route
 	beego.Router("/create/", &controllers.CreateAdvertControler{})
 
+	// upload files
+	beego.Router("/upload/", &controllers.UploadController{})
 	// api's routes
 	beego.Router("/api/cities", &controllers.FetchCities{})
 	beego.Router("/api/categories/?:id", &controllers.FetchCategoryController{})
-	beego.Router("/api/form/?:formId", &controllers.CategoryFormController{})
+	beego.Router("/api/form/json_content", &controllers.CategoryFormController{})
 	// authentification api routes
 	beego.Router("/api/auth/email_reg", &controllers.EmailRegistration{})
 	beego.Router("/api/auth/email_login", &controllers.EmailLoginController{})
@@ -49,4 +52,14 @@ func init() {
 	// filters
 	beego.InsertFilter("/*", beego.BeforeRouter, golabalFilter)
 	beego.InsertFilter("/profile/*", beego.BeforeRouter, profileFilter)
+	beego.InsertFilter("/upload/*", beego.BeforeRouter, cors.Allow(&cors.Options{
+		AllowOrigins:     []string{"http://127.0.0.1:5500"},
+		AllowMethods:     []string{"PUT", "PATCH", "POST", "DELETE"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
+
+	// set path to static images files
+	beego.SetStaticPath("/files", "files")
 }
