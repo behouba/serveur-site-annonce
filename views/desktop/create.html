@@ -39,10 +39,10 @@
     }
   </style>
   <body>
-    <div class="ui text container" id="create" style="display:none">
+    <div class="ui container" id="create" style="display:none">
       <!-- create new form form -->
-      <div class="ui grid" style="margin-top:30px; margin-bottom: 45px">
-        <div class="twelve wide column">
+      <div class="ui grid" style="margin-top:100px; margin-bottom: 45px">
+        <div class="eleven wide column">
           <div class="ui form small" id="newAdForm">
              <!--advert title -->
              <div class="ui grid">
@@ -296,7 +296,7 @@
               <div class="four wide column">
                 <label>Ajouter des photos</label>
               </div>
-              <div class="twelve wide column field">
+              <div class="twelve wide column field"  id="pictures-field">
                   <div id="images-area">
                     <div class="fileuploader fileuploader-theme-thumbnails">
                       <div class="fileuploader-items">
@@ -338,7 +338,7 @@
                     <div class="ui basic label">+255</div>
                   <input
                     type="text"
-                    v-model="data.tel"
+                    v-model="data.phoneNumber"
                     id="phoneNumberInput"
                     maxlength="11"
                   />

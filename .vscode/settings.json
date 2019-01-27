@@ -2,5 +2,6 @@
   "json.format.enable": false,
   "prettier.trailingComma": "es5",
   "vetur.format.defaultFormatter.js": "none",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "go.lintTool": "gometalinter"
 }

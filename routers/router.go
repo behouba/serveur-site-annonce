@@ -35,7 +35,7 @@ func init() {
 	beego.Router("/store/settings", &controllers.StoreSettingsControler{})
 	beego.Router("/store/stats", &controllers.StoreStatsControler{})
 
-	// new advert creation route
+	// new advert creation routes
 	beego.Router("/create/", &controllers.CreateAdvertControler{})
 
 	// upload files

@@ -14,6 +14,27 @@ $(document).ready(function() {
   const housing = 7;
   const moto = 8;
 
+  // tips constants values
+  const titleTipTitle = "Comment choisir le titre de mon annonce?";
+  const titleTipList = [
+    "tips one and so on",
+    "tips two and so on",
+    "tips one and so on",
+  ];
+
+  const descrTipTitle = "Comment decrire l'annonce?";
+  const descrTipList = [
+    "Quelques information sur comment",
+    "ecrire le titre de l'annonce etc descr...",
+  ];
+  const picTipTitle =
+    "En ajoutant des photos a votre annonce vous attirez plus de visiteur.";
+  const picTipList = [
+    "Assurez vous que le produit est bien visible sur la photo",
+    "La taille des images ne doit pas exceder 10 Mb",
+    "La premiere photo sera la principale",
+  ];
+
   var createApp = new Vue({
     el: "#create",
     data: {
@@ -27,28 +48,31 @@ $(document).ready(function() {
       data: {
         attributes: {},
       },
-      adTypeId: 1,
+      typeId: 1,
     },
     methods: {
       advertJSON: function() {
-        this.data.imagesURL = AdImages;
-        console.log(JSON.parse(JSON.stringify(this.data)));
+        var advertJSON = JSON.parse(JSON.stringify(this.data));
+        advertJSON.picturesURL = AdImages;
+        advertJSON.price = cleanOfNaNChar(this.data.price);
+        console.log(advertJSON);
+        createNewAdvert(advertJSON);
       },
       adTypeChange: function() {
-        var adTypeId = Number($("#adTypes").val());
-        console.log(adTypeId == 2);
-        if (adTypeId == 2 || adTypeId == 4) {
+        var typeId = Number($("#adTypes").val());
+        console.log(typeId == 2);
+        if (typeId == 2 || typeId == 4) {
           this.propState = simple;
           this.form.showPrice = false;
-          console.log(adTypeId, "simple");
+          console.log(typeId, "simple");
         } else {
           console.log(createApp.categoryId);
           setPropState(this);
           this.form.showPrice = true;
           initPriceTips();
-          console.log(adTypeId, "cars");
+          console.log(typeId, "cars");
         }
-        this.data.adTypeId = adTypeId;
+        this.data.typeId = typeId;
       },
       genderChange: function() {
         var genderId = Number($("#clothingGender").val());
@@ -99,13 +123,24 @@ $(document).ready(function() {
     },
   });
 
+  function cleanOfNaNChar(n) {
+    return n !== undefined ? Number(n.replace(/\D/g, "")) : 0;
+  }
+
+  // function validateAdvert(advert) {
+  //   advert.price = cleanOfNaNChar(advert.price);
+  //   return advert;
+  // }
+
   function resetPropsValues() {
     $(".propSelect").prop("selectedIndex", 0);
     // createApp.data = {};
   }
 
   $("#phoneNumberInput").on("input", function() {
-    createApp.data.tel = phoneNumberFormater(createApp.data.tel);
+    createApp.data.phoneNumber = phoneNumberFormater(
+      createApp.data.phoneNumber
+    );
   });
 
   function phoneNumberFormater(value) {
@@ -247,7 +282,7 @@ $(document).ready(function() {
     setTimeout(() => {
       $("#ad-price").popup({
         on: "focus",
-        position: "bottom left",
+        position: "right center",
         title: "Comment mettre un prix sur l'annonce?",
         content:
           "Quelques information sur comment ecrire le titre de l'annonce etc prix...",
@@ -271,21 +306,43 @@ $(document).ready(function() {
 
   $("#ad-title").popup({
     on: "focus",
-    position: "bottom left",
-    title: "Comment choisir le titre de mon annonce?",
-    content:
-      "Quelques information sur comment ecrire le titre de l'annonce etc titre",
+    position: "right center",
+    html: makeTipsHTML(titleTipTitle, titleTipList),
     variation: "wide",
   });
 
   $("#descritpion").popup({
     on: "focus",
-    position: "bottom left",
-    title: "Comment decrire l'annonce?",
-    content:
-      "Quelques information sur comment ecrire le titre de l'annonce etc descr...",
+    position: "right center",
+    html: makeTipsHTML(descrTipTitle, descrTipList),
     variation: "wide",
   });
+  $("#pictures-field").popup({
+    on: "hover",
+    position: "right center",
+    html: makeTipsHTML(picTipTitle, picTipList),
+    variation: "wide",
+  });
+  function makeTipsHTML(title, tipsArray) {
+    var tipsListHTML = "";
+    var titleHTML = `<h4>${title}</h4>`;
+    tipsArray.forEach(function(v) {
+      tipsListHTML += `<li>${v}</li>`;
+    });
+    return `<div>${titleHTML}<ul>${tipsListHTML}</ul><div>`;
+  }
+
+  // createNewAdvert function send POST request to create new advert
+  function createNewAdvert(advertJSON) {
+    axios
+      .post("/create", advertJSON)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   /*
     This part of the code control

@@ -8,6 +8,7 @@ import (
 	"mime/multipart"
 	"os"
 	"path/filepath"
+	"serveur/models"
 	"strconv"
 
 	"github.com/disintegration/imaging"
@@ -26,11 +27,7 @@ type UploadController struct {
 	beego.Controller
 }
 
-type AdvertImage struct {
-	ImageURL     string `json:"imageURL"`
-	ThumbnailURL string `json:"thumbnailURL"`
-}
-
+// Post handle file upload request
 func (c *UploadController) Post() {
 	_, fileHeader, err := c.GetFile("files")
 	if err != nil {
@@ -38,15 +35,13 @@ func (c *UploadController) Post() {
 		return
 	}
 
-	var jsonRes AdvertImage
+	var jsonRes models.Picture
 
-	// for _, file := range filesHeaders {
 	img, err := saveImage(fileHeader)
 	if err != nil {
 		log.Println(err)
 	}
 	jsonRes = *img
-	// }
 
 	c.Data["json"] = jsonRes
 	c.ServeJSON()
@@ -83,7 +78,7 @@ func hash(s string) string {
 }
 
 // saveImage save uploaded file on files folder
-func saveImage(file *multipart.FileHeader) (img *AdvertImage, err error) {
+func saveImage(file *multipart.FileHeader) (img *models.Picture, err error) {
 	f, err := file.Open()
 
 	defer f.Close()
@@ -99,21 +94,21 @@ func saveImage(file *multipart.FileHeader) (img *AdvertImage, err error) {
 		return
 	}
 
-	imgDst240 := imaging.Resize(imgSrc, 240, 180, imaging.Lanczos)
-	err = imaging.Save(imgDst240, "./files/240x180/"+fileName)
+	imgDst240 := imaging.Fit(imgSrc, 240, 180, imaging.Lanczos)
+	err = imaging.Save(imgDst240, thumbnailsFolder +fileName)
 	if err != nil {
 		return
 	}
 
-	imgDst640 := imaging.Resize(imgSrc, 640, 480, imaging.Lanczos)
-	err = imaging.Save(imgDst640, "./files/640x480/"+fileName)
+	imgDst640 := imaging.Fit(imgSrc, 640, 480, imaging.Lanczos)
+	err = imaging.Save(imgDst640, imagesFolder+fileName)
 	if err != nil {
 		return
 	}
 
-	img = &AdvertImage{
+	img = &models.Picture{
 		ThumbnailURL: thumbnailsPath + fileName,
-		ImageURL:     imagesPath + fileName,
+		URL:          imagesPath + fileName,
 	}
 	return
 }
