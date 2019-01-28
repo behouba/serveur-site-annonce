@@ -2,11 +2,19 @@ package controllers
 
 import (
 	"fmt"
+	"log"
 	"serveur/models"
 )
 
 // Get method of MainController handle request for home page
 func (c *MainController) Get() {
+
+	items, err := models.GetAdvertsItems()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	c.Data["Items"] = items
 	c.TplName = "desktop/home.html"
 }
 
@@ -45,6 +53,12 @@ func (c *CategoryControler) Get() {
 	if cityName == "" || categoryName == "" {
 		c.Abort("404")
 	}
+	items, err := models.GetAdvertsItems()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	c.Data["Items"] = items
 	c.Data["CityName"] = cityName
 	c.Data["CityPath"] = c.Ctx.Input.Param(":city")
 	c.Data["Category"] = categoryName

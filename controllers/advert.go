@@ -30,9 +30,9 @@ func (c *CreateAdvertControler) Post() {
 	advert.UserID = user.ID
 
 	if errResp := advert.Validate(); errResp.Code != http.StatusOK {
-		c.Data["json"] = errResp
 		c.Ctx.Output.SetStatus(http.StatusBadRequest)
-		return
+		c.Data["json"] = errResp
+		c.ServeJSON()
 	}
 
 	if err := advert.Save(); err != nil {

@@ -46,42 +46,56 @@
         <!-- ad grid view -->
 
         <div class="ui four column grid" v-if="isViewGrid">
-          <div class="column" v-for="i in images">
+          {{ range.Items }}
+          <div class="column">
             <div class="ui fluid card raised link">
-              <a class="image" href="/abidjan/telephones/34" target="blank">
-                <img :src="i" class="grid-card-img" />
-                <div class="img-overlay card-location">Yamoussoukro</div>
+              <a class="image" href="" target="blank">
+                <img src="{{index .ThumbnailsURLs 0}}" class="grid-card-img" />
+                <div class="img-overlay card-location">{{.CityName}}</div>
               </a>
-              <div class="content">
-                <a class="cardPrice" href="/abidjan/telephones/34"
-                  >Sony PS4 Pro 1 To + Disque</a
+              <div class="content text-truncate">
+                <a
+                  class="cardPrice"
+                  href="/abidjan/telephones/34"
+                  >{{.Title}}</a
                 >
-                <div class="price">150.000 FCFA</div>
+                {{if ne .Price 0 }}
+                <div class="price">{{.FormattedPrice}} FCFA</div>
+                {{else }}
+                <div class="price"></div>
+                {{ end }}
                 <div class="meta">
-                  <span class="date">13 novembre 08:07</span>
+                  <span class="date">{{.FormattedTime}}</span>
                 </div>
               </div>
             </div>
           </div>
+          {{ end }}
         </div>
 
         <!-- ad list view -->
         <div class="ui divided link items" v-else>
-          <div class="item" v-for="i in images">
-            <a class="image"> <img class="list-card-img" :src="i" /> </a>
-            <div class="content">
-              <a class="cardPrice" href="/abidjan/telephones/34"
-                >Sony PS4 Pro 1 To + Disque</a
-              >
-              <div class="price">150.000 FCFA</div>
-
-              <div class="meta"><span class="cinema">Yamoussoukro</span></div>
+          {{ range.Items }}
+          <div class="item">
+            <a class="image">
+              <img class="list-card-img" src="{{index .ThumbnailsURLs 0}}" />
+            </a>
+            <div class="content text-truncate">
+              <a class="cardPrice" href="">{{.Title}}</a> {{if ne .Price 0 }}
+              <div class="price">{{.FormattedPrice}} FCFA</div>
+              {{else}}
+              <div class="price"></div>
+              {{ end }}
               <div class="meta">
-                <span class="cinema">13 novembre 08:07</span>
+                <span class="cinema">{{ .CityName }}</span>
+              </div>
+              <div class="meta">
+                <span class="cinema">{{.FormattedTime}}</span>
               </div>
               <div class="description"><p></p></div>
             </div>
           </div>
+          {{ end }}
         </div>
         <!-- end of advert card listing -->
       </div>

@@ -10,6 +10,11 @@ body {
 #first-nav {
   padding-top: 10px;
 }
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 #header {
   padding-bottom: 4px;
@@ -77,6 +82,7 @@ body {
 .price {
   font-weight: 700;
   margin: 5px 0px;
+  min-height: 20px;
 }
 .grid-card-img {
   height: 142px !important;

@@ -14,6 +14,17 @@ $(document).ready(function() {
   const housing = 7;
   const moto = 8;
 
+  // advert type contants values
+
+  const selling = 1;
+  const seeking = 2;
+  const troc = 3;
+  const gift = 4;
+  const servicesType = 5;
+  const jobType = 6;
+  const eventType = 7;
+  const housingType = 8;
+
   // tips constants values
   const titleTipTitle = "Comment choisir le titre de mon annonce?";
   const titleTipList = [
@@ -48,7 +59,7 @@ $(document).ready(function() {
       data: {
         attributes: {},
       },
-      typeId: 1,
+      typeId: selling,
     },
     methods: {
       advertJSON: function() {
@@ -104,7 +115,7 @@ $(document).ready(function() {
         .get("/api/cities")
         .then(res => {
           this.cities = res.data;
-          console.log(this.cities);
+          // console.log(this.cities);
         })
         .catch(err => {
           console.log(err);
@@ -165,14 +176,13 @@ $(document).ready(function() {
         f = f.replace(/(\d{2})(\d{2})(\d{2})(\d{2})/, "$1-$2-$3-$4");
         break;
     }
-    // f = f.replace(/(\d{2})(\d{2})(\d{2})(\d{1})/, "$1-$2-$3-$4");
     return f;
   }
 
   $(document).on("input", "#ad-price", function() {
     createApp.data.price = moneyFormater(createApp.data.price);
-    // $("#ad-price").val(moneyFormater(this.value))
   });
+
   function moneyFormater(x) {
     console.log(x.length);
     var val = x.replace(/\D/g, "");
@@ -231,21 +241,24 @@ $(document).ready(function() {
         break;
       case 5: // services
         app.propState = services;
+        app.data.typeId = servicesType;
         app.form.showAdTypes = false;
         break;
       case 67: // immobilier
       case 68:
         app.propState = housing;
+        app.data.typeId = housingType;
         app.form.showAdTypes = false;
         break;
-      case 58:
+      case 58: // emplois
       case 60:
         app.propState = simple;
         app.form.showAdTypes = false;
         app.form.showPrice = true;
+        app.data.typeId = jobType;
         app.form.priceLabel = "Salaire";
         break;
-      case 59:
+      case 59: // events
       case 61:
       case 53:
       case 54:
@@ -255,6 +268,7 @@ $(document).ready(function() {
       case 134:
         app.propState = simple;
         app.form.showAdTypes = false;
+        app.data.typeId = eventType;
         app.form.showPrice = false;
         break;
       case 69:
@@ -340,7 +354,11 @@ $(document).ready(function() {
         console.log(res.data);
       })
       .catch(err => {
-        console.log(err);
+        if (err.response.status === 400) {
+          alert(err.response.data.message);
+        } else {
+          alert(err.response.status);
+        }
       });
   }
 

@@ -12,7 +12,7 @@ type city struct {
 
 func getCities() (cities []city, err error) {
 	var rows *sql.Rows
-	rows, err = Db.Query("SELECT name, path_name, city_id FROM city")
+	rows, err = Db.Query("SELECT city_name, path_name, city_id FROM city")
 	if err != nil {
 		return
 	}
