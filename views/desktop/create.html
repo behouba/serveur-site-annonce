@@ -72,7 +72,12 @@
                     <div class="item" data-value="{{ .CategoryID }}">
                       {{ .Name }}
                     </div>
-                    {{ end }} {{ range.SubCategories }}
+                    {{else if eq .Name "AUTRES CATÉGORIES"}}
+                    <div class="item" data-value="{{ .CategoryID }}">
+                      {{ .Name }}
+                    </div>
+                    {{ end }}
+                    {{ range.SubCategories }}
                     <div class="item" data-value="{{ .CategoryID }}">
                       {{ .Name }}
                     </div>
@@ -100,19 +105,31 @@
                 <div class="six wide column field">
                   <select class="propSelect" name="" id="clothingGender" v-on:change="genderChange">
                       <option value="0">--</option>
-                    <option v-for="c in form.clothingTypes" :value="c.id">{c.label}</option>
+                    <option v-for="c in form.attributes.fashionGenders" :value="c.id">{c.name}</option>
                   </select>
                 </div>
                 <div class="six wide column field"></div>
               </div>
-              <div class="ui grid">
+              <div class="ui grid" v-if="clothingSizesIndex !== null">
+                <div class="four wide column">
+                  <label>Type de vetement</label>
+                </div>
+                <div class="six wide column field">
+                  <select class="propSelect" name="" id="clothingSizes" v-model="data.attributes.clothingTypeId">
+                      <option value="0">--</option>
+                    <option v-for="size in form.attributes.fashionGenders[clothingSizesIndex].clothingTypes" :value="size.id">{size.name}</option>
+                  </select>
+                </div>
+                <div class="six wide column field"></div>
+              </div>
+              <div class="ui grid" v-if="clothingSizesIndex !== null">
                 <div class="four wide column">
                   <label>Choisissez une taille</label>
                 </div>
                 <div class="six wide column field">
                   <select class="propSelect" name="" id="clothingSizes" v-model="data.attributes.clothingSize">
                       <option value="0">--</option>
-                    <option v-for="s in form.clothingSizes" :value="s">{s}</option>
+                    <option v-for="size in form.attributes.fashionGenders[clothingSizesIndex].sizes" :value="size.id">{size.name}</option>
                   </select>
                 </div>
                 <div class="six wide column field"></div>
@@ -125,23 +142,22 @@
                 <div class="six wide column field">
                   <select class="propSelect" name="" id="" v-model="data.attributes.genderId">
                       <option value="0">--</option>
-                    <option v-for="c in form.genders" :value="c.id">{c.label}</option>
+                    <option v-for="c in form.attributes.fashionGenders" :value="c.id">{c.name}</option>
                   </select>
                 </div>
                 <div class="six wide column field"></div>
               </div>
             </div>
-            <!-- men and women -->
-            <div v-else-if="propState == props.services">
+            <!-- service domaine -->
+            <div v-else-if="propState == props.jobs">
               <div class="ui grid">
                 <div class="four wide column"><label>Domaine d'áctivité</label></div>
-                <div class="six wide column field">
-                  <select class="propSelect" name="" id="" v-model="data.attributes.serviceId">
+                <div class="twelve wide column field">
+                  <select class="propSelect" name="" id="" v-model="data.attributes.jobFieldID">
                       <option value="0">--</option>
-                    <option v-for="c in form.services"  :value="c.id"> {c.label}</option>
+                    <option v-for="s in form.attributes.jobFields"  :value="s.id"> {s.name}</option>
                   </select>               
                 </div>
-                <div class="six wide column field"></div>
               </div>
             </div>
             <!-- shoes properties -->
@@ -151,7 +167,7 @@
                 <div class="six wide column field">
                     <select class="propSelect" name="" id="" v-model="data.attributes.genderId">
                         <option value="0">--</option>
-                        <option v-for="c in form.clothingTypes"  :value="c.id"> {c.label}</option>
+                        <option v-for="c in form.attributes.fashionGenders" :value="c.id">{c.name}</option>
                       </select> 
                 </div>
                 <div class="six wide column field"></div>
@@ -163,7 +179,7 @@
                 <div class="six wide column field">
                     <select class="propSelect" name="" id="" v-model="data.attributes.shoesSize">
                         <option value="0">--</option>
-                        <option v-for="s in form.shoesSizes"  :value="s"> {s}</option>
+                        <option v-for="size in form.attributes.shoeSizes"  :value="size.id"> {size.value}</option>
                       </select> 
                 </div>
                 <div class="six wide column field"></div>
@@ -174,25 +190,25 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Type de bien</label></div>
                 <div class="six wide column field">
-                    <select class="propSelect" name="" id="housingTypes" v-on:change="changeHousingType" v-model="data.attributes.housingTypeId">
+                    <select class="propSelect" name="" id="housingTypes" v-model="data.attributes.realEstateTypeId">
                         <option value="0">--</option>
-                        <option v-for="c in form.housingTypes"  :value="c.id"> {c.label}</option>
+                        <option v-for="c in form.attributes.realEstates[rsIndex].types"  :value="c.id"> {c.name}</option>
                       </select> 
                 </div>
                 <div class="six wide column field"></div>
               </div>
-              <div class="ui grid" v-if="form.showHousingRoom">
+              <!--<div class="ui grid" v-if="form.showHousingRoom">
                 <div class="four wide column">
                   <label>Nombres de pieces</label>
                 </div>
                 <div class="six wide column field">
                   <div class="ui input">
                     <input type="text" v-model="data.attributes.housingRoomNumber"/>
-                    <!-- <div class="ui basic label">Km</div> -->
+                    <div class="ui basic label">Km</div>
                   </div>
                 </div>
                 <div class="six wide column field"></div>
-              </div>
+              </div>-->
             </div>
             <!-- cars properties -->
             <div v-else-if="propState == props.cars">
@@ -201,7 +217,7 @@
                 <div class="six wide column field">
                   <select class="propSelect" name="" id="" v-model="data.attributes.carBrand">
                       <option value="0">--</option>
-                    <option v-for="m in form.carsBrands" :value="m.label">{m.label}</option>
+                    <option v-for="m in form.attributes.carBrands" :value="m.id">{m.name}</option>
                   </select>
                 </div>
                 <div class="six wide column field"></div>
@@ -213,7 +229,7 @@
                 <div class="six wide column field">
                   <select class="propSelect" name="" id="" v-model="data.attributes.carYear">
                       <option value="0">--</option>
-                    <option v-for="y in form.carsYears" :value="y">{y}</option>
+                    <option v-for="year in form.attributes.years" :value="year.id">{year.value}</option>
                   </select>
                 </div>
                 <div class="six wide column field"></div>
@@ -222,7 +238,7 @@
                 <div class="four wide column"><label>Kilométrage</label></div>
                 <div class="six wide column field">
                   <div class="ui right labeled input">
-                    <input type="text" v-model="data.attributes.carKm"/>
+                    <input type="text" v-model="data.attributes.carKm" id="carKm"/>
                     <div class="ui basic label">Km</div>
                   </div>
                 </div>
@@ -237,7 +253,7 @@
                   <div class="six wide column field">
                     <select class="propSelect" name="" id="" v-model="data.attributes.motoYear">
                         <option value="0">--</option>
-                      <option v-for="y in form.carsYears" :value="y">{y}</option>
+                      <option v-for="year in form.attributes.years" :value="year.id">{year.value}</option>
                     </select>
                   </div>
                   <div class="six wide column field"></div>
@@ -246,7 +262,7 @@
                   <div class="four wide column"><label>Kilométrage</label></div>
                   <div class="five wide column field">
                     <div class="ui right labeled input">
-                      <input type="text" v-model="data.attributes.motoKm" />
+                      <input type="text" v-model="data.attributes.motoKm" id="motoKm"/>
                       <div class="ui basic label">Km</div>
                     </div>
                   </div>

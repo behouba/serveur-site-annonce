@@ -101,7 +101,8 @@ func (user *User) CreateSession(c *context.Context) (err error) {
 	if err != nil {
 		return
 	}
-	c.SetSecureCookie(CookieSecret, UserCookie, accessToken)
+	// set secure cookie for 1 year lifetime
+	c.SetSecureCookie(CookieSecret, UserCookie, accessToken, 86400*365)
 	return
 }
 

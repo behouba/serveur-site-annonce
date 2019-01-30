@@ -40,17 +40,24 @@ type Advert struct {
 	Price       int64           `json:"price"`
 	PicturesURL []Picture       `json:"picturesURL"`
 	CityID      int             `json:"cityId"`
+	CityName    string          `json:"cityName"`
 	PhoneNumber string          `json:"phoneNumber"`
 	CreatedAt   time.Time       `json:"createdAt"`
 }
 
 type AdvertItem struct {
+	ID             int64    `json:"id"`
 	Title          string   `json:"title"`
 	Price          int64    `json:"price"`
 	FormattedPrice string   `json:"formattedPrice"`
 	ThumbnailsURLs []string `json:"ThumbnailsURLs"`
 	CityName       string   `json:"cityName"`
 	FormattedTime  string   `json:"formattedTime"`
+}
+
+type Attribute struct {
+	Name string 	`json:"name"`
+	Value string `json:"value"`
 }
 
 // Validate methode of Advert struct check
@@ -122,9 +129,42 @@ func GetFormContent() (rawJSON json.RawMessage, err error) {
 	return
 }
 
+func GetFullAdvert(id int) (ad Advert, err error) {
+	ad.ID = id
+	row := Db.QueryRow(`
+				SELECT title, description, advertiser_id,
+				price, created_at, city_name, pictures_urls, attribute 
+				FROM advert  INNER JOIN city ON advert.city_id=city.city_id 
+				WHERE advert_id=$1;`, id)
+	var pictures json.RawMessage
+	err = row.Scan(
+		&ad.Title, &ad.Description, &ad.UserID,
+		&ad.Price, &ad.CreatedAt, &ad.CityName,
+		&pictures, &ad.Attributes)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(pictures, &ad.PicturesURL)
+	if err != nil {
+		return
+	}
+	return
+}
+
+func GetAttributes(id int) (jsonRes json.RawMessage, err error) {
+	row := Db.QueryRow("SELECT attribute FROM advert WHERE advert_id=$1", id)
+	err = row.Scan(&jsonRes)
+	if err != nil {
+		return
+	}
+	return
+}
+
 func GetAdvertsItems() (items []AdvertItem, err error) {
 
-	rows, err := Db.Query("SELECT title, price, created_at, city_name, thumbnails_urls FROM advert INNER JOIN city ON advert.city_id=city.city_id;")
+	rows, err := Db.Query(`
+	SELECT advert_id, title, price, created_at, city_name, thumbnails_urls 
+	FROM advert INNER JOIN city ON advert.city_id=city.city_id;`)
 	if err != nil {
 		return
 	}
@@ -135,7 +175,9 @@ func GetAdvertsItems() (items []AdvertItem, err error) {
 		var item AdvertItem
 		var createTime time.Time
 
-		err := rows.Scan(&item.Title, &item.Price, &createTime, &item.CityName, pq.Array(&item.ThumbnailsURLs))
+		err := rows.Scan(
+			&item.ID, &item.Title, &item.Price, &createTime,
+			&item.CityName, pq.Array(&item.ThumbnailsURLs))
 		if err != nil {
 			log.Println(err)
 			continue

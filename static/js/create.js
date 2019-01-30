@@ -10,12 +10,11 @@ $(document).ready(function() {
   const clothing = 3;
   const shoes = 4;
   const gender = 5;
-  const services = 6;
+  const jobs = 6;
   const housing = 7;
   const moto = 8;
 
   // advert type contants values
-
   const selling = 1;
   const seeking = 2;
   const troc = 3;
@@ -24,6 +23,8 @@ $(document).ready(function() {
   const jobType = 6;
   const eventType = 7;
   const housingType = 8;
+  const optionT1 = [selling, seeking, troc, gift];
+  const optionT2 = [selling, seeking];
 
   // tips constants values
   const titleTipTitle = "Comment choisir le titre de mon annonce?";
@@ -50,9 +51,11 @@ $(document).ready(function() {
     el: "#create",
     data: {
       cities: [],
+      clothingSizesIndex: null,
+      rsIndex: null,
       propState: simple,
       prevPropState: simple,
-      props: {simple, cars, clothing, shoes, gender, services, housing, moto},
+      props: {simple, cars, clothing, shoes, gender, jobs, housing, moto},
       categories: [],
       categoryId: null,
       form: {},
@@ -67,7 +70,7 @@ $(document).ready(function() {
         advertJSON.picturesURL = AdImages;
         advertJSON.price = cleanOfNaNChar(this.data.price);
         console.log(advertJSON);
-        createNewAdvert(advertJSON);
+        // createNewAdvert(advertJSON);
       },
       adTypeChange: function() {
         var typeId = Number($("#adTypes").val());
@@ -87,28 +90,32 @@ $(document).ready(function() {
       },
       genderChange: function() {
         var genderId = Number($("#clothingGender").val());
-        this.form.clothingSizes = this.setClothingSize(genderId);
+        this.getClothingSizesIndex(genderId);
         this.data.attributes.genderId = genderId;
-        // console.log(genderId, this.form.clothingSizes);
+        console.log(genderId, this.clothingSizesIndex);
       },
-      setClothingSize: function(c) {
-        switch (c) {
-          case 1:
-            return this.form.womenClothingSizes;
-          case 2:
-            return this.form.menClothingSizes;
-          case 3:
-            return this.form.childClothingSizes;
+      getClothingSizesIndex: function(id) {
+        // for baby clothes there are not sizes
+        if (id === 5) {
+          this.clothingSizesIndex = null;
+          return;
+        }
+        var fsGenders = this.form.attributes.fashionGenders;
+        for (var i = 0; i < fsGenders.length; i++) {
+          if (fsGenders[i].id === id) {
+            this.clothingSizesIndex = i;
+            return;
+          }
         }
       },
-      changeHousingType: function() {
-        this.data.housingTypeId = Number($("#housingTypes").val());
-        if (this.data.housingTypeId != 3) {
-          this.form.showHousingRoom = true;
-        } else {
-          this.form.showHousingRoom = false;
-        }
-      },
+      // changeHousingType: function() {
+      //   this.data.housingTypeId = Number($("#housingTypes").val());
+      //   if (this.data.housingTypeId != 3) {
+      //     this.form.showHousingRoom = true;
+      //   } else {
+      //     this.form.showHousingRoom = false;
+      //   }
+      // },
     },
     created() {
       axios
@@ -121,11 +128,12 @@ $(document).ready(function() {
           console.log(err);
         });
       axios
-        .get("/api/form/json_content")
+        .get("/api/form/attr")
         .then(res => {
           $("#create").show();
           init();
-          this.form = res.data;
+          this.form.attributes = res.data;
+          console.log(this.form.attributes);
           // console.log(JSON.stringify(res.data));
         })
         .catch(err => {
@@ -183,6 +191,18 @@ $(document).ready(function() {
     createApp.data.price = moneyFormater(createApp.data.price);
   });
 
+  $(document).on("input", "#carKm", function() {
+    createApp.data.attributes.carKm = moneyFormater(
+      createApp.data.attributes.carKm
+    );
+  });
+
+  $(document).on("input", "#motoKm", function() {
+    createApp.data.attributes.motoKn = moneyFormater(
+      createApp.data.attributes.motoKn
+    );
+  });
+
   function moneyFormater(x) {
     console.log(x.length);
     var val = x.replace(/\D/g, "");
@@ -195,7 +215,7 @@ $(document).ready(function() {
       onChange: function(value, text, $choice) {
         createApp.categoryId = Number(value);
         createApp.data.categoryId = Number(value);
-        createApp.form.typesOptions = createApp.form.optionT1;
+        createApp.form.typesOptions = optionT1;
         console.log(createApp.categoryId);
         setPropState(createApp);
         resetPropsValues();
@@ -210,53 +230,65 @@ $(document).ready(function() {
     });
   }
 
+  function setRSIndex(app) {
+    var rs = app.form.attributes.realEstates;
+    for (var i = 0; i < rs.length; i++) {
+      if (rs[i].id == app.categoryId) {
+        app.rsIndex = i;
+        console.log(rs[i]);
+        return;
+      }
+    }
+  }
+
   function setPropState(app) {
     switch (app.categoryId) {
       case 20: // moto
         app.propState = moto;
-        app.form.typesOptions = app.form.optionT2;
+        app.form.typesOptions = optionT2;
         app.form.showAdTypes = true;
         break;
       case 19: // voitures
         app.propState = cars;
-        app.form.typesOptions = app.form.optionT2;
+        app.form.typesOptions = optionT2;
         app.form.showAdTypes = true;
         break;
       case 30: // vetements
         app.propState = clothing;
-        app.form.typesOptions = app.form.optionT1;
+        app.form.typesOptions = optionT1;
         app.form.showAdTypes = true;
         break;
       case 31: // chaussures
         app.propState = shoes;
-        app.form.typesOptions = app.form.optionT1;
+        app.form.typesOptions = optionT1;
         app.form.showAdTypes = true;
         break;
       case 32: // autres modes et bien-etre
       case 33:
       case 34:
-        app.form.typesOptions = app.form.optionT1;
+        app.form.typesOptions = optionT1;
         app.form.showAdTypes = true;
         app.propState = gender;
         break;
       case 5: // services
-        app.propState = services;
+        app.propState = jobs;
         app.data.typeId = servicesType;
         app.form.showAdTypes = false;
         break;
       case 67: // immobilier
       case 68:
+      case 69:
         app.propState = housing;
         app.data.typeId = housingType;
         app.form.showAdTypes = false;
+        setRSIndex(app);
         break;
       case 58: // emplois
       case 60:
-        app.propState = simple;
+        app.propState = jobs;
         app.form.showAdTypes = false;
-        app.form.showPrice = true;
+        app.form.showPrice = false;
         app.data.typeId = jobType;
-        app.form.priceLabel = "Salaire";
         break;
       case 59: // events
       case 61:
@@ -367,6 +399,7 @@ $(document).ready(function() {
     file upload, uploaded files thumbnail
     preview and uploaded files removal
   */
+
   var readURL = function(input) {
     if (AdImages.length >= 4) {
       return;

@@ -41,6 +41,7 @@
     }
     #ad-detail {
       margin-top: 50px;
+      display:none;
     }
     #ad-info-left {
       height: 1000px;
@@ -109,8 +110,8 @@
       <div class="ui grid">
         <div class="row">
           <div class="column">
-            <h1 class="ui header">Nintendo Switch édition Super Mario</h1>
-            <p>№ 1457435464, posté le 2 décembre à 23:04</p>
+            <h1 class="ui header">{{ .Advert.Title }}</h1>
+            <p>№ {{.Advert.ID }}, posté le {{.Advert.CreatedAt}} à 23:04</p>
             <button
               class="ui small positive  button"
               v-if="isFavorite"
@@ -134,16 +135,18 @@
                 <!--
                   should format image in order for them to look well 'data-thumb' for images thumbnail and 'data-src' for main image
                 -->
-                <li v-for="i in images" :data-src="i" :data-thumb="i">
-                  <img :src="i" />
+                {{range.Advert.PicturesURL}}
+                <li data-src="{{.URL}}" data-thumb="{{.ThumbnailURL}}">
+                  <img src="{{.URL}}" />
                 </li>
+                {{end}}
               </ul>
             </div>
           </section>
           <div class="ui grid" id="ad-description">
             <div class="four wide column"><h3>Addrres:</h3></div>
             <div class="twelve wide column">
-              <p class="ad-desc-text">Abidjan, Cocody Riviera</p>
+              <p class="ad-desc-text">{{.Advert.CityName}}</p>
               <button
                 class="ui right floated basic button mini"
                 v-on:click="showMap=!showMap"
@@ -153,22 +156,19 @@
             </div>
             <div class="four wide column" v-if="showMap"></div>
             <div class="twelve wide column map" v-if="showMap"></div>
-            <div class="four wide column"><h3>Publié le :</h3></div>
+            <div class="four wide column"><h3>Attribute :</h3></div>
             <div class="twelve wide column">
-              <p class="ad-desc-text">20 février 2017</p>
-            </div>
-            <div class="four wide column"><h3>Condition :</h3></div>
-            <div class="twelve wide column">
-              <p class="ad-desc-text">Occasion</p>
+              <p class="ad-desc-text">{{.Advert.Attributes}}</p>
             </div>
             <div class="four wide column"><h3>Description :</h3></div>
             <div class="twelve wide column">
               <p class="ad-desc-text">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
-                doloremque iure, temporibus fugit numquam iste pariatur ratione
-                ullam aperiam totam earum dignissimos suscipit, delectus aliquid
-                cupiditate minima quia repellendus excepturi!
+                {{.Advert.Description}}
               </p>
+            </div>
+            <div class="four wide column"><h3>Publié le :</h3></div>
+            <div class="twelve wide column">
+              <p class="ad-desc-text">{{.Advert.CreatedAt}}</p>
             </div>
             <div class="four wide column"><h3>Partager :</h3></div>
             <div class="twelve wide column">
@@ -274,20 +274,9 @@
     vuejs instance initiated first important for jquery plugin to work properly
   -->
   <script>
-    var dumpImg = [
-      "https://scontent-frt3-1.cdninstagram.com/vp/3f3221c8ef1499170f6fb4cf1fdc1b3a/5C921356/t51.2885-15/e35/45510151_2352295998132462_5450872102550480899_n.jpg",
-      "https://svetofor.info/images/detailed/133/sony-ps4-igrovaya-pristavka-sony-playstation-4-pro-1tb-chernyy-igra-fifa-18-icon-edition-1.jpg",
-      "http://pa1.narvii.com/6630/24663444ead34a17b3ed0031e183b0b16595dcc7_hq.gif",
-      "https://i.ytimg.com/vi/9vx69Pe7Ncs/maxresdefault.jpg",
-      "https://www.indiewire.com/wp-content/uploads/2015/07/soul-eater-1.jpg",
-      "https://media.comicbook.com/2016/12/soul-eater-218746-1280x0.jpg",
-      "https://www.gamepretty.com/wp-content/uploads/2018/10/nintendo-switch-6.01-update-01.jpg",
-      "https://images-na.ssl-images-amazon.com/images/I/51qiZgs22mL._SX425_.jpg",
-    ];
     var adDetailApp = new Vue({
       el: "#ad-detail",
       data: {
-        images: dumpImg,
         showMap: false,
         isFavorite: false,
       },
@@ -299,9 +288,19 @@
           this.isFavorite = !this.isFavorite;
         },
       },
+      created: function() {
+        axios.get("/api/attr/{{.Advert.ID}}")
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        $("#ad-detail").show()
+      }
     });
   </script>
-  <script src="/static/js/index.js"></script>
+  <!-- <script src="/static/js/index.js"></script> -->
   <!-- lightgallery library javascript and plugin import require jquery -->
   <script src="/static/lightgallery/dist/js/lightgallery.min.js"></script>
   <script src="/static/lightgallery/modules/lg-thumbnail.min.js"></script>

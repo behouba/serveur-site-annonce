@@ -13,7 +13,7 @@ func init() {
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/:fPath:string/", &controllers.FPathController{})
 	beego.Router("/:city:string/:category:string/", &controllers.CategoryControler{})
-	beego.Router("/:city:string/:category:string/:id:int/", &controllers.AdvertControler{})
+	beego.Router("/ad/:id:int/", &controllers.AdvertControler{})
 	// profile
 	beego.Router("/profile/", &controllers.ProfileControler{})
 	beego.Router("/profile/favoris/", &controllers.ProfileFavoritesControler{})
@@ -44,6 +44,9 @@ func init() {
 	beego.Router("/api/cities", &controllers.FetchCities{})
 	beego.Router("/api/categories/?:id", &controllers.FetchCategoryController{})
 	beego.Router("/api/form/json_content", &controllers.CategoryFormController{})
+	beego.Router("/api/form/json_content", &controllers.CategoryFormController{})
+	beego.Router("/api/form/attr", &controllers.AttributesController{})
+
 	// authentification api routes
 	beego.Router("/api/auth/email_reg", &controllers.EmailRegistration{})
 	beego.Router("/api/auth/email_login", &controllers.EmailLoginController{})
@@ -52,6 +55,7 @@ func init() {
 	// filters
 	beego.InsertFilter("/*", beego.BeforeRouter, golabalFilter)
 	beego.InsertFilter("/profile/*", beego.BeforeRouter, profileFilter)
+	beego.InsertFilter("/create", beego.BeforeRouter, profileFilter)
 	beego.InsertFilter("/upload/*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowOrigins:     []string{"http://127.0.0.1:5500"},
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "DELETE"},

@@ -49,14 +49,14 @@
           {{ range.Items }}
           <div class="column">
             <div class="ui fluid card raised link">
-              <a class="image" href="" target="blank">
+              <a class="image" href="/ad/{{.ID}}" target="blank">
                 <img src="{{index .ThumbnailsURLs 0}}" class="grid-card-img" />
                 <div class="img-overlay card-location">{{.CityName}}</div>
               </a>
               <div class="content text-truncate">
                 <a
                   class="cardPrice"
-                  href="/abidjan/telephones/34"
+                  href="/ad/{{.ID}}"
                   >{{.Title}}</a
                 >
                 {{if ne .Price 0 }}
@@ -77,11 +77,11 @@
         <div class="ui divided link items" v-else>
           {{ range.Items }}
           <div class="item">
-            <a class="image">
+            <a class="image" href="/ad/{{.ID}}">
               <img class="list-card-img" src="{{index .ThumbnailsURLs 0}}" />
             </a>
             <div class="content text-truncate">
-              <a class="cardPrice" href="">{{.Title}}</a> {{if ne .Price 0 }}
+              <a class="cardPrice" href="/ad/{{.ID}}">{{.Title}}</a> {{if ne .Price 0 }}
               <div class="price">{{.FormattedPrice}} FCFA</div>
               {{else}}
               <div class="price"></div>

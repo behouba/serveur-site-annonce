@@ -2,6 +2,7 @@ package routers
 
 import (
 	"fmt"
+	"net/http"
 	"serveur/models"
 
 	"github.com/astaxie/beego/context"
@@ -29,6 +30,7 @@ func golabalFilter(ctx *context.Context) {
 func profileFilter(ctx *context.Context) {
 	user := ctx.Input.GetData("User")
 	if user == nil {
+		ctx.Output.SetStatus(http.StatusForbidden)
 		ctx.Redirect(401, "/")
 	}
 }

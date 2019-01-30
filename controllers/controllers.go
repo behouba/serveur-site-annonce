@@ -52,10 +52,6 @@ type ProfileSettingsControler struct {
 	beego.Controller
 }
 
-type AdvertControler struct {
-	beego.Controller
-}
-
 type ProfileAlertsControler struct {
 	beego.Controller
 }

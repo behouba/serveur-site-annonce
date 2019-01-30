@@ -31,6 +31,9 @@ var Cities []city
 // CitiesMap map each city path with city name
 var CitiesMap = make(map[string]string)
 
+// Attributes data structure
+var Attributes *AllAttributes
+
 func init() {
 	var err error
 	dbConnInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
@@ -45,6 +48,10 @@ func init() {
 		panic(err)
 	}
 	Cities, err = getCities()
+	if err != nil {
+		panic(err)
+	}
+	Attributes, err = GetAllAttributes()
 	if err != nil {
 		panic(err)
 	}
