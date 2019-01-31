@@ -32,9 +32,7 @@ func getAllCategories() (categories []Category, err error) {
 			fmt.Println(err)
 		}
 		CategoryMap[cat.PathName] = cat.Name
-		if cat.CategoryID != 5 {
-			cat.SubCategories, err = GetCategories(cat.CategoryID)
-		}
+		cat.SubCategories, err = GetCategories(cat.CategoryID)
 		if err != nil {
 			fmt.Println(err)
 		}

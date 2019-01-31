@@ -6,6 +6,7 @@ import (
 	"image"
 	"log"
 	"mime/multipart"
+	"net/http"
 	"os"
 	"path/filepath"
 	"serveur/models"
@@ -32,6 +33,7 @@ func (c *UploadController) Post() {
 	_, fileHeader, err := c.GetFile("files")
 	if err != nil {
 		log.Println(err)
+		c.Ctx.Output.SetStatus(http.StatusInternalServerError)
 		return
 	}
 
@@ -40,6 +42,8 @@ func (c *UploadController) Post() {
 	img, err := saveImage(fileHeader)
 	if err != nil {
 		log.Println(err)
+		c.Ctx.Output.SetStatus(http.StatusInternalServerError)
+		return
 	}
 	jsonRes = *img
 
@@ -95,7 +99,7 @@ func saveImage(file *multipart.FileHeader) (img *models.Picture, err error) {
 	}
 
 	imgDst240 := imaging.Fit(imgSrc, 240, 180, imaging.Lanczos)
-	err = imaging.Save(imgDst240, thumbnailsFolder +fileName)
+	err = imaging.Save(imgDst240, thumbnailsFolder+fileName)
 	if err != nil {
 		return
 	}

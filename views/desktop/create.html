@@ -78,15 +78,6 @@
                     {{ range.Categories }}
                     <div class="header">{{ .Name }}</div>
                     <!-- <div class="divider"></div> -->
-                    {{ if eq .Name "SERVICES"}}
-                    <div class="item" data-value="{{ .CategoryID }}">
-                      {{ .Name }}
-                    </div>
-                    {{else if eq .Name "AUTRES CATÉGORIES"}}
-                    <div class="item" data-value="{{ .CategoryID }}">
-                      {{ .Name }}
-                    </div>
-                    {{ end }}
                     {{ range.SubCategories }}
                     <div class="item" data-value="{{ .CategoryID }}">
                       {{ .Name }}
@@ -137,7 +128,7 @@
                   <label>Choisissez une taille</label>
                 </div>
                 <div class="six wide column field">
-                  <select class="propSelect" name="" id="clothingSizes" v-model="data.attributes.clothingSize">
+                  <select class="propSelect" name="" id="clothingSizes" v-model="data.attributes.clothingSizeId">
                       <option value="0">--</option>
                     <option v-for="size in form.attributes.fashionGenders[clothingSizesIndex].sizes" :value="size.id">{size.name}</option>
                   </select>
@@ -187,7 +178,7 @@
                   <label>Choisissez une pointure</label>
                 </div>
                 <div class="six wide column field">
-                    <select class="propSelect" name="" id="" v-model="data.attributes.shoesSize">
+                    <select class="propSelect" name="" id="" v-model="data.attributes.shoeSizeId">
                         <option value="0">--</option>
                         <option v-for="size in form.attributes.shoeSizes"  :value="size.id"> {size.value}</option>
                       </select> 
@@ -225,7 +216,7 @@
               <div class="ui grid">
                 <div class="four wide column"><label>Marque</label></div>
                 <div class="six wide column field">
-                  <select class="propSelect" name="" id="" v-model="data.attributes.carBrand">
+                  <select class="propSelect" name="" id="" v-model="data.attributes.brandId">
                       <option value="0">--</option>
                     <option v-for="m in form.attributes.carBrands" :value="m.id">{m.name}</option>
                   </select>
@@ -237,7 +228,7 @@
                   <label>Année de fabrication</label>
                 </div>
                 <div class="six wide column field">
-                  <select class="propSelect" name="" id="" v-model="data.attributes.carYear">
+                  <select class="propSelect" name="" id="" v-model="data.attributes.YearId">
                       <option value="0">--</option>
                     <option v-for="year in form.attributes.years" :value="year.id">{year.value}</option>
                   </select>
@@ -248,7 +239,7 @@
                 <div class="four wide column"><label>Kilométrage</label></div>
                 <div class="six wide column field">
                   <div class="ui right labeled input">
-                    <input type="text" v-model="data.attributes.carKm" id="carKm"/>
+                    <input type="text" v-model="data.attributes.mileageOutPut" id="carKm"/>
                     <div class="ui basic label">Km</div>
                   </div>
                 </div>
@@ -261,7 +252,7 @@
                     <label>Année de fabrication</label>
                   </div>
                   <div class="six wide column field">
-                    <select class="propSelect" name="" id="" v-model="data.attributes.motoYear">
+                    <select class="propSelect" name="" id="" v-model="data.attributes.YearId">
                         <option value="0">--</option>
                       <option v-for="year in form.attributes.years" :value="year.id">{year.value}</option>
                     </select>
@@ -272,7 +263,7 @@
                   <div class="four wide column"><label>Kilométrage</label></div>
                   <div class="five wide column field">
                     <div class="ui right labeled input">
-                      <input type="text" v-model="data.attributes.motoKm" id="motoKm"/>
+                      <input type="text" v-model="data.attributes.mileageOutPut" id="motoKm"/>
                       <div class="ui basic label">Km</div>
                     </div>
                   </div>
@@ -313,11 +304,6 @@
                   <div class="ui basic label">FCFA</div>
                 </div>
               </div>
-              <!-- <div class="five wide column field">
-                <button class="ui icon button">
-                  <i class="question circle outline icon"></i>
-                </button>
-              </div> -->
             </div>
             <div class="ui section divider"></div>
             <div class="ui grid" v-bind:class="{disabledDiv: !categoryId}">

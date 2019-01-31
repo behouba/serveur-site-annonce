@@ -56,7 +56,7 @@ type AdvertItem struct {
 }
 
 type Attribute struct {
-	Name string 	`json:"name"`
+	Name  string `json:"name"`
 	Value string `json:"value"`
 }
 
@@ -97,8 +97,8 @@ func (a *Advert) Save() (err error) {
 	stmt, err := Db.Prepare(
 		`INSERT INTO advert 
 		(title, description , advertiser_id, category_id, city_id, advert_state_id,
-		advert_type_id, price, attribute,  pictures_urls, thumbnails_urls) 
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning advert_id;`)
+		advert_type_id, price,  pictures_urls, thumbnails_urls) 
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning advert_id;`)
 	if err != err {
 		return
 	}
@@ -113,11 +113,206 @@ func (a *Advert) Save() (err error) {
 		return
 	}
 
-	err = stmt.QueryRow(a.Title, a.Description, a.UserID, a.CategoryID, a.CityID, advertOnlineState, a.TypeID, a.Price, a.Attributes, picturesURL, pq.Array(thumbnailsURLs)).Scan(&a.ID)
+	err = stmt.QueryRow(a.Title, a.Description, a.UserID, a.CategoryID, a.CityID, advertOnlineState, a.TypeID, a.Price, picturesURL, pq.Array(thumbnailsURLs)).Scan(&a.ID)
+	if err != nil {
+		return
+	}
+
+	log.Println("advert type id = ", a.TypeID)
+
+	if (a.TypeID != searchTypeID) && (a.TypeID != giftTypeID) {
+		_, err = a.saveAdvertAttribute()
+		if err != nil {
+			return
+		}
+	}
+
+	return
+}
+
+func (a *Advert) saveAdvertAttribute() (id int, err error) {
+	log.Println("ADVERT id = ", a.ID)
+	switch a.CategoryID {
+	case carCategoryID:
+		return saveCarAttribute(a.Attributes, a.ID)
+	case motoCategoryID:
+		return saveMotoAttribute(a.Attributes, a.ID)
+	case clothingCategoryID:
+		return saveClothingAttribute(a.Attributes, a.ID)
+	case shoeCategoryID:
+		return saveShoeAttribute(a.Attributes, a.ID)
+	case 32, 33, 34: // handle others fashion categories attributes
+		return saveFashionAttribute(a.Attributes, a.ID)
+	case 58, 146: // handle services and job categories attributes
+		return saveJobAttribute(a.Attributes, a.CategoryID, a.ID)
+	case 67, 68, 69: // handle real estate categories attributes
+		return saveRealEstateAttribute(a.Attributes, a.CategoryID, a.ID)
+	}
+	return
+}
+
+//
+func saveCarAttribute(data json.RawMessage, advertID int) (id int, err error) {
+	var attr carAttribute
+
+	err = json.Unmarshal(data, &attr)
+	if err != nil {
+		return
+	}
+
+	stmt, err := Db.Prepare(`INSERT INTO vehicle_attribute 
+					(advert_id, brand_id, year_id, mileage)
+					 VALUES ($1, $2, $3, $4) returning advert_id;`)
+	if err != nil {
+		return
+	}
+	err = stmt.QueryRow(advertID, attr.BrandID, attr.YearID, attr.Mileage).Scan(&id)
+	if err != nil {
+		return
+	}
+	log.Println("car attribute saved")
+	return
+
+}
+
+func saveMotoAttribute(data json.RawMessage, advertID int) (id int, err error) {
+	var attr vehiculeAttribute
+
+	err = json.Unmarshal(data, &attr)
+	if err != nil {
+		return
+	}
+
+	stmt, err := Db.Prepare(`INSERT INTO vehicle_attribute 
+					(advert_id, year_id, mileage)
+					 VALUES ($1, $2, $3) returning advert_id;`)
+	if err != nil {
+		return
+	}
+	err = stmt.QueryRow(advertID, attr.YearID, attr.Mileage).Scan(&id)
 	if err != nil {
 		return
 	}
 	return
+
+}
+
+func saveClothingAttribute(data json.RawMessage, advertID int) (id int, err error) {
+	var attr clothingAttribute
+
+	err = json.Unmarshal(data, &attr)
+	if err != nil {
+		return
+	}
+
+	stmt, err := Db.Prepare(`INSERT INTO clothing_attribute 
+					(advert_id, gender_id, type_id, size_id)
+					 VALUES ($1, $2, $3, $4) returning advert_id;`)
+	if err != nil {
+		return
+	}
+	err = stmt.QueryRow(advertID, attr.GenderID, attr.ClothingTypeID, attr.ClothingSizeID).Scan(&id)
+	if err != nil {
+		return
+	}
+	return
+
+}
+
+func saveShoeAttribute(data json.RawMessage, advertID int) (id int, err error) {
+	var attr shoeAttribute
+
+	err = json.Unmarshal(data, &attr)
+	if err != nil {
+		return
+	}
+
+	stmt, err := Db.Prepare(`INSERT INTO shoe_attribute 
+					(advert_id, gender_id, size_id)
+					 VALUES ($1, $2, $3) returning advert_id;`)
+	if err != nil {
+		return
+	}
+	err = stmt.QueryRow(advertID, attr.GenderID, attr.ShoeSizeID).Scan(&id)
+	if err != nil {
+		return
+	}
+	return
+
+}
+
+func saveFashionAttribute(data json.RawMessage, advertID int) (id int, err error) {
+	var attr fashionAttribute
+
+	err = json.Unmarshal(data, &attr)
+	if err != nil {
+		return
+	}
+
+	stmt, err := Db.Prepare(`INSERT INTO fashion_attribute 
+					(advert_id, gender_id)
+					 VALUES ($1, $2) returning advert_id;`)
+	if err != nil {
+		return
+	}
+	err = stmt.QueryRow(advertID, attr.GenderID).Scan(&id)
+	if err != nil {
+		return
+	}
+	return
+
+}
+
+func saveJobAttribute(data json.RawMessage, categoryID, advertID int) (id int, err error) {
+	var attr jobAttribute
+
+	err = json.Unmarshal(data, &attr)
+	if err != nil {
+		return
+	}
+
+	stmt, err := Db.Prepare(`INSERT INTO job_attribute 
+					(advert_id, field_id, category_id)
+					 VALUES ($1, $2, $3) returning advert_id;`)
+	if err != nil {
+		return
+	}
+	err = stmt.QueryRow(advertID, attr.JobFieldID, categoryID).Scan(&id)
+	if err != nil {
+		return
+	}
+	return
+
+}
+
+func saveRealEstateAttribute(data json.RawMessage, categoryID, advertID int) (id int, err error) {
+	var attr realEstateAttribute
+	var dbCatID int
+	err = json.Unmarshal(data, &attr)
+	if err != nil {
+		return
+	}
+
+	err = Db.QueryRow("SELECT category_id FROM real_estate_type WHERE type_id=$1", attr.RealEstateTypeId).Scan(&dbCatID)
+	if err != nil {
+		return
+	}
+
+	if dbCatID != categoryID {
+		return
+	}
+	stmt, err := Db.Prepare(`INSERT INTO real_estate_attribute 
+					(advert_id, type_id)
+					 VALUES ($1, $2) returning advert_id;`)
+	if err != nil {
+		return
+	}
+	err = stmt.QueryRow(advertID, attr.RealEstateTypeId).Scan(&id)
+	if err != nil {
+		return
+	}
+	return
+
 }
 
 // GetFormContent retrive advert form field objet from database
@@ -133,14 +328,14 @@ func GetFullAdvert(id int) (ad Advert, err error) {
 	ad.ID = id
 	row := Db.QueryRow(`
 				SELECT title, description, advertiser_id,
-				price, created_at, city_name, pictures_urls, attribute 
+				price, created_at, city_name, pictures_urls
 				FROM advert  INNER JOIN city ON advert.city_id=city.city_id 
 				WHERE advert_id=$1;`, id)
 	var pictures json.RawMessage
 	err = row.Scan(
 		&ad.Title, &ad.Description, &ad.UserID,
 		&ad.Price, &ad.CreatedAt, &ad.CityName,
-		&pictures, &ad.Attributes)
+		&pictures)
 	if err != nil {
 		return
 	}

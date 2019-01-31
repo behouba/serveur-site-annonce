@@ -41,7 +41,7 @@
     }
     #ad-detail {
       margin-top: 50px;
-      display:none;
+      display: none;
     }
     #ad-info-left {
       height: 1000px;
@@ -136,7 +136,7 @@
                   should format image in order for them to look well 'data-thumb' for images thumbnail and 'data-src' for main image
                 -->
                 {{range.Advert.PicturesURL}}
-                <li data-src="{{.URL}}" data-thumb="{{.ThumbnailURL}}">
+                <li data-src="{{.URL}}" data-thumb="{{.URL}}">
                   <img src="{{.URL}}" />
                 </li>
                 {{end}}

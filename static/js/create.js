@@ -23,6 +23,8 @@ $(document).ready(function() {
   const jobType = 6;
   const eventType = 7;
   const housingType = 8;
+
+  // adverts types options arrays
   const optionT1 = [
     {id: selling, label: "Vente"},
     {id: seeking, label: "Recherche"},
@@ -93,7 +95,7 @@ $(document).ready(function() {
         advertJSON.picturesURL = AdImages;
         advertJSON.price = cleanOfNaNChar(this.data.price);
         console.log(advertJSON);
-        // createNewAdvert(advertJSON);
+        createNewAdvert(advertJSON);
       },
       adTypeChange: function() {
         var typeId = Number($("#adTypes").val());
@@ -166,7 +168,7 @@ $(document).ready(function() {
   });
 
   function cleanOfNaNChar(n) {
-    return n !== undefined ? Number(n.replace(/\D/g, "")) : 0;
+    return n !== undefined ? Number(n.replace(/\D/g, "")) : null;
   }
 
   // function validateAdvert(advert) {
@@ -215,14 +217,20 @@ $(document).ready(function() {
   });
 
   $(document).on("input", "#carKm", function() {
-    createApp.data.attributes.carKm = moneyFormater(
-      createApp.data.attributes.carKm
+    createApp.data.attributes.mileageOutPut = moneyFormater(
+      createApp.data.attributes.mileageOutPut
+    );
+    createApp.data.attributes.mileage = cleanOfNaNChar(
+      createApp.data.attributes.mileageOutPut
     );
   });
 
   $(document).on("input", "#motoKm", function() {
-    createApp.data.attributes.motoKn = moneyFormater(
-      createApp.data.attributes.motoKn
+    createApp.data.attributes.mileageOutPut = moneyFormater(
+      createApp.data.attributes.mileageOutPut
+    );
+    createApp.data.attributes.mileage = cleanOfNaNChar(
+      createApp.data.attributes.mileageOutPut
     );
   });
 
@@ -311,7 +319,7 @@ $(document).ready(function() {
         app.showAdTypesOpts = true;
         app.propState = gender;
         break;
-      case 5: // services
+      case 146: // services
         app.propState = jobs;
         app.data.typeId = servicesType;
         app.showAdTypesOpts = false;
