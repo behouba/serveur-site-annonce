@@ -5,7 +5,7 @@
 -- Dumped from database version 11.1
 -- Dumped by pg_dump version 11.1
 
--- Started on 2019-01-28 22:56:25
+-- Started on 2019-01-31 01:58:52
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,7 +18,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 3110 (class 0 OID 16763)
+-- TOC entry 3222 (class 0 OID 16763)
 -- Dependencies: 202
 -- Data for Name: account_state; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -31,7 +31,7 @@ COPY public.account_state (account_state_id, description) FROM stdin;
 
 
 --
--- TOC entry 3112 (class 0 OID 16771)
+-- TOC entry 3224 (class 0 OID 16771)
 -- Dependencies: 204
 -- Data for Name: account_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -43,7 +43,7 @@ COPY public.account_type (account_type_id, description) FROM stdin;
 
 
 --
--- TOC entry 3127 (class 0 OID 16916)
+-- TOC entry 3239 (class 0 OID 16916)
 -- Dependencies: 219
 -- Data for Name: advert; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -58,6 +58,7 @@ COPY public.advert (advert_id, title, description, advertiser_id, category_id, c
 14	Ford fiesta	T-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasvvvv	30	19	\N	34	1	1	4500000	2019-01-28 12:01:35.127915	\N	[{"URL":"http://localhost:8080/files/640x480/3855095553371761356.jpg","thumbnailURL":"http://localhost:8080/files/240x180/3855095553371761356.jpg"},{"URL":"http://localhost:8080/files/640x480/15094578976759072176.jpg","thumbnailURL":"http://localhost:8080/files/240x180/15094578976759072176.jpg"}]	{"carKm": "450000", "carYear": 2003, "carBrand": "FORD"}	{http://localhost:8080/files/240x180/3855095553371761356.jpg,http://localhost:8080/files/240x180/15094578976759072176.jpg}
 15	Audi car to sell	T-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasvvvv	30	19	\N	11	1	1	7800000	2019-01-28 12:03:59.148829	\N	[{"URL":"http://localhost:8080/files/640x480/16477134501520466746.jpg","thumbnailURL":"http://localhost:8080/files/240x180/16477134501520466746.jpg"},{"URL":"http://localhost:8080/files/640x480/15094578976759072176.jpg","thumbnailURL":"http://localhost:8080/files/240x180/15094578976759072176.jpg"}]	{"carKm": "785000", "carYear": 2008, "carBrand": "AUDI"}	{http://localhost:8080/files/240x180/16477134501520466746.jpg,http://localhost:8080/files/240x180/15094578976759072176.jpg}
 16	samsung galaxy note 	T-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasvvvv	30	13	\N	20	1	1	40000	2019-01-28 12:07:42.773934	\N	[{"URL":"http://localhost:8080/files/640x480/3829156176175377070.jpg","thumbnailURL":"http://localhost:8080/files/240x180/3829156176175377070.jpg"},{"URL":"http://localhost:8080/files/640x480/18081676385789534663.jpg","thumbnailURL":"http://localhost:8080/files/240x180/18081676385789534663.jpg"}]	{}	{http://localhost:8080/files/240x180/3829156176175377070.jpg,http://localhost:8080/files/240x180/18081676385789534663.jpg}
+64	htc one m7	je veux faire un troc avec iphone 7	30	13	\N	1	1	3	100000	2019-01-29 07:10:01.991025	\N	[{"URL":"http://localhost:8080/files/640x480/8580997037698167581.png","thumbnailURL":"http://localhost:8080/files/240x180/8580997037698167581.png"},{"URL":"http://localhost:8080/files/640x480/17572661708830334022.jpg","thumbnailURL":"http://localhost:8080/files/240x180/17572661708830334022.jpg"}]	{}	{http://localhost:8080/files/240x180/8580997037698167581.png,http://localhost:8080/files/240x180/17572661708830334022.jpg}
 17	samsung galaxy	T-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasT-shirt adidasvvvv	30	13	\N	18	1	1	35000	2019-01-28 12:10:16.008228	\N	[{"URL":"http://localhost:8080/files/640x480/18081676385789534663.jpg","thumbnailURL":"http://localhost:8080/files/240x180/18081676385789534663.jpg"},{"URL":"http://localhost:8080/files/640x480/3829156176175377070.jpg","thumbnailURL":"http://localhost:8080/files/240x180/3829156176175377070.jpg"}]	{}	{http://localhost:8080/files/240x180/18081676385789534663.jpg,http://localhost:8080/files/240x180/3829156176175377070.jpg}
 18	asus rog 450	asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450	30	11	\N	14	1	1	500000	2019-01-28 12:13:51.676936	\N	[{"URL":"http://localhost:8080/files/640x480/17627493558245744602.jpg","thumbnailURL":"http://localhost:8080/files/240x180/17627493558245744602.jpg"},{"URL":"http://localhost:8080/files/640x480/5317211526770565100.jpg","thumbnailURL":"http://localhost:8080/files/240x180/5317211526770565100.jpg"}]	{}	{http://localhost:8080/files/240x180/17627493558245744602.jpg,http://localhost:8080/files/240x180/5317211526770565100.jpg}
 19	Asus ordinateur portable 	asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450asus rog 450vvv	30	11	\N	4	1	1	150000	2019-01-28 12:15:11.070282	\N	[{"URL":"http://localhost:8080/files/640x480/5317211526770565100.jpg","thumbnailURL":"http://localhost:8080/files/240x180/5317211526770565100.jpg"},{"URL":"http://localhost:8080/files/640x480/9965287171978122157.jpg","thumbnailURL":"http://localhost:8080/files/240x180/9965287171978122157.jpg"}]	{}	{http://localhost:8080/files/240x180/5317211526770565100.jpg,http://localhost:8080/files/240x180/9965287171978122157.jpg}
@@ -85,11 +86,12 @@ COPY public.advert (advert_id, title, description, advertiser_id, category_id, c
 60	Liveuse kobo	Liseuse kindle en excellent etat	30	14	\N	8	1	1	70000	2019-01-28 22:44:38.648571	\N	[{"URL":"http://localhost:8080/files/640x480/6375527449506005986.jpg","thumbnailURL":"http://localhost:8080/files/240x180/6375527449506005986.jpg"},{"URL":"http://localhost:8080/files/640x480/13964337125384998921.jpg","thumbnailURL":"http://localhost:8080/files/240x180/13964337125384998921.jpg"}]	{}	{http://localhost:8080/files/240x180/6375527449506005986.jpg,http://localhost:8080/files/240x180/13964337125384998921.jpg}
 61	Location villa	Location villa 7 pices	30	68	\N	19	1	8	400000	2019-01-28 22:46:04.53672	\N	[{"URL":"http://localhost:8080/files/640x480/1342368545980499035.jpg","thumbnailURL":"http://localhost:8080/files/240x180/1342368545980499035.jpg"}]	{"housingTypeId": 1, "housingRoomNumber": "7"}	{http://localhost:8080/files/240x180/1342368545980499035.jpg}
 62	Vente d'immeuble	Vente d'un immeuble 	30	67	\N	4	1	8	100000000	2019-01-28 22:47:40.650796	\N	[{"URL":"http://localhost:8080/files/640x480/12528886103206857652.jpg","thumbnailURL":"http://localhost:8080/files/240x180/12528886103206857652.jpg"},{"URL":"http://localhost:8080/files/640x480/1342368545980499035.jpg","thumbnailURL":"http://localhost:8080/files/240x180/1342368545980499035.jpg"}]	{"housingTypeId": 1, "housingRoomNumber": "9"}	{http://localhost:8080/files/240x180/12528886103206857652.jpg,http://localhost:8080/files/240x180/1342368545980499035.jpg}
+63	htc one 	je vend un htc one 	30	13	\N	1	1	1	78500	2019-01-29 07:03:54.659731	\N	[{"URL":"http://localhost:8080/files/640x480/17572661708830334022.jpg","thumbnailURL":"http://localhost:8080/files/240x180/17572661708830334022.jpg"},{"URL":"http://localhost:8080/files/640x480/8580997037698167581.png","thumbnailURL":"http://localhost:8080/files/240x180/8580997037698167581.png"}]	{}	{http://localhost:8080/files/240x180/17572661708830334022.jpg,http://localhost:8080/files/240x180/8580997037698167581.png}
 \.
 
 
 --
--- TOC entry 3125 (class 0 OID 16902)
+-- TOC entry 3237 (class 0 OID 16902)
 -- Dependencies: 217
 -- Data for Name: advert_condition; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -101,7 +103,7 @@ COPY public.advert_condition (condition_id, name) FROM stdin;
 
 
 --
--- TOC entry 3135 (class 0 OID 17015)
+-- TOC entry 3247 (class 0 OID 17015)
 -- Dependencies: 227
 -- Data for Name: advert_state; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -114,7 +116,7 @@ COPY public.advert_state (advert_state_id, name) FROM stdin;
 
 
 --
--- TOC entry 3133 (class 0 OID 17006)
+-- TOC entry 3245 (class 0 OID 17006)
 -- Dependencies: 225
 -- Data for Name: advert_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -132,7 +134,7 @@ COPY public.advert_type (advert_type_id, name) FROM stdin;
 
 
 --
--- TOC entry 3146 (class 0 OID 17154)
+-- TOC entry 3258 (class 0 OID 17154)
 -- Dependencies: 238
 -- Data for Name: alert; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -142,7 +144,7 @@ COPY public.alert (alert_id, owner_id, key_word, category_id, min_price, max_pri
 
 
 --
--- TOC entry 3108 (class 0 OID 16743)
+-- TOC entry 3220 (class 0 OID 16743)
 -- Dependencies: 200
 -- Data for Name: auth_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -155,14 +157,104 @@ COPY public.auth_type (auth_type_id, name) FROM stdin;
 
 
 --
--- TOC entry 3121 (class 0 OID 16868)
+-- TOC entry 3268 (class 0 OID 41401)
+-- Dependencies: 248
+-- Data for Name: car_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.car_attribute (advert_id, brand_id, year_id, mileage) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3269 (class 0 OID 41414)
+-- Dependencies: 249
+-- Data for Name: car_brand; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.car_brand (car_brand_id, brand_name) FROM stdin;
+1	Acura
+2	Alfa Romeo
+3	AMC
+4	Aston Martin
+5	Audi
+6	Avanti
+7	Bentley
+8	BMW
+9	Buick
+10	Cadillac
+11	Chevrolet
+12	Chrysler
+13	Daewoo
+14	Daihatsu
+15	Datsun
+16	DeLorean
+17	Dodge
+18	Eagle
+19	Ferrari
+20	FIAT
+21	Fisker
+22	Ford
+23	Freightliner
+24	Geo
+25	GMC
+26	Honda
+27	HUMMER
+28	Hyundai
+29	Infiniti
+30	Isuzu
+31	Jaguar
+32	Jeep
+33	Kia
+34	Lamborghini
+35	Lancia
+36	Land Rover
+37	Lexus
+38	Lincoln
+39	Lotus
+40	Maserati
+41	Maybach
+42	Mazda
+43	McLaren
+44	Mercedes-Benz
+45	Mercury
+46	Merkur
+47	MINI
+48	Mitsubishi
+49	Nissan
+50	Oldsmobile
+51	Peugeot
+52	Plymouth
+53	Pontiac
+54	Porsche
+55	RAM
+56	Renault
+57	Rolls-Royce
+58	Saab
+59	Saturn
+60	Scion
+61	smart
+62	SRT
+63	Sterling
+64	Subaru
+65	Suzuki
+66	Tesla
+67	Toyota
+68	Triumph
+69	Volkswagen
+70	Volvo
+71	Yugo
+\.
+
+
+--
+-- TOC entry 3233 (class 0 OID 16868)
 -- Dependencies: 213
 -- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.category (parent_id, category_id, name, path_name, fields) FROM stdin;
 7	58	Offre d’emploi	offre_demploi	\N
-7	60	Offre de stage	offre_de_stage	\N
 3	25	Décorations	decorations	\N
 3	26	Electroménager	electromenager	\N
 3	27	Bricolage	bricolage	\N
@@ -174,9 +266,6 @@ COPY public.category (parent_id, category_id, name, path_name, fields) FROM stdi
 4	32	Montres et bijoux	montres_et_bijoux	\N
 5	51	Cours particulier	cours_particulier	\N
 6	56	Expositions, visites	expositions_visites	\N
-6	57	Autres evènements	autres_evenements	\N
-7	59	Demande  d’emploi	demande_demploi	\N
-7	61	Demande de stage	demande_de_stage	\N
 1	17	Audio et vidéo	audio_et_video	\N
 1	14	Tablettes et livres électroniques	tablettes_et_livres_electroniques	\N
 1	15	Jeux vidéos, consoles et logiciels	jeux_videos_consoles_et_logiciels	\N
@@ -188,12 +277,9 @@ COPY public.category (parent_id, category_id, name, path_name, fields) FROM stdi
 8	66	Cd, dvd, films	cd_dvd_films	\N
 9	67	Ventes immobilières	ventes_immobilieres	\N
 9	68	Locations immobilières	locations_immobilieres	\N
-9	69	Colocations	colocations	\N
-9	70	Bureaux et commerces	bureaux_et_commerces	\N
 5	40	Restauration	restauration	\N
 5	48	Réparation	reparation	\N
 5	45	Entretien, nettoyage et services domestiques	entretien_nettoyage_et_services_domestiques	\N
-6	134	Promotions	promotions	\N
 4	34	Produits cosmetiques	produits_cosmetiques	\N
 5	35	Traduction	traduction	\N
 5	36	Organisation d’evènements	organisation_devenements	\N
@@ -212,6 +298,9 @@ COPY public.category (parent_id, category_id, name, path_name, fields) FROM stdi
 5	43	Livraison, déménagement	livraison_demenagement	\N
 5	46	Formation, cours	formation_cours	\N
 5	47	Publicité	publicite	\N
+6	57	Autres evènements	autres_evenements	\N
+6	134	Promotions	promotions	\N
+9	69	Recherches immobilières	colocations	\N
 \N	9	IMMOBILIER	immobilier	\N
 1	10	Ordinateurs de bureaux	ordinateurs_de_bureaux	\N
 1	11	Ordinateurs portables	ordinateurs_portables	\N
@@ -228,17 +317,18 @@ COPY public.category (parent_id, category_id, name, path_name, fields) FROM stdi
 5	133	Installation de matériel	installation_de_materiel	\N
 \N	6	ÉVÉNEMENTS	evenements	\N
 \N	3	MAISON ET JARDIN	maison_et_jardin	\N
-\N	4	HABILLEMENT ET BIEN-ETRE	habillement_et_bien_etre	\N
 \N	7	EMPLOIS	emplois	\N
 \N	5	SERVICES	services	\N
 \N	8	LOISIRS ET DIVERTISSEMENTS	loisirs_et_divertissements	\N
 \N	1	ELECTRONIQUE ET MULTIMÉDIA	electronique_et_multimedia	\N
 4	131	Équipements pour enfants et bébés	equipements_pour_enfants_et_bebes	\N
+\N	4	MODE ET BIEN-ETRE	habillement_et_bien_etre	\N
+\N	143	AUTRES CATÉGORIES	autres_categories	\N
 \.
 
 
 --
--- TOC entry 3154 (class 0 OID 33139)
+-- TOC entry 3266 (class 0 OID 33139)
 -- Dependencies: 246
 -- Data for Name: category_field; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -248,7 +338,7 @@ COPY public.category_field (category_id, form_field_id) FROM stdin;
 
 
 --
--- TOC entry 3117 (class 0 OID 16800)
+-- TOC entry 3229 (class 0 OID 16800)
 -- Dependencies: 209
 -- Data for Name: chat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -258,7 +348,7 @@ COPY public.chat (chat_id, advertiser_id, guest_id, chat_state_id) FROM stdin;
 
 
 --
--- TOC entry 3143 (class 0 OID 17104)
+-- TOC entry 3255 (class 0 OID 17104)
 -- Dependencies: 235
 -- Data for Name: chat_state; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -270,7 +360,7 @@ COPY public.chat_state (chat_state_id, name) FROM stdin;
 
 
 --
--- TOC entry 3139 (class 0 OID 17037)
+-- TOC entry 3251 (class 0 OID 17037)
 -- Dependencies: 231
 -- Data for Name: city; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -327,7 +417,97 @@ COPY public.city (city_id, city_name, district_id, path_name) FROM stdin;
 
 
 --
--- TOC entry 3137 (class 0 OID 17026)
+-- TOC entry 3270 (class 0 OID 41427)
+-- Dependencies: 250
+-- Data for Name: clothing_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.clothing_attribute (advert_id, gender_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3281 (class 0 OID 41481)
+-- Dependencies: 261
+-- Data for Name: clothing_size; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.clothing_size (size_id, fashion_gender_id, size_name) FROM stdin;
+1	1	32 (XXS)
+2	1	34 (XS)
+3	1	36 (S)
+4	1	38 (M)
+5	1	40 (L)
+6	1	42 (XL)
+7	1	44 (XXL)
+8	1	46 (XXXL)
+9	1	48 (4XL)
+10	1	50 et + (5XL)
+11	2	XS
+12	2	S
+13	2	M
+14	2	L
+15	2	XL
+16	2	XXL
+17	2	XXXL et +
+18	3	2-4 ans
+19	3	4-6 ans
+20	3	6-8 ans
+21	3	8-10 ans
+22	3	10-12 ans
+23	3	12-14 ans
+24	3	14-16 ans
+25	4	2-4 ans
+26	4	4-6 ans
+27	4	6-8 ans
+28	4	8-10 ans
+29	4	10-12 ans
+30	4	12-14 ans
+31	4	14-16 ans
+\.
+
+
+--
+-- TOC entry 3283 (class 0 OID 41497)
+-- Dependencies: 263
+-- Data for Name: clothing_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.clothing_type (clothing_type_id, clothing_name, gender_id) FROM stdin;
+1	Pantalons	1
+2	Vêtements d'extérieur	1
+3	Jeans	1
+4	Maillots de bain	1
+5	Sous-vêtement	1
+6	Blazers et costumes	1
+7	Robes et jupes	1
+8	Chemises et chemisiers	1
+9	Robes de mariée	1
+10	Polo et t-shirts	1
+12	Pantalons	2
+13	Jeans	2
+14	Blazers et costumes	2
+15	Chemises	2
+16	Polo et t-shirts	2
+11	Bonnets et chapeaux	1
+18	Bonnets et chapeaux	2
+19	Pantalons et jeans	3
+20	Maillots de bain	3
+21	Sous-vêtement	3
+22	Robes et jupes	3
+23	Chemises et chemisiers	3
+24	Polos et T-shirts	3
+25	Bonnets et chapeaux	3
+26	Pantalons et jeans	4
+27	Blazers et costumes	4
+28	Chemises et chemisiers	4
+29	Polos et T-shirts	4
+30	Bonnets et chapeaux	4
+\.
+
+
+--
+-- TOC entry 3249 (class 0 OID 17026)
 -- Dependencies: 229
 -- Data for Name: district; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -351,7 +531,7 @@ COPY public.district (district_id, name) FROM stdin;
 
 
 --
--- TOC entry 3145 (class 0 OID 17132)
+-- TOC entry 3257 (class 0 OID 17132)
 -- Dependencies: 237
 -- Data for Name: evaluation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -361,7 +541,22 @@ COPY public.evaluation (advertiser_id, guest_id, rating_id, comment, evaluation_
 
 
 --
--- TOC entry 3144 (class 0 OID 17118)
+-- TOC entry 3279 (class 0 OID 41465)
+-- Dependencies: 259
+-- Data for Name: fashion_gender; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.fashion_gender (gender_id, gender_name) FROM stdin;
+1	Femmes
+2	Hommes
+4	Enfants (Garçons)
+3	Enfants (Filles)
+5	Bébés
+\.
+
+
+--
+-- TOC entry 3256 (class 0 OID 17118)
 -- Dependencies: 236
 -- Data for Name: favorite; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -371,7 +566,7 @@ COPY public.favorite (user_id, advert_id, created_at) FROM stdin;
 
 
 --
--- TOC entry 3115 (class 0 OID 16785)
+-- TOC entry 3227 (class 0 OID 16785)
 -- Dependencies: 207
 -- Data for Name: follow; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -381,7 +576,7 @@ COPY public.follow (user_id, follower_id) FROM stdin;
 
 
 --
--- TOC entry 3155 (class 0 OID 33191)
+-- TOC entry 3267 (class 0 OID 33191)
 -- Dependencies: 247
 -- Data for Name: form_field; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -392,7 +587,45 @@ COPY public.form_field (form_field_id, content) FROM stdin;
 
 
 --
--- TOC entry 3119 (class 0 OID 16820)
+-- TOC entry 3272 (class 0 OID 41438)
+-- Dependencies: 252
+-- Data for Name: job_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.job_attribute (advert_id, job_domain_id, job_type_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3287 (class 0 OID 41540)
+-- Dependencies: 267
+-- Data for Name: job_field; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.job_field (field_id, field_name) FROM stdin;
+1	Agriculture / Agroalimentaire / Environnement
+2	Banques / Assurances / Finance
+3	Commerce / Distribution
+4	Communication / Publicité / Média
+5	Conseil / Consulting
+6	Construction / BTP / Immobilier
+7	Transport / Logistique
+8	Tourisme / Hôtellerie / Restauration / Loisirs
+9	Services aux entreprises
+10	Santé / Social
+11	Informatique - Télécom
+12	Industries
+13	Enseignement / Formation / Cours particuliers
+14	Réparation / Maintenance
+15	Restauration / Services traiteurs
+16	Sécurité / Gardiennage
+17	Art, décoration
+18	Services ménagers / Personnel De Maison / Domestique
+\.
+
+
+--
+-- TOC entry 3231 (class 0 OID 16820)
 -- Dependencies: 211
 -- Data for Name: message; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -402,7 +635,7 @@ COPY public.message (message_id, chat_id, body, "time", is_read, user_id, messag
 
 
 --
--- TOC entry 3123 (class 0 OID 16883)
+-- TOC entry 3235 (class 0 OID 16883)
 -- Dependencies: 215
 -- Data for Name: message_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -415,7 +648,7 @@ COPY public.message_type (message_type_id, name) FROM stdin;
 
 
 --
--- TOC entry 3106 (class 0 OID 16733)
+-- TOC entry 3218 (class 0 OID 16733)
 -- Dependencies: 198
 -- Data for Name: phone; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -425,7 +658,56 @@ COPY public.phone (user_id, phone_number) FROM stdin;
 
 
 --
--- TOC entry 3129 (class 0 OID 16928)
+-- TOC entry 3273 (class 0 OID 41441)
+-- Dependencies: 253
+-- Data for Name: phone_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.phone_attribute (advert_id, phone_brand_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3271 (class 0 OID 41435)
+-- Dependencies: 251
+-- Data for Name: real_estate_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.real_estate_attribute (advert_id, type_id, area, room_number) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3289 (class 0 OID 41552)
+-- Dependencies: 269
+-- Data for Name: real_estate_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.real_estate_type (type_id, name, category_id) FROM stdin;
+1	Studios et appartements	67
+2	Maisons & Villas	67
+3	Terrains	67
+4	Parkings	67
+5	Bureaux et commerces	67
+6	Studios et appartements	68
+7	Maisons & Villas	68
+8	Colocations	68
+9	Terrains	68
+10	Parkings	68
+11	Chambres d'hôtels	68
+12	Bureaux et commerces	68
+13	Studios et appartements	69
+14	Maisons & Villas	69
+15	Colocations	69
+16	Terrains	69
+17	Parkings	69
+18	Chambres d'hôtels	69
+19	Bureaux et commerces	69
+\.
+
+
+--
+-- TOC entry 3241 (class 0 OID 16928)
 -- Dependencies: 221
 -- Data for Name: report; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -435,7 +717,7 @@ COPY public.report (report_id, advert_id, created_at, report_message, report_typ
 
 
 --
--- TOC entry 3131 (class 0 OID 16940)
+-- TOC entry 3243 (class 0 OID 16940)
 -- Dependencies: 223
 -- Data for Name: report_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -451,7 +733,7 @@ COPY public.report_type (report_type_id, title) FROM stdin;
 
 
 --
--- TOC entry 3153 (class 0 OID 17213)
+-- TOC entry 3265 (class 0 OID 17213)
 -- Dependencies: 245
 -- Data for Name: search; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -461,49 +743,28 @@ COPY public.search (query, "time", user_id, is_success, category_id) FROM stdin;
 
 
 --
--- TOC entry 3114 (class 0 OID 16779)
+-- TOC entry 3274 (class 0 OID 41444)
+-- Dependencies: 254
+-- Data for Name: service_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.service_attribute (advert_id, service_domain_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3226 (class 0 OID 16779)
 -- Dependencies: 206
 -- Data for Name: session; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.session (session_id, user_id, created_at, last_activity_time, access_token) FROM stdin;
-12	30	2018-12-24 18:08:06.447125	\N	176cfaae-e0a4-4f38-91b5-36da47250d87
-13	31	2018-12-24 18:09:00.338237	\N	2d3c5a68-02c2-49ac-bc27-2d4ce6f308f4
-14	30	2018-12-24 18:45:25.893368	\N	4580a494-b88d-4ed5-a703-b73ed54e3a2b
-15	30	2018-12-24 18:46:05.388735	\N	35c7a0fa-f71c-4002-a14d-b41e7556ee86
-16	30	2018-12-24 18:50:10.968961	\N	5a1ccdcf-154a-4211-823e-2a006c4b32dd
-17	30	2018-12-24 18:50:35.296198	\N	3e53425c-6c12-41b2-9c8d-2b9236c6320f
-18	30	2018-12-25 00:17:26.559748	\N	b7712405-3851-411d-85d1-018737414e5b
-19	30	2018-12-25 00:35:20.598938	\N	95a91f17-7983-4fe0-b70a-27830ae2adfd
-20	30	2018-12-25 15:02:48.34404	\N	8fa2e8e5-22fd-44d9-9be8-f9e6de00dd1b
-21	30	2018-12-25 15:03:35.982064	\N	b3b2ec6d-70e8-4364-b62b-25c1d6c59191
-22	30	2018-12-25 15:15:12.157352	\N	ea2707c9-e923-492b-a8f0-2862e544d1a8
-23	30	2018-12-25 18:54:36.628323	\N	dde8ec72-b91a-4097-ac5e-9abeed190a41
-24	30	2018-12-25 21:36:52.153418	\N	991395df-39b8-4dff-9cb8-ddeecb38ddc4
-25	30	2018-12-25 21:53:01.886193	\N	565793bb-a18b-4a2c-a846-cbd7ed59c533
-26	30	2018-12-25 22:19:15.047265	\N	458df087-3af0-4117-8402-8798809a5ef9
-27	30	2018-12-25 22:48:29.490522	\N	5a695c88-cc98-4244-abf4-41e82602d59c
-28	30	2018-12-26 04:25:32.672229	\N	dff9bf76-e73c-48eb-9fba-15cc9a68f1ae
-29	30	2018-12-26 04:42:13.210048	\N	1e86b2e0-4013-48c5-a419-d3d35fffbc56
-30	30	2018-12-26 12:56:41.020584	\N	d12960d2-b986-441e-9a67-f320493cebc4
-31	30	2018-12-27 00:11:55.621743	\N	3a562fe2-5cbe-47f5-8167-ba3d0d2aab64
-32	30	2018-12-27 00:13:54.43494	\N	09e5eefd-9d1d-4cbf-af44-117a682d3eeb
-33	30	2018-12-27 18:55:53.02971	\N	7ea01601-235a-41e1-94bd-bf2f63864fe2
-34	30	2018-12-28 17:19:10.294009	\N	94e37996-90b3-4063-b79a-c72bbe623ec6
-35	30	2018-12-29 18:53:09.581547	\N	e38a65ed-0501-4757-b634-2654ba89ab61
-36	30	2019-01-02 18:12:01.060532	\N	67d3f7c1-b4d0-4013-9e77-2f4e715f6edf
-37	30	2019-01-03 02:48:04.296838	\N	ebc6e59f-1a05-4a80-9e25-3483e67526aa
-38	30	2019-01-03 03:19:27.995334	\N	9d7a9c3a-28ce-416e-bdae-c322a2190715
-39	30	2019-01-04 21:37:26.956834	\N	ce63fbf1-3562-4417-bc51-00d52920e2d3
-40	30	2019-01-13 15:19:54.883513	\N	3c68e4e9-6a88-4d3b-8026-3c55697382cf
-41	30	2019-01-26 02:18:19.177711	\N	e4c46ee8-6b31-4df4-856e-0a2df44c0081
-42	30	2019-01-26 22:48:53.277923	\N	44f45e02-a312-462a-aa51-82cf0af75012
-43	30	2019-01-27 23:09:14.006924	\N	e89cd572-d1dd-4342-a585-deedd667cc46
+46	30	2019-01-29 07:48:54.719975	\N	8b30f6dc-9d39-4c02-9026-1004500157e7
 \.
 
 
 --
--- TOC entry 3148 (class 0 OID 17172)
+-- TOC entry 3260 (class 0 OID 17172)
 -- Dependencies: 240
 -- Data for Name: share; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -513,7 +774,52 @@ COPY public.share (advert_id, guest_id, social_media_id, shared_at) FROM stdin;
 
 
 --
--- TOC entry 3150 (class 0 OID 17188)
+-- TOC entry 3285 (class 0 OID 41513)
+-- Dependencies: 265
+-- Data for Name: shoe_size; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.shoe_size (size_id, size_value) FROM stdin;
+1	16
+2	17
+3	18
+4	19
+5	20
+6	21
+7	22
+8	23
+9	24
+10	25
+11	26
+12	27
+13	28
+14	29
+15	30
+16	31
+17	32
+18	33
+19	34
+20	35
+21	36
+22	37
+23	38
+24	39
+25	40
+26	41
+27	42
+28	43
+29	44
+30	45
+31	46
+32	47
+33	48
+34	49
+35	50
+\.
+
+
+--
+-- TOC entry 3262 (class 0 OID 17188)
 -- Dependencies: 242
 -- Data for Name: social_media; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -526,7 +832,7 @@ COPY public.social_media (social_media_id, name) FROM stdin;
 
 
 --
--- TOC entry 3141 (class 0 OID 17075)
+-- TOC entry 3253 (class 0 OID 17075)
 -- Dependencies: 233
 -- Data for Name: store; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -538,19 +844,19 @@ COPY public.store (store_id, brand_name, owner_id, slogan, profile_picture_url, 
 
 
 --
--- TOC entry 3105 (class 0 OID 16724)
+-- TOC entry 3217 (class 0 OID 16724)
 -- Dependencies: 197
 -- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.user_account (user_id, name, email, profile_picture, password, auth_type_id, city_id) FROM stdin;
-30	behouba	behouba@gmail.com	https://cache3.youla.io/files/images/80_80/5b/e6/5be6f5f3cf2045d381310d1e.jpg	$2a$14$QCg4qbv9Xu6tfkiZvMMan.NnnPoaNeCPmcrY2Zsqdu2cJlf7IO/iW	1	\N
-31	behouba2	behouba@yandex.ru	https://cache3.youla.io/files/images/80_80/5b/e6/5be6f5f3cf2045d381310d1e.jpg	$2a$14$ZCSo0DC2JALqReXYH8RTN.DVGo0cCV14.CR7VEd6pWVUCwO2XpLZq	1	\N
+COPY public.user_account (user_id, name, email, profile_picture, password, auth_type_id, city_id, account_type_id) FROM stdin;
+30	behouba	behouba@gmail.com	https://cache3.youla.io/files/images/80_80/5b/e6/5be6f5f3cf2045d381310d1e.jpg	$2a$14$QCg4qbv9Xu6tfkiZvMMan.NnnPoaNeCPmcrY2Zsqdu2cJlf7IO/iW	1	\N	1
+31	behouba2	behouba@yandex.ru	https://cache3.youla.io/files/images/80_80/5b/e6/5be6f5f3cf2045d381310d1e.jpg	$2a$14$ZCSo0DC2JALqReXYH8RTN.DVGo0cCV14.CR7VEd6pWVUCwO2XpLZq	1	\N	1
 \.
 
 
 --
--- TOC entry 3152 (class 0 OID 17201)
+-- TOC entry 3264 (class 0 OID 17201)
 -- Dependencies: 244
 -- Data for Name: verified_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -560,7 +866,7 @@ COPY public.verified_user (user_id, firstname, lastname, id_card_no, id_card_url
 
 
 --
--- TOC entry 3147 (class 0 OID 17168)
+-- TOC entry 3259 (class 0 OID 17168)
 -- Dependencies: 239
 -- Data for Name: view; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -570,7 +876,77 @@ COPY public.view (advert_id, guest_id, viewed_at) FROM stdin;
 
 
 --
--- TOC entry 3198 (class 0 OID 0)
+-- TOC entry 3277 (class 0 OID 41452)
+-- Dependencies: 257
+-- Data for Name: year; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.year (car_year_id, year) FROM stdin;
+1	1960
+2	1961
+3	1962
+4	1963
+5	1964
+6	1965
+7	1966
+8	1967
+9	1968
+10	1969
+11	1970
+12	1971
+13	1972
+14	1973
+15	1974
+16	1975
+17	1976
+18	1977
+19	1978
+20	1979
+21	1980
+22	1981
+23	1982
+24	1983
+25	1984
+26	1985
+27	1986
+28	1987
+29	1988
+30	1989
+31	1990
+32	1991
+33	1992
+34	1993
+35	1994
+36	1995
+37	1996
+38	1997
+39	1998
+40	1999
+41	2000
+42	2001
+43	2002
+44	2003
+45	2004
+46	2005
+47	2006
+48	2007
+49	2008
+50	2009
+51	2010
+52	2011
+53	2012
+54	2013
+55	2014
+56	2015
+57	2016
+58	2017
+59	2018
+60	2019
+\.
+
+
+--
+-- TOC entry 3340 (class 0 OID 0)
 -- Dependencies: 201
 -- Name: account_state_account_state_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -579,7 +955,7 @@ SELECT pg_catalog.setval('public.account_state_account_state_id_seq', 3, true);
 
 
 --
--- TOC entry 3199 (class 0 OID 0)
+-- TOC entry 3341 (class 0 OID 0)
 -- Dependencies: 203
 -- Name: account_type_account_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -588,16 +964,16 @@ SELECT pg_catalog.setval('public.account_type_account_type_id_seq', 2, true);
 
 
 --
--- TOC entry 3200 (class 0 OID 0)
+-- TOC entry 3342 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: advert_advert_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.advert_advert_id_seq', 62, true);
+SELECT pg_catalog.setval('public.advert_advert_id_seq', 65, true);
 
 
 --
--- TOC entry 3201 (class 0 OID 0)
+-- TOC entry 3343 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: advert_state_advert_state_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -606,7 +982,7 @@ SELECT pg_catalog.setval('public.advert_state_advert_state_id_seq', 3, true);
 
 
 --
--- TOC entry 3202 (class 0 OID 0)
+-- TOC entry 3344 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: advert_type_advert_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -615,7 +991,7 @@ SELECT pg_catalog.setval('public.advert_type_advert_type_id_seq', 5, true);
 
 
 --
--- TOC entry 3203 (class 0 OID 0)
+-- TOC entry 3345 (class 0 OID 0)
 -- Dependencies: 199
 -- Name: auth_type_auth_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -624,16 +1000,34 @@ SELECT pg_catalog.setval('public.auth_type_auth_type_id_seq', 3, true);
 
 
 --
--- TOC entry 3204 (class 0 OID 0)
+-- TOC entry 3346 (class 0 OID 0)
+-- Dependencies: 255
+-- Name: car_brand_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.car_brand_id_seq', 71, true);
+
+
+--
+-- TOC entry 3347 (class 0 OID 0)
+-- Dependencies: 256
+-- Name: car_year_car_year_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.car_year_car_year_id_seq', 60, true);
+
+
+--
+-- TOC entry 3348 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: category_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.category_category_id_seq', 142, true);
+SELECT pg_catalog.setval('public.category_category_id_seq', 143, true);
 
 
 --
--- TOC entry 3205 (class 0 OID 0)
+-- TOC entry 3349 (class 0 OID 0)
 -- Dependencies: 208
 -- Name: chat_chat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -642,7 +1036,7 @@ SELECT pg_catalog.setval('public.chat_chat_id_seq', 1, false);
 
 
 --
--- TOC entry 3206 (class 0 OID 0)
+-- TOC entry 3350 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: chat_state_chat_state_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -651,7 +1045,7 @@ SELECT pg_catalog.setval('public.chat_state_chat_state_id_seq', 2, true);
 
 
 --
--- TOC entry 3207 (class 0 OID 0)
+-- TOC entry 3351 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: city_city_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -660,7 +1054,16 @@ SELECT pg_catalog.setval('public.city_city_id_seq', 50, true);
 
 
 --
--- TOC entry 3208 (class 0 OID 0)
+-- TOC entry 3352 (class 0 OID 0)
+-- Dependencies: 262
+-- Name: clothing_type_clothing_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.clothing_type_clothing_type_id_seq', 31, true);
+
+
+--
+-- TOC entry 3353 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: condition_condition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -669,7 +1072,43 @@ SELECT pg_catalog.setval('public.condition_condition_id_seq', 2, true);
 
 
 --
--- TOC entry 3209 (class 0 OID 0)
+-- TOC entry 3354 (class 0 OID 0)
+-- Dependencies: 258
+-- Name: fashion_gender_gender_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.fashion_gender_gender_id_seq', 5, true);
+
+
+--
+-- TOC entry 3355 (class 0 OID 0)
+-- Dependencies: 260
+-- Name: fashion_size_size_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.fashion_size_size_id_seq', 31, true);
+
+
+--
+-- TOC entry 3356 (class 0 OID 0)
+-- Dependencies: 268
+-- Name: housing_type_housing_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.housing_type_housing_type_id_seq', 19, true);
+
+
+--
+-- TOC entry 3357 (class 0 OID 0)
+-- Dependencies: 266
+-- Name: job_field_field_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.job_field_field_id_seq', 18, true);
+
+
+--
+-- TOC entry 3358 (class 0 OID 0)
 -- Dependencies: 210
 -- Name: message_message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -678,7 +1117,7 @@ SELECT pg_catalog.setval('public.message_message_id_seq', 1, false);
 
 
 --
--- TOC entry 3210 (class 0 OID 0)
+-- TOC entry 3359 (class 0 OID 0)
 -- Dependencies: 214
 -- Name: message_type_table_message_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -687,7 +1126,7 @@ SELECT pg_catalog.setval('public.message_type_table_message_type_id_seq', 3, tru
 
 
 --
--- TOC entry 3211 (class 0 OID 0)
+-- TOC entry 3360 (class 0 OID 0)
 -- Dependencies: 228
 -- Name: region_region_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -696,7 +1135,7 @@ SELECT pg_catalog.setval('public.region_region_id_seq', 14, true);
 
 
 --
--- TOC entry 3212 (class 0 OID 0)
+-- TOC entry 3361 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: report_report_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -705,7 +1144,7 @@ SELECT pg_catalog.setval('public.report_report_id_seq', 1, false);
 
 
 --
--- TOC entry 3213 (class 0 OID 0)
+-- TOC entry 3362 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: report_type_report_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -714,16 +1153,25 @@ SELECT pg_catalog.setval('public.report_type_report_type_id_seq', 6, true);
 
 
 --
--- TOC entry 3214 (class 0 OID 0)
+-- TOC entry 3363 (class 0 OID 0)
 -- Dependencies: 205
 -- Name: session_session_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.session_session_id_seq', 43, true);
+SELECT pg_catalog.setval('public.session_session_id_seq', 46, true);
 
 
 --
--- TOC entry 3215 (class 0 OID 0)
+-- TOC entry 3364 (class 0 OID 0)
+-- Dependencies: 264
+-- Name: shoe_size_size_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.shoe_size_size_id_seq', 35, true);
+
+
+--
+-- TOC entry 3365 (class 0 OID 0)
 -- Dependencies: 241
 -- Name: social_media_social_media_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -732,7 +1180,7 @@ SELECT pg_catalog.setval('public.social_media_social_media_id_seq', 3, true);
 
 
 --
--- TOC entry 3216 (class 0 OID 0)
+-- TOC entry 3366 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: store_store_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -741,7 +1189,7 @@ SELECT pg_catalog.setval('public.store_store_id_seq', 2, true);
 
 
 --
--- TOC entry 3217 (class 0 OID 0)
+-- TOC entry 3367 (class 0 OID 0)
 -- Dependencies: 196
 -- Name: user_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -750,7 +1198,7 @@ SELECT pg_catalog.setval('public.user_user_id_seq', 31, true);
 
 
 --
--- TOC entry 3218 (class 0 OID 0)
+-- TOC entry 3368 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: verified_user_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -758,7 +1206,7 @@ SELECT pg_catalog.setval('public.user_user_id_seq', 31, true);
 SELECT pg_catalog.setval('public.verified_user_user_id_seq', 1, false);
 
 
--- Completed on 2019-01-28 22:56:26
+-- Completed on 2019-01-31 01:58:59
 
 --
 -- PostgreSQL database dump complete

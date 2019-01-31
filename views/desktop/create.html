@@ -37,6 +37,16 @@
     #category-select.ui.selection.dropdown .menu {
       max-height: 30.028571rem;
     }
+    .disabledDiv {
+      pointer-events: none;
+      opacity: 0.4;
+    }
+    .tips ul {
+        padding-left: 20px;
+    }
+    .tips ul li {
+      margin: 5px auto;
+    }
   </style>
   <body>
     <div class="ui container" id="create" style="display:none">
@@ -87,12 +97,12 @@
               </div>
             </div>
             <!-- advert type -->
-            <div class="ui grid" v-if="form.showAdTypes">
+            <div class="ui grid" v-if="showAdTypesOpts">
               <div class="four wide column"><label>Type d'annonce</label></div>
               <div class="six wide column field">
                 <select class="propSelect" name="" id="adTypes" v-on:change="adTypeChange">
                   <option value="0">--</option>
-                  <option v-for="c in form.typesOptions" :value="c.id">{c.label}</option>
+                  <option v-for="c in adTypesOptions" :value="c.id">{c.label}</option>
                 </select>
               </div>
             </div>
@@ -269,7 +279,9 @@
                 </div>
               </div>
             <!--end of advert properties-->
-            <div class="ui grid">
+
+            <!-- advert description -->
+            <div class="ui grid"  v-bind:class="{disabledDiv: !categoryId}">
               <div class="four wide column">
                 <label>Description de l'annonce</label>
               </div>
@@ -284,9 +296,9 @@
                 ></textarea>
               </div>
             </div>
-            <div class="ui grid" v-if="form.showPrice">
+            <div class="ui grid" v-if="showPrice">
               <div class="four wide column">
-                <label>{form.priceLabel}</label>
+                <label>{priceLabel}</label>
               </div>
               <div class="six wide column field">
                 <div class="ui right labeled input">
@@ -308,7 +320,7 @@
               </div> -->
             </div>
             <div class="ui section divider"></div>
-            <div class="ui grid">
+            <div class="ui grid" v-bind:class="{disabledDiv: !categoryId}">
               <div class="four wide column">
                 <label>Ajouter des photos</label>
               </div>
@@ -367,6 +379,7 @@
                 <button
                   class="ui right labeled icon button right floated primary"
                   v-on:click="advertJSON()"
+                  :disabled="!categoryId || !data.title"
                 >
                   <i class="right arrow icon"></i>Suivant
                 </button>

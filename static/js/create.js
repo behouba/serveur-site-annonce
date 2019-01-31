@@ -23,8 +23,19 @@ $(document).ready(function() {
   const jobType = 6;
   const eventType = 7;
   const housingType = 8;
-  const optionT1 = [selling, seeking, troc, gift];
-  const optionT2 = [selling, seeking];
+  const optionT1 = [
+    {id: selling, label: "Vente"},
+    {id: seeking, label: "Recherche"},
+    {id: troc, label: "Troc"},
+    {id: gift, label: "Don"},
+  ];
+  const optionT2 = [
+    {id: selling, label: "Vente"},
+    {id: seeking, label: "Recherche"},
+  ];
+  // label constants
+  const sellingLabel = "Prix";
+  const rentingLabel = "Coût de location / Loyer";
 
   // tips constants values
   const titleTipTitle = "Comment choisir le titre de mon annonce?";
@@ -47,11 +58,23 @@ $(document).ready(function() {
     "La premiere photo sera la principale",
   ];
 
+  const typesTipsTitle = "De quel type d'annonce sagit t'il?";
+  const typesTipsList = [
+    "Vente: lorsque vous vendez un bien.",
+    "Recherche: lorsque vous recherchez un bien.",
+    "Troc: lorsque vous souhaitez troquer un bien.",
+    "Don: lorsque vous souhaitez faire don d'un bien.",
+  ];
+
   var createApp = new Vue({
     el: "#create",
     data: {
       cities: [],
       clothingSizesIndex: null,
+      adTypesOptions: [],
+      showAdTypesOpts: false,
+      showPrice: false,
+      priceLabel: sellingLabel,
       rsIndex: null,
       propState: simple,
       prevPropState: simple,
@@ -77,12 +100,12 @@ $(document).ready(function() {
         console.log(typeId == 2);
         if (typeId == 2 || typeId == 4) {
           this.propState = simple;
-          this.form.showPrice = false;
+          this.showPrice = false;
           console.log(typeId, "simple");
         } else {
           console.log(createApp.categoryId);
           setPropState(this);
-          this.form.showPrice = true;
+          this.showPrice = true;
           initPriceTips();
           console.log(typeId, "cars");
         }
@@ -230,10 +253,28 @@ $(document).ready(function() {
     });
   }
 
+  // setRSIndex take vue app instance and set
+  // real estate form layout
   function setRSIndex(app) {
+    var id = app.categoryId;
+
+    app.propState = housing;
+    app.showAdTypesOpts = false;
+    app.data.typeId = housingType;
+    app.showAdTypesOpts = false;
+
+    if (id === 67) {
+      app.showPrice = true;
+      app.priceLabel = sellingLabel;
+    } else if (id === 68) {
+      app.showPrice = true;
+      app.priceLabel = rentingLabel;
+    } else {
+      app.showPrice = false;
+    }
     var rs = app.form.attributes.realEstates;
     for (var i = 0; i < rs.length; i++) {
-      if (rs[i].id == app.categoryId) {
+      if (rs[i].id == id) {
         app.rsIndex = i;
         console.log(rs[i]);
         return;
@@ -245,49 +286,46 @@ $(document).ready(function() {
     switch (app.categoryId) {
       case 20: // moto
         app.propState = moto;
-        app.form.typesOptions = optionT2;
-        app.form.showAdTypes = true;
+        app.adTypesOptions = optionT2;
+        app.showAdTypesOpts = true;
         break;
       case 19: // voitures
         app.propState = cars;
-        app.form.typesOptions = optionT2;
-        app.form.showAdTypes = true;
+        app.adTypesOptions = optionT2;
+        app.showAdTypesOpts = true;
         break;
       case 30: // vetements
         app.propState = clothing;
-        app.form.typesOptions = optionT1;
-        app.form.showAdTypes = true;
+        app.adTypesOptions = optionT1;
+        app.showAdTypesOpts = true;
         break;
       case 31: // chaussures
         app.propState = shoes;
-        app.form.typesOptions = optionT1;
-        app.form.showAdTypes = true;
+        app.adTypesOptions = optionT1;
+        app.showAdTypesOpts = true;
         break;
       case 32: // autres modes et bien-etre
       case 33:
       case 34:
-        app.form.typesOptions = optionT1;
-        app.form.showAdTypes = true;
+        app.adTypesOptions = optionT1;
+        app.showAdTypesOpts = true;
         app.propState = gender;
         break;
       case 5: // services
         app.propState = jobs;
         app.data.typeId = servicesType;
-        app.form.showAdTypes = false;
+        app.showAdTypesOpts = false;
         break;
-      case 67: // immobilier
-      case 68:
-      case 69:
-        app.propState = housing;
-        app.data.typeId = housingType;
-        app.form.showAdTypes = false;
+      case 67: // immobilier vente
+      case 68: // location
+      case 69: // recherche
         setRSIndex(app);
         break;
       case 58: // emplois
       case 60:
         app.propState = jobs;
-        app.form.showAdTypes = false;
-        app.form.showPrice = false;
+        app.showAdTypesOpts = false;
+        app.showPrice = false;
         app.data.typeId = jobType;
         break;
       case 59: // events
@@ -299,27 +337,28 @@ $(document).ready(function() {
       case 57:
       case 134:
         app.propState = simple;
-        app.form.showAdTypes = false;
+        app.showAdTypesOpts = false;
         app.data.typeId = eventType;
-        app.form.showPrice = false;
+        app.showPrice = false;
         break;
       case 69:
       case 70:
         app.propState = simple;
-        app.form.showAdTypes = false;
+        app.showAdTypesOpts = false;
         break;
       default:
         app.propState = simple;
-        app.form.showAdTypes = true;
-        app.form.showPrice = true;
-        app.form.priceLabel = "Prix";
+        app.showAdTypesOpts = true;
+        app.adTypesOptions = optionT1;
+        app.showPrice = false;
+        app.priceLabel = sellingLabel;
         break;
     }
 
-    if (app.form.showAdTypes === true) {
+    if (app.showAdTypesOpts === true) {
       initTypesTips();
     }
-    if (app.form.showPrice === true) {
+    if (app.showPrice === true) {
       initPriceTips();
     }
   }
@@ -342,9 +381,7 @@ $(document).ready(function() {
       $("#adTypes").popup({
         on: "focus",
         position: "right center",
-        title: "Comment choisir le type d'annonce?",
-        content:
-          "Quelques information sur comment ecrire le titre de l'annonce etc types...",
+        html: makeTipsHTML(typesTipsTitle, typesTipsList),
         variation: "wide",
       });
     }, 500);
@@ -375,7 +412,7 @@ $(document).ready(function() {
     tipsArray.forEach(function(v) {
       tipsListHTML += `<li>${v}</li>`;
     });
-    return `<div>${titleHTML}<ul>${tipsListHTML}</ul><div>`;
+    return `<div class="tips">${titleHTML}<ul>${tipsListHTML}</ul><div>`;
   }
 
   // createNewAdvert function send POST request to create new advert
