@@ -121,9 +121,8 @@ func (a *Advert) Save() (err error) {
 	log.Println("advert type id = ", a.TypeID)
 
 	if (a.TypeID != searchTypeID) && (a.TypeID != giftTypeID) {
-		_, err = a.saveAdvertAttribute()
-		if err != nil {
-			return
+		if _, er := a.saveAdvertAttribute(); err != nil {
+			log.Println(er)
 		}
 	}
 

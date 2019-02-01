@@ -88,6 +88,15 @@ $(document).ready(function() {
         attributes: {},
       },
       typeId: selling,
+      auth: {
+        loginState: 1,
+        eRegName: "",
+        eRegEmail: "",
+        eRegPass: "",
+        requestErrorStatus: 0,
+        loginEmail: "",
+        loginPass: "",
+      },
     },
     methods: {
       advertJSON: function() {
@@ -106,7 +115,7 @@ $(document).ready(function() {
           console.log(typeId, "simple");
         } else {
           console.log(createApp.categoryId);
-          setPropState(this);
+          setPropState(this, this.categoryId);
           this.showPrice = true;
           initPriceTips();
           console.log(typeId, "cars");
@@ -133,14 +142,119 @@ $(document).ready(function() {
           }
         }
       },
-      // changeHousingType: function() {
-      //   this.data.housingTypeId = Number($("#housingTypes").val());
-      //   if (this.data.housingTypeId != 3) {
-      //     this.form.showHousingRoom = true;
-      //   } else {
-      //     this.form.showHousingRoom = false;
-      //   }
-      // },
+
+      emaiRegistration: function() {
+        $("#registrationBtn").prop("disabled", true);
+        $("#registrationBtn").addClass("loading");
+        const userData = {
+          name: this.auth.eRegName,
+          email: this.auth.eRegEmail,
+          password: this.auth.eRegPass,
+        };
+        axios
+          .post("/api/auth/email_reg", userData)
+          .then(res => {
+            $("#registrationBtn").prop("disabled", false);
+            $("#registrationBtn").removeClass("loading");
+            console.log(res);
+            this.requestErrorStatus = 0;
+            window.location.reload();
+          })
+          .catch(err => {
+            $("#registrationBtn").prop("disabled", false);
+            $("#registrationBtn").removeClass("loading");
+            console.log(err.response);
+            switch (err.response.status) {
+              case 400:
+                this.requestErrorStatus = err.response.data.errCode;
+                break;
+              case 409:
+                this.requestErrorStatus = 4;
+                console.log("email address already in use");
+                break;
+              case 500:
+                console.log("serveur side error");
+                break;
+            }
+            //
+          });
+      },
+      emailLogin: function() {
+        $("#loginBtn").prop("disabled", true);
+        $("#loginBtn").addClass("loading");
+        const userData = {
+          email: this.auth.loginEmail,
+          password: this.auth.loginPass,
+        };
+        axios
+          .post("/api/auth/email_login", userData)
+          .then(res => {
+            $("#loginBtn").prop("disabled", false);
+            $("#loginBtn").removeClass("loading");
+            console.log(res);
+            this.requestErrorStatus = 0;
+            // window.location.reload();
+          })
+          .catch(err => {
+            $("#loginBtn").prop("disabled", false);
+            $("#loginBtn").removeClass("loading");
+            console.log(err.response);
+            switch (err.response.status) {
+              case 401:
+                $("#loginForm").addClass("error");
+                break;
+              case 500:
+                console.log("serveur side error");
+                break;
+            }
+            //
+          });
+        console.log(this.auth.loginEmail, this.auth.loginPass);
+      },
+      logout: function() {
+        axios
+          .delete("/api/auth/logout")
+          .then(res => {
+            console.log(res);
+            window.location.reload();
+          })
+          .catch(err => {
+            console.log(err.response);
+          });
+      },
+      showEmailRegistraion: function() {
+        this.auth.loginState = 3;
+      },
+      showEmailLogin: function() {
+        this.auth.loginState = 2;
+      },
+      showMainLogin: function() {
+        this.auth.loginState = 1;
+      },
+      showPassRecovery: function() {
+        this.auth.loginState = 4;
+      },
+      showLoginModal: function() {
+        $("#loginModal").modal("show");
+      },
+      initGoogleSignIn: function() {
+        gapi.signin2.render("google-signin-btn", {
+          // this is the button "id"
+          onsuccess: this.onGoogleSignIn, // note, no "()" here
+          onfailure: this.googleOnFailure,
+          longtitle: true,
+        });
+      },
+      onGoogleSignIn: function(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log("Name: " + profile.getName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail()); // This is null if the 'email' scope is not present.
+      },
+      googleOnFailure: function(error) {
+        console.log(error);
+      },
     },
     created() {
       axios
@@ -164,6 +278,12 @@ $(document).ready(function() {
         .catch(err => {
           console.log(err.message);
         });
+    },
+    mounted() {
+      this.initGoogleSignIn();
+    },
+    updated() {
+      this.initGoogleSignIn();
     },
   });
 
@@ -244,13 +364,8 @@ $(document).ready(function() {
     initPriceTips();
     $("#category-select").dropdown({
       onChange: function(value, text, $choice) {
-        createApp.categoryId = Number(value);
-        createApp.data.categoryId = Number(value);
-        createApp.form.typesOptions = optionT1;
-        console.log(createApp.categoryId);
-        setPropState(createApp);
+        setPropState(createApp, value);
         resetPropsValues();
-        createApp.data.attributes = {};
       },
     });
 
@@ -290,7 +405,16 @@ $(document).ready(function() {
     }
   }
 
-  function setPropState(app) {
+  function setPropState(app, value) {
+    app.categoryId = Number(value);
+    if (app.categoryId === 0) {
+      app.showAdTypesOpts = false;
+      return;
+    }
+    app.data.categoryId = Number(value);
+    console.log(app.categoryId);
+    app.data.attributes = {};
+
     switch (app.categoryId) {
       case 20: // moto
         app.propState = moto;

@@ -55,7 +55,7 @@ func init() {
 	// filters
 	beego.InsertFilter("/*", beego.BeforeRouter, golabalFilter)
 	beego.InsertFilter("/profile/*", beego.BeforeRouter, profileFilter)
-	beego.InsertFilter("/create", beego.BeforeRouter, profileFilter)
+	// beego.InsertFilter("/create", beego.BeforeRouter, profileFilter)
 	beego.InsertFilter("/upload/*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowOrigins:     []string{"http://127.0.0.1:5500"},
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "DELETE"},

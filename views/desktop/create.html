@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="google-signin-client_id" content="967677495372-s72ks6tq04vrtu9o7vma78qthg4bcvho.apps.googleusercontent.com">
     <link
       rel="stylesheet"
       type="text/css"
@@ -22,6 +23,7 @@
   <script src="/static/js/axios.min.js"></script>
   <script src="/static/js/semantic.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <style>
     .ui.form .inline.field > .selection.dropdown,
     .ui.form .inline.fields .field > .selection.dropdown {
@@ -37,6 +39,9 @@
     #category-select.ui.selection.dropdown .menu {
       max-height: 30.028571rem;
     }
+    #create{
+      margin-bottom: 100px;
+    }
     .disabledDiv {
       pointer-events: none;
       opacity: 0.4;
@@ -46,6 +51,14 @@
     }
     .tips ul li {
       margin: 5px auto;
+    }
+    .g-signin2{
+      width: 100%;
+    }
+
+    .g-signin2 > div{
+      width: 100% !important;
+      margin: 0 auto;
     }
   </style>
   <body>
@@ -198,18 +211,6 @@
                 </div>
                 <div class="six wide column field"></div>
               </div>
-              <!--<div class="ui grid" v-if="form.showHousingRoom">
-                <div class="four wide column">
-                  <label>Nombres de pieces</label>
-                </div>
-                <div class="six wide column field">
-                  <div class="ui input">
-                    <input type="text" v-model="data.attributes.housingRoomNumber"/>
-                    <div class="ui basic label">Km</div>
-                  </div>
-                </div>
-                <div class="six wide column field"></div>
-              </div>-->
             </div>
             <!-- cars properties -->
             <div v-else-if="propState == props.cars">
@@ -334,18 +335,19 @@
                   </div>
               </div>
             </div>
+
+            <!-- user authentification field -->
             <div class="ui section divider"></div>
-            <div class="ui grid" id="cityPicker">
+            <div class="ui grid" id="cityPicker" v-bind:class="{disabledDiv: !categoryId}">
               <div class="four wide column"><label>Ville</label></div>
               <div class="six wide column field">
                     <select class="ui search dropdown">
-                        <option value="0">--</option>
+                        <option value="0">Choisissez votre ville</option>
                         <option v-for="c in cities" :value="c.CityID">{c.name}</option>
                     </select>
               </div>
             </div>
-
-            <div class="ui grid">
+            <div class="ui grid" v-bind:class="{disabledDiv: !categoryId}">
               <div class="four wide column"><label>Téléphone</label></div>
               <div class="six wide column field">
                 <div class="ui left labeled input">
@@ -360,17 +362,244 @@
               </div>
             </div>
             <div class="ui section divider"></div>
+
+            {{ if .User }}
             <div class="ui grid">
-              <div class="sixteen wide column">
-                <button
-                  class="ui right labeled icon button right floated primary"
-                  v-on:click="advertJSON()"
-                  :disabled="!categoryId || !data.title"
-                >
-                  <i class="right arrow icon"></i>Suivant
+                <div class="sixteen wide column">
+                  <button
+                    class="ui right labeled icon button right floated primary"
+                    v-on:click="advertJSON()"
+                    :disabled="!categoryId || !data.title"
+                  >
+                    <i class="right arrow icon"></i>Suivant
+                  </button>
+                </div>
+              </div>
+            {{ else }}
+            <div class="ui grid">
+                <div class="sixteen wide column">
+                  <button
+                    class="ui right labeled icon button right floated primary"
+                    v-on:click="showLoginModal"
+                  >
+                    <i class="right arrow icon"></i>Suivant
+                  </button>
+                </div>
+              </div>
+            <!-- login modal -->
+            <div class="ui modal mini" id="loginModal">
+              <i class="close icon"></i>
+              <div class="content" v-if="auth.loginState == 1">
+                <h2 class="legend">Connexion</h2>
+                <p>Merci de vous connecter avant de publier votre annonce.</p>
+                <div class="ui divider"></div>
+                <button class="ui facebook button large fluid">
+                  <i class="facebook icon"></i> Facebook
                 </button>
+                <template>
+                    <div class="g-signin2" data-height="50" id="google-signin-btn" data-onsuccess="onGoogleSignIn"></div>
+                </template>
+                <div class="ui horizontal divider">OU</div>
+                <button
+                  class="ui mail button large fluid"
+                  v-on:click="showEmailLogin"
+                >
+                  <i class="mail icon"></i> Se connecter via e-mail
+                </button>
+                <div class="small-text">
+                  En vous inscrivant vous reconnaissez avoir lu et accepté
+                  <a href="#"
+                    >Charte de confidentialité et nos Conditions d'utilisation.</a
+                  >
+                </div>
+              </div>
+              <!-- email login form -->
+              <div class="content" v-else-if="auth.loginState == 2">
+                <form class="ui form large" id="loginForm">
+                  <div class="field">
+                    <label class="legend">Se connecter via email</label>
+                  </div>
+                  <div class="ui divider"></div>
+                  <div class="ui error message">
+                    <p>
+                      Votre adresse e-mail ou votre mot de passe est incorrect.
+                      Merci de réessayer ou de cliquer sur le lien « Mot de passe
+                      oublié ? » ci-dessous.
+                    </p>
+                  </div>
+                  <div class="field">
+                    <label>Adresse e-mail </label>
+                    <div class="ui left icon input">
+                      <input
+                        type="email"
+                        placeholder="email"
+                        v-model="auth.loginEmail"
+                      />
+                      <i class="mail icon"></i>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>Mot de passe</label>
+                    <div class="ui left icon input">
+                      <input
+                        type="password"
+                        placeholder="mot de passe"
+                        v-model="auth.loginPass"
+                      />
+                      <i class="lock icon"></i>
+                    </div>
+                  </div>
+    
+                  <div class="field">
+                    <button
+                      class="ui large primary button fluid"
+                      type="button"
+                      id="loginBtn"
+                      v-on:click="emailLogin"
+                    >
+                      Se connecter
+                    </button>
+                    <p>
+                      <a v-on:click="showPassRecovery">Mot de passe oublié ?</a>
+                    </p>
+                  </div>
+                  <div class="field">
+                    <p>
+                      Vous n'avez pas de compte ?
+                      <a v-on:click="showEmailRegistraion">Inscription</a>
+                    </p>
+                    <p>
+                      Vous préférez utiliser Facebook ou Google ?
+                      <a v-on:click="showMainLogin">Retour</a>
+                    </p>
+                  </div>
+                  <div class="small-text">
+                    En vous inscrivant vous reconnaissez avoir lu et accepté
+                    <a href="#"
+                      >Charte de confidentialité et nos Conditions d'utilisation.</a
+                    >
+                  </div>
+                </form>
+              </div>
+              <!-- email registration form -->
+              <div class="content" v-else-if="auth.loginState == 3">
+                <form class="ui form large" id="registrationForm">
+                  <div class="field"><label class="legend">Inscription</label></div>
+                  <div class="ui divider"></div>
+                  <div class="field">
+                    <label>Créez un pseudo</label>
+                    <div class="ui left icon input">
+                      <input type="text" v-model="auth.eRegName" name="name" />
+                      <i class="user icon"></i>
+                    </div>
+                    <div
+                      class="ui basic red pointing prompt label transition visible"
+                      v-if="auth.requestErrorStatus == 1"
+                    >
+                      Votre pseud doit contenir au moins 3 charcateres et debuter
+                      par une lettre
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>Adresse e-mail</label>
+                    <div class="ui left icon input">
+                      <input type="email" v-model="auth.eRegEmail" name="email" />
+                      <i class="mail icon"></i>
+                    </div>
+                    <div
+                      class="ui basic red pointing prompt label transition visible"
+                      v-if="auth.requestErrorStatus == 2"
+                    >
+                      Cette address email est invalide
+                    </div>
+                    <div
+                      class="ui basic red pointing prompt label transition visible"
+                      v-if="auth.requestErrorStatus == 4"
+                    >
+                      Cette address email est deja utilisée
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>Créez un mot de passe</label>
+                    <div class="ui left icon input">
+                      <input type="password" v-model="auth.eRegPass" name="password" />
+                      <i class="lock icon"></i>
+                    </div>
+                    <div
+                      class="ui basic red pointing prompt label transition visible"
+                      v-if="auth.requestErrorStatus == 3"
+                    >
+                      votre mot de passe doit comprendre au moins 4 charcateres
+                    </div>
+                  </div>
+    
+                  <div class="field">
+                    <button
+                      class="ui large primary button fluid"
+                      v-on:click="emaiRegistration"
+                      id="registrationBtn"
+                      type="button"
+                    >
+                      <!-- <i class="spinner loading icon"></i>  -->
+                      S'inscrire
+                    </button>
+                  </div>
+                  <div class="field">
+                    <p>
+                      Vous avez déjà un compte ?
+                      <a v-on:click="showEmailLogin">Connexion</a>
+                    </p>
+                    <p>
+                      Vous préférez utiliser Facebook ou Google ?
+                      <a v-on:click="showMainLogin">Retour</a>
+                    </p>
+                  </div>
+                  <div class="small-text">
+                    En vous inscrivant vous reconnaissez avoir lu et accepté
+                    <a href="#"
+                      >Charte de confidentialité et nos Conditions d'utilisation.</a
+                    >
+                  </div>
+                </form>
+              </div>
+              <div class="content" v-else-if="auth.loginState == 4">
+                <form class="ui form large">
+                  <div class="field">
+                    <label class="legend">
+                      Vous avez oublié votre mot de passe ?
+                    </label>
+                    <div class="ui divider"></div>
+                    <p>
+                      Pas de problème ! Il vous suffit d'entrer votre adresse e-mail
+                      ci-dessous et nous vous enverrons un lien pour le
+                      réinitialiser.
+                    </p>
+                  </div>
+    
+                  <div class="field">
+                    <label>Adresse e-mail</label>
+                    <div class="ui left icon input">
+                      <input type="email" /> <i class="mail icon"></i>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <button class="ui large primary button fluid" type="button">
+                      <i class="spinner loading icon"></i> Envoyer
+                    </button>
+                    <p><a v-on:click="showEmailLogin">Annuler</a></p>
+                  </div>
+                  <div class="small-text">
+                    En vous inscrivant vous reconnaissez avoir lu et accepté
+                    <a href="#"
+                      >Charte de confidentialité et nos Conditions d'utilisation.</a
+                    >
+                  </div>
+                </form>
               </div>
             </div>
+    
+            <!-- end login modal -->
+            {{ end }}
           </div>
         </div>
       </div>
@@ -378,6 +607,16 @@
 
   </body>
   <!-- <script src="/static/js/index.js"></script> -->
-  
+
   <script src="/static/js/create.js"></script>
+  <!-- <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script> -->
+  <script>
+  function onGoogleSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+  </script>
 </html>
