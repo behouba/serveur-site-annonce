@@ -24,11 +24,11 @@ type SubCategoryControler struct {
 	beego.Controller
 }
 
-type EmailRegistration struct {
-	beego.Controller
-}
+// type EmailRegistration struct {
+// 	beego.Controller
+// }
 
-type EmailLoginController struct {
+type AuthController struct {
 	beego.Controller
 }
 
@@ -60,9 +60,6 @@ type AdvertiserControler struct {
 	beego.Controller
 }
 
-type CreateAdvertControler struct {
-	beego.Controller
-}
 
 type FetchCategoryController struct {
 	beego.Controller

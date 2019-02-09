@@ -13,5 +13,6 @@ require (
 	github.com/satori/go.uuid v1.2.0 // indirect
 	golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9
 	golang.org/x/image v0.0.0-20190118043309-183bebdce1b2 // indirect
+	golang.org/x/oauth2 v0.0.0-20190130055435-99b60b757ec1 // indirect
 	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20180810215634-df19058c872c // indirect
 )

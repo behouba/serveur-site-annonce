@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/css/semantic.min.css"
+    />
+    <link rel="stylesheet" href="/static/css/uploader.css" />
+    <link rel="stylesheet" href="/static/css/uploader-icon.css" />
+    <title>Registration</title>
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/static/js/semantic.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  </head>
+  <body>
+    <div class="ui container">
+      <div id="registration" style="display:none">
+        <div>
+          <button v-on:click="regType = regOpts.regular">
+            ustilisteur regulier
+          </button>
+          <button v-on:click="regType = regOpts.pro">utilisateur pro</button>
+          <div id="pro" v-if="regType == regOpts.pro">
+            <form action="">
+              <h4>Ouvrir une boutique</h4>
+              <div>
+                Nom de la boutique
+                <input type="text" v-model="proUser.storeName" />
+              </div>
+              <div>
+                Votre nom
+                <input type="text" v-model="proUser.ownerName" />
+              </div>
+              <div>
+                Email
+                <input type="email" v-model="proUser.email" />
+              </div>
+              <div>
+                Telephone
+                <input type="tel" v-model="proUser.phone" />
+              </div>
+              <div>
+                Mot de passe
+                <input type="password" v-model="proUser.password" />
+              </div>
+              <div>
+                <button type="button" v-on:click="register(proUser)">
+                  validate
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div id="regular" v-else-if="regType == regOpts.regular">
+            <form action="">
+              <h4>Ouvrir un compte regulier</h4>
+              <div>
+                Nom
+                <input type="text" id="username" v-model="regularUser.name" />
+              </div>
+              <div>
+                Email
+                <input type="email" id="email" v-model="regularUser.email" />
+              </div>
+              <div>
+                Telephone
+                <input type="tel" id="phone" v-model="regularUser.phone" />
+              </div>
+              <div>
+                Mot de passe
+                <input
+                  type="password"
+                  id="passsword"
+                  v-model="regularUser.password"
+                />
+              </div>
+              <div>
+                <button type="button" v-on:click="register(regularUser)">
+                  validate
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    var ChoiceApp = new Vue({
+      el: "#registration",
+      data: {
+        regOpts: {regular: 1, pro: 2},
+        regType: null,
+        regularUser: {accountType: 1},
+        proUser: {accountType: 2},
+      },
+      methods: {
+        register: function(user) {
+          console.log(user);
+        },
+      },
+      created() {
+        $("#registration").show();
+      },
+    });
+  </script>
+</html>

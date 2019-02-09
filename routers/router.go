@@ -36,7 +36,10 @@ func init() {
 	beego.Router("/store/stats", &controllers.StoreStatsControler{})
 
 	// new advert creation routes
-	beego.Router("/create/", &controllers.CreateAdvertControler{})
+	beego.Router("/create/", &controllers.Create{})
+
+	//authentification
+	beego.Router("/auth/registration", &controllers.Registration{})
 
 	// upload files
 	beego.Router("/upload/", &controllers.UploadController{})
@@ -48,8 +51,8 @@ func init() {
 	beego.Router("/api/form/attr", &controllers.AttributesController{})
 
 	// authentification api routes
-	beego.Router("/api/auth/email_reg", &controllers.EmailRegistration{})
-	beego.Router("/api/auth/email_login", &controllers.EmailLoginController{})
+	// beego.Router("/api/auth/email_reg", &controllers.EmailRegistration{})
+	beego.Router("/api/auth", &controllers.AuthController{})
 	beego.Router("/api/auth/logout", &controllers.LogoutController{})
 
 	// filters

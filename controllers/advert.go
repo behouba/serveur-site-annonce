@@ -10,6 +10,9 @@ import (
 	"github.com/astaxie/beego"
 )
 
+type Create struct {
+	beego.Controller
+}
 type AdvertControler struct {
 	beego.Controller
 }
@@ -47,11 +50,17 @@ func (c *AdvertControler) Get() {
 // 	c.ServeJSON()
 // }
 
-func (c *CreateAdvertControler) Get() {
+func (c *Create) Get() {
+	user := c.Ctx.Input.GetData("User")
+	if user == nil {
+		log.Println("must be registred")
+		c.Redirect("/auth/registration", http.StatusSeeOther)
+		return
+	}
 	c.TplName = "desktop/create.html"
 }
 
-func (c *CreateAdvertControler) Post() {
+func (c *Create) Post() {
 	var advert models.Advert
 
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &advert)
@@ -59,10 +68,9 @@ func (c *CreateAdvertControler) Post() {
 		log.Println(err)
 		return
 	}
-
 	// Get user's id and add it into userID field of
 	// advert
-	user := c.Ctx.Input.GetData("User").(models.User)
+	user := c.Ctx.Input.GetData("User").(models.UserData)
 	advert.UserID = user.ID
 
 	if errResp := advert.Validate(); errResp.Code != http.StatusOK {

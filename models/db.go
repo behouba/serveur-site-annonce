@@ -9,6 +9,9 @@ import (
 )
 
 var (
+	googleClientID     = beego.AppConfig.String("googleClientID")
+	googleClientSecret = beego.AppConfig.String("googleClientSecret")
+
 	CookieSecret = beego.AppConfig.String("secret")
 	UserCookie   = "__connexion"
 	GuestCookie  = "__guest"
@@ -55,4 +58,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	cid := OauthCredentiel{CID: googleClientID, CSecret: googleClientSecret}
+	fmt.Println(cid)
 }

@@ -21,12 +21,14 @@ var HeaderApp = new Vue({
       $("#registrationBtn").prop("disabled", true);
       $("#registrationBtn").addClass("loading");
       const userData = {
+        uid: this.eRegEmail,
         name: this.eRegName,
         email: this.eRegEmail,
         password: this.eRegPass,
+        authTypeID: 1,
       };
       axios
-        .post("/api/auth/email_reg", userData)
+        .post("/api/auth", userData)
         .then(res => {
           $("#registrationBtn").prop("disabled", false);
           $("#registrationBtn").removeClass("loading");
@@ -57,11 +59,13 @@ var HeaderApp = new Vue({
       $("#loginBtn").prop("disabled", true);
       $("#loginBtn").addClass("loading");
       const userData = {
+        uid: this.loginEmail,
         email: this.loginEmail,
         password: this.loginPass,
+        auhTypeID: 1,
       };
       axios
-        .post("/api/auth/email_login", userData)
+        .post("/api/auth", userData)
         .then(res => {
           $("#loginBtn").prop("disabled", false);
           $("#loginBtn").removeClass("loading");

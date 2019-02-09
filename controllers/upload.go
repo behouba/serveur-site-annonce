@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"hash/fnv"
 	"image"
+	"io"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -18,10 +20,12 @@ import (
 )
 
 const (
-	thumbnailsPath   = "http://localhost:8080/files/240x180/"
-	imagesPath       = "http://localhost:8080/files/640x480/"
-	thumbnailsFolder = "./files/240x180/"
-	imagesFolder     = "./files/640x480/"
+	fbUserImgURLFmt       = "http://graph.facebook.com/%s/picture?type=square"
+	thumbnailsPath        = "http://localhost:8080/files/240x180/"
+	imagesPath            = "http://localhost:8080/files/640x480/"
+	thumbnailsFolder      = "./files/240x180/"
+	imagesFolder          = "./files/640x480/"
+	userPictureFolderPath = "./files/user/"
 )
 
 type UploadController struct {
@@ -114,5 +118,28 @@ func saveImage(file *multipart.FileHeader) (img *models.Picture, err error) {
 		ThumbnailURL: thumbnailsPath + fileName,
 		URL:          imagesPath + fileName,
 	}
+	return
+}
+
+func saveFBUserImage(id string) (err error) {
+	url := fmt.Sprintf(fbUserImgURLFmt, id)
+
+	response, e := http.Get(url)
+	if e != nil {
+		return
+	}
+	defer response.Body.Close()
+
+	file, err := os.Create(userPictureFolderPath + id + ".jpeg")
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
+	_, err = io.Copy(file, response.Body)
+	if err != nil {
+		return
+	}
+	fmt.Println("Success!")
 	return
 }

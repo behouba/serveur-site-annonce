@@ -18,8 +18,8 @@ func golabalFilter(ctx *context.Context) {
 	ctx.Input.SetData("Categories", models.Categories)
 	ctx.Input.SetData("CityPath", "all")
 	userCookieValue, ok := ctx.GetSecureCookie(models.CookieSecret, models.UserCookie)
-	user := models.User{}
-	if err := user.GetData(userCookieValue); err != nil || !ok {
+	user := models.UserData{}
+	if err := user.Get(userCookieValue); err != nil || !ok {
 		fmt.Println("cookie is not valid", err)
 	} else {
 		ctx.Input.SetData("User", user)
