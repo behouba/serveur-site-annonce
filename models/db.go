@@ -6,6 +6,8 @@ import (
 
 	"github.com/astaxie/beego"
 	_ "github.com/lib/pq" // postgresql driver
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
 )
 
 var (
@@ -37,6 +39,10 @@ var CitiesMap = make(map[string]string)
 // Attributes data structure
 var Attributes *AllAttributes
 
+// Oauth config
+
+var oauth2Config Oauth2Config
+
 func init() {
 	var err error
 	dbConnInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
@@ -58,7 +64,22 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	oauth2Config, err = initOauthConfig()
+	if err != nil {
+		panic(err)
+	}
+}
 
-	cid := OauthCredentiel{CID: googleClientID, CSecret: googleClientSecret}
-	fmt.Println(cid)
+func initOauthConfig() (oauth2Config Oauth2Config, err error) {
+	oauth2Config.Google = &oauth2.Config{
+		ClientID:     googleClientID,
+		ClientSecret: googleClientSecret,
+		RedirectURL:  "http://localhost:8080/auth/oauth",
+		Scopes: []string{
+			"https://www.googleapis.com/auth/userinfo.email", // You have to select your own scope from here -> https://developers.google.com/identity/protocols/googlescopes#google_sign-in
+		},
+		Endpoint: google.Endpoint,
+	}
+
+	return
 }

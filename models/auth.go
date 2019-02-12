@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"regexp"
 
@@ -11,6 +12,7 @@ import (
 	"github.com/badoux/checkmail"
 	"github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -25,11 +27,15 @@ type RegistrationError struct {
 	ErrCode    int    `json:"errCode"`
 }
 
-//
-type OauthCredentiel struct {
-	CID     string
-	CSecret string
+type Oauth2Config struct {
+	Google, Facebook *oauth2.Config
 }
+
+//
+// type OauthCredentiel struct {
+// 	CID     string
+// 	CSecret string
+// }
 
 type UserData struct {
 	ID            int    `json:"id"`
@@ -48,10 +54,10 @@ func (u *UserData) Authenticate() (err error) {
 		switch u.AuthTypeID {
 		case emailAuthTypeID:
 			return u.emailLogin()
-			// case googleAuthTypeID:
-			// 	return u.googleLogin()
-			// case fbAuthTypeID:
-			// 	return u.facebookLogin()
+		case googleAuthTypeID:
+			return u.googleLogin()
+		case fbAuthTypeID:
+			return u.facebookLogin()
 		}
 	} else {
 		fmt.Println("registration here")
@@ -169,6 +175,31 @@ func (u *UserData) emailLogin() (err error) {
 		return
 	}
 	u.ID = dbUser.ID
+	return
+}
+
+func GetGoogleLoginURL(state string) string {
+	return oauth2Config.Google.AuthCodeURL(state)
+}
+
+func GetGoogleUserData(code string) (resBody []byte, err error) {
+	tok, err := oauth2Config.Google.Exchange(oauth2.NoContext, code)
+	if err != nil {
+		return
+	}
+
+	client := oauth2Config.Google.Client(oauth2.NoContext, tok)
+
+	resp, err := client.Get("https://www.googleapis.com/oauth2/v3/userinfo")
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+	resBody, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	// log.Println("Resp body: ", string(resBody))
 	return
 }
 

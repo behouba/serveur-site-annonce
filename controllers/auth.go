@@ -3,12 +3,18 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"net/http"
 	"serveur/models"
 
 	"github.com/astaxie/beego"
 )
 
 type Registration struct {
+	beego.Controller
+}
+
+type OauthRedirect struct {
 	beego.Controller
 }
 
@@ -86,4 +92,21 @@ func (c *AuthController) Post() {
 func (c *LogoutController) Delete() {
 	models.DestroySession(c.Ctx.Input.Context)
 	c.Finish()
+}
+
+func (c *OauthRedirect) Get() {
+	state := c.Ctx.GetCookie("state")
+
+	if state != c.GetString("state") {
+		c.Ctx.Abort(http.StatusUnauthorized, fmt.Sprintf("Invalid session state: %s", state))
+		return
+	}
+
+	userData, err := models.GetGoogleUserData(c.GetString("code"))
+	if err != nil {
+		c.Ctx.Abort(http.StatusInternalServerError, err.Error())
+		return
+	}
+	log.Println("google user data = ", string(userData))
+	c.Redirect("/", http.StatusSeeOther)
 }

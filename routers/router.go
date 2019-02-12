@@ -50,6 +50,9 @@ func init() {
 	beego.Router("/api/form/json_content", &controllers.CategoryFormController{})
 	beego.Router("/api/form/attr", &controllers.AttributesController{})
 
+	//oauth redirection url
+	beego.Router("/auth/oauth", &controllers.OauthRedirect{})
+
 	// authentification api routes
 	// beego.Router("/api/auth/email_reg", &controllers.EmailRegistration{})
 	beego.Router("/api/auth", &controllers.AuthController{})
