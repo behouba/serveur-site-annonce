@@ -27,6 +27,7 @@ func golabalFilter(ctx *context.Context) {
 			ctx.SetCookie("state", randToken())
 		}
 		ctx.Input.SetData("GoogleLoginURL", models.GetGoogleLoginURL(state))
+		ctx.Input.SetData("FbkLoginURL", models.GetFbkLoginURL(state))
 	} else {
 		ctx.Input.SetData("User", user)
 		// fmt.Println("user is logged in")

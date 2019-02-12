@@ -7,12 +7,15 @@ import (
 	"github.com/astaxie/beego"
 	_ "github.com/lib/pq" // postgresql driver
 	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/facebook"
 	"golang.org/x/oauth2/google"
 )
 
 var (
-	googleClientID     = beego.AppConfig.String("googleClientID")
-	googleClientSecret = beego.AppConfig.String("googleClientSecret")
+	googleClientID       = beego.AppConfig.String("googleClientID")
+	googleClientSecret   = beego.AppConfig.String("googleClientSecret")
+	facebookClientID     = beego.AppConfig.String("facebookClientID")
+	facebookClientSecret = beego.AppConfig.String("facebookClientSecret")
 
 	CookieSecret = beego.AppConfig.String("secret")
 	UserCookie   = "__connexion"
@@ -64,13 +67,10 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	oauth2Config, err = initOauthConfig()
-	if err != nil {
-		panic(err)
-	}
+	oauth2Config = initOauthConfig()
 }
 
-func initOauthConfig() (oauth2Config Oauth2Config, err error) {
+func initOauthConfig() (oauth2Config Oauth2Config) {
 	oauth2Config.Google = &oauth2.Config{
 		ClientID:     googleClientID,
 		ClientSecret: googleClientSecret,
@@ -79,6 +79,14 @@ func initOauthConfig() (oauth2Config Oauth2Config, err error) {
 			"https://www.googleapis.com/auth/userinfo.email", // You have to select your own scope from here -> https://developers.google.com/identity/protocols/googlescopes#google_sign-in
 		},
 		Endpoint: google.Endpoint,
+	}
+
+	oauth2Config.Facebook = &oauth2.Config{
+		ClientID:     facebookClientID,
+		ClientSecret: facebookClientSecret,
+		RedirectURL:  "http://localhost:8080/api/auth2/facebook",
+		Scopes:       []string{"email"},
+		Endpoint:     facebook.Endpoint,
 	}
 
 	return

@@ -17,6 +17,9 @@ type Registration struct {
 type OauthRedirect struct {
 	beego.Controller
 }
+type FbkAuth2Controller struct {
+	beego.Controller
+}
 
 //
 func (c *Registration) Get() {
@@ -58,36 +61,6 @@ func (c *AuthController) Post() {
 	c.ServeJSON()
 }
 
-// Post method of EmailLoginController
-// expect user json data in request body
-// authenticate user and create new session
-// for user
-// func (c *EmailLoginController) Post() {
-// 	var user models.User
-// 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &user)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		c.Ctx.Output.SetStatus(401)
-// 		return
-// 	}
-
-// 	err = user.Authenticate()
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		c.Ctx.Output.SetStatus(401)
-// 		return
-// 	}
-
-// 	err = user.CreateSession(c.Ctx.Input.Context)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		c.Ctx.Output.SetStatus(500)
-// 		return
-// 	}
-// 	c.Data["json"] = user
-// 	c.ServeJSON()
-// }
-
 // Delete handler for when user send request to logout
 func (c *LogoutController) Delete() {
 	models.DestroySession(c.Ctx.Input.Context)
@@ -98,15 +71,76 @@ func (c *OauthRedirect) Get() {
 	state := c.Ctx.GetCookie("state")
 
 	if state != c.GetString("state") {
+		fmt.Println(c.GetString("state"))
 		c.Ctx.Abort(http.StatusUnauthorized, fmt.Sprintf("Invalid session state: %s", state))
 		return
 	}
 
-	userData, err := models.GetGoogleUserData(c.GetString("code"))
+	user, err := models.GetGoogleUserData(c.GetString("code"))
 	if err != nil {
 		c.Ctx.Abort(http.StatusInternalServerError, err.Error())
 		return
 	}
-	log.Println("google user data = ", string(userData))
+	log.Println("google user data = ", user.AuthTypeID)
+
+	err = user.GoogleLogin()
+	if err != nil {
+		fmt.Println(err)
+		c.Ctx.Output.SetStatus(400)
+		c.Data["json"] = struct {
+			Error string `json:"error"`
+		}{err.Error()}
+		c.ServeJSON()
+		return
+	}
+
+	err = user.CreateSession(c.Ctx.Input.Context)
+	if err != nil {
+		fmt.Println(err)
+		c.Ctx.Output.SetStatus(500)
+		return
+	}
 	c.Redirect("/", http.StatusSeeOther)
+}
+
+func (c *FbkAuth2Controller) Get() {
+	state := c.Ctx.GetCookie("state")
+
+	if state != c.GetString("state") {
+		fmt.Println(c.GetString("state"))
+		c.Ctx.Abort(http.StatusUnauthorized, fmt.Sprintf("Invalid session state: %s", state))
+		return
+	}
+
+	user, err := models.GetFbkUserData(c.GetString("code"))
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println(user)
+	c.Redirect("/", http.StatusTemporaryRedirect)
+	// if err != nil {
+	// 	c.Ctx.Abort(http.StatusInternalServerError, err.Error())
+	// 	return
+	// }
+	// log.Println("google user data = ", user.AuthTypeID)
+
+	// err = user.FacebookLogin()
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	c.Ctx.Output.SetStatus(400)
+	// 	c.Data["json"] = struct {
+	// 		Error string `json:"error"`
+	// 	}{err.Error()}
+	// 	c.ServeJSON()
+	// 	return
+	// }
+
+	// err = user.CreateSession(c.Ctx.Input.Context)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	c.Ctx.Output.SetStatus(500)
+	// 	return
+	// }
+	// c.Redirect("/", http.StatusSeeOther)
 }

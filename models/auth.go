@@ -2,11 +2,13 @@ package models
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"regexp"
+	"strconv"
 
 	"github.com/astaxie/beego/context"
 	"github.com/badoux/checkmail"
@@ -50,28 +52,27 @@ type UserData struct {
 
 func (u *UserData) Authenticate() (err error) {
 	if u.checkAuthState() {
-		fmt.Println("login here")
+		fmt.Println("login here", u.AuthTypeID)
 		switch u.AuthTypeID {
-		case emailAuthTypeID:
-			return u.emailLogin()
-		case googleAuthTypeID:
-			return u.googleLogin()
+		// case emailAuthTypeID:
+		// 	return u.emailLogin()
 		case fbAuthTypeID:
 			return u.facebookLogin()
+		default:
+			return u.emailLogin()
 		}
 	} else {
 		fmt.Println("registration here")
 		return u.registerNewUser()
 	}
-	return
 }
 
 // checkAuthState return true if user is already registred and false if not
 func (u *UserData) checkAuthState() bool {
 	err := Db.QueryRow(
-		`SELECT user_id, auth_type_id
+		`SELECT user_id
 		FROM user_account  WHERE email=$1;`,
-		u.Email).Scan(&u.ID, &u.AuthTypeID)
+		u.Email).Scan(&u.ID)
 	if err != nil {
 		log.Println(err)
 		return false
@@ -151,15 +152,8 @@ func (u *UserData) validateEmailRegistration() (err error) {
 }
 
 func (u *UserData) login() (err error) {
-	switch u.AuthTypeID {
-	case emailAuthTypeID:
-		return u.emailLogin()
-	case googleAuthTypeID:
-		return u.googleLogin()
-	case fbAuthTypeID:
-		return u.facebookLogin()
-	}
-	return fmt.Errorf("wrong login input")
+	return u.emailLogin()
+	// return fmt.Errorf("wrong login input")
 }
 
 func (u *UserData) emailLogin() (err error) {
@@ -182,7 +176,7 @@ func GetGoogleLoginURL(state string) string {
 	return oauth2Config.Google.AuthCodeURL(state)
 }
 
-func GetGoogleUserData(code string) (resBody []byte, err error) {
+func GetGoogleUserData(code string) (user UserData, err error) {
 	tok, err := oauth2Config.Google.Exchange(oauth2.NoContext, code)
 	if err != nil {
 		return
@@ -195,36 +189,82 @@ func GetGoogleUserData(code string) (resBody []byte, err error) {
 		return
 	}
 	defer resp.Body.Close()
-	resBody, err = ioutil.ReadAll(resp.Body)
+	resBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return
+	}
+
+	gUser := struct {
+		Name      string `json:"name"`
+		GivenName string `json:"given_name"`
+		Email     string `json:"email"`
+		Picture   string `json:"picture"`
+	}{}
+
+	err = json.Unmarshal(resBody, &gUser)
+	if err != nil {
+		return
+	}
+	user = UserData{
+		Name:       gUser.GivenName,
+		Email:      gUser.Email,
+		PictureURL: gUser.Picture,
+		AuthTypeID: googleAuthTypeID,
 	}
 	// log.Println("Resp body: ", string(resBody))
 	return
 }
 
-func (u *UserData) googleLogin() (err error) {
-	var dbUser UserData
+func (u *UserData) GoogleLogin() (err error) {
+	if u.checkAuthState() {
+		return
+	}
+	return u.registerNewUser()
+}
 
-	err = Db.QueryRow("SELECT user_id, email FROM user_account WHERE email=$1", u.ThirdPartyUID).Scan(&dbUser.ID, &dbUser.Email)
+func GetFbkLoginURL(state string) string {
+	return oauth2Config.Facebook.AuthCodeURL(state)
+}
+
+func GetFbkUserData(code string) (fbUser UserData, err error) {
+	tok, err := oauth2Config.Facebook.Exchange(oauth2.NoContext, code)
 	if err != nil {
 		return
 	}
 
-	u.ID = dbUser.ID
+	client := oauth2Config.Facebook.Client(oauth2.NoContext, tok)
+
+	resp, err := client.Get("https://graph.facebook.com/me?fields=id,name,email,picture&access_token=" + tok.AccessToken)
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+	resBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	log.Println(string(resBody))
+	u := struct {
+		ID    string `json:"id"`
+		Email string `json:"email"`
+		Name  string `json:"name"`
+	}{}
+	err = json.Unmarshal(resBody, &u)
+	if err != nil {
+		return
+	}
+	fbUser.ID, _ = strconv.Atoi(u.ID)
+	fbUser.Name = u.Name
+	fbUser.Email = u.Email
+	fbUser.PictureURL = "https://graph.facebook.com/" + u.ID + "/picture?type=normal"
 	return
 }
 
 func (u *UserData) facebookLogin() (err error) {
-	var dbUser UserData
-
-	err = Db.QueryRow("SELECT user_id, email FROM user_account WHERE email=$1", u.ThirdPartyUID).Scan(&dbUser.ID, &dbUser.Email)
-	if err != nil {
+	if u.checkAuthState() {
 		return
 	}
-
-	u.ID = dbUser.ID
-	return
+	return u.registerNewUser()
 }
 
 func (u *UserData) CreateSession(c *context.Context) (err error) {

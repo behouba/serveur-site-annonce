@@ -135,7 +135,7 @@ body {
 
 /* login modal css */
 
-#loginModal button {
+#loginModal .button {
   margin-bottom: 10px;
 }
 #loginModal a:hover {

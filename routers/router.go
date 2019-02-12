@@ -56,6 +56,7 @@ func init() {
 	// authentification api routes
 	// beego.Router("/api/auth/email_reg", &controllers.EmailRegistration{})
 	beego.Router("/api/auth", &controllers.AuthController{})
+	beego.Router("/api/auth2/facebook", &controllers.FbkAuth2Controller{})
 	beego.Router("/api/auth/logout", &controllers.LogoutController{})
 
 	// filters
