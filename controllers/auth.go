@@ -14,7 +14,7 @@ type Registration struct {
 	beego.Controller
 }
 
-type OauthRedirect struct {
+type GoogleAuth2Controller struct {
 	beego.Controller
 }
 type FbkAuth2Controller struct {
@@ -32,7 +32,7 @@ func (c *Registration) Post() {
 
 // Post EmailRegistration handle post request for new user
 // email registration
-func (c *AuthController) Post() {
+func (c *EmailAuthController) Post() {
 	var user models.UserData
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &user)
 	if err != nil {
@@ -40,10 +40,9 @@ func (c *AuthController) Post() {
 	}
 	fmt.Println(user)
 
-	err = user.Authenticate()
+	err = user.EmailAuth(c.Ctx.Input.Context)
 	if err != nil {
 		fmt.Println(err)
-		c.Ctx.Output.SetStatus(400)
 		c.Data["json"] = struct {
 			Error string `json:"error"`
 		}{err.Error()}
@@ -51,12 +50,6 @@ func (c *AuthController) Post() {
 		return
 	}
 
-	err = user.CreateSession(c.Ctx.Input.Context)
-	if err != nil {
-		fmt.Println(err)
-		c.Ctx.Output.SetStatus(500)
-		return
-	}
 	c.Data["json"] = user
 	c.ServeJSON()
 }
@@ -64,10 +57,10 @@ func (c *AuthController) Post() {
 // Delete handler for when user send request to logout
 func (c *LogoutController) Delete() {
 	models.DestroySession(c.Ctx.Input.Context)
-	c.Finish()
+	c.Redirect("/", http.StatusSeeOther)
 }
 
-func (c *OauthRedirect) Get() {
+func (c *GoogleAuth2Controller) Get() {
 	state := c.Ctx.GetCookie("state")
 
 	if state != c.GetString("state") {
@@ -83,7 +76,7 @@ func (c *OauthRedirect) Get() {
 	}
 	log.Println("google user data = ", user.AuthTypeID)
 
-	err = user.GoogleLogin()
+	err = user.Oauth2Login(c.Ctx.Input.Context)
 	if err != nil {
 		fmt.Println(err)
 		c.Ctx.Output.SetStatus(400)
@@ -93,14 +86,7 @@ func (c *OauthRedirect) Get() {
 		c.ServeJSON()
 		return
 	}
-
-	err = user.CreateSession(c.Ctx.Input.Context)
-	if err != nil {
-		fmt.Println(err)
-		c.Ctx.Output.SetStatus(500)
-		return
-	}
-	c.Redirect("/", http.StatusSeeOther)
+	c.Redirect("/", http.StatusTemporaryRedirect)
 }
 
 func (c *FbkAuth2Controller) Get() {
@@ -117,30 +103,16 @@ func (c *FbkAuth2Controller) Get() {
 		log.Println(err)
 		return
 	}
-	log.Println(user)
+	err = user.Oauth2Login(c.Ctx.Input.Context)
+	if err != nil {
+		fmt.Println(err)
+		c.Ctx.Output.SetStatus(400)
+		c.Data["json"] = struct {
+			Error string `json:"error"`
+		}{err.Error()}
+		c.ServeJSON()
+		return
+	}
 	c.Redirect("/", http.StatusTemporaryRedirect)
-	// if err != nil {
-	// 	c.Ctx.Abort(http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
-	// log.Println("google user data = ", user.AuthTypeID)
 
-	// err = user.FacebookLogin()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	c.Ctx.Output.SetStatus(400)
-	// 	c.Data["json"] = struct {
-	// 		Error string `json:"error"`
-	// 	}{err.Error()}
-	// 	c.ServeJSON()
-	// 	return
-	// }
-
-	// err = user.CreateSession(c.Ctx.Input.Context)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	c.Ctx.Output.SetStatus(500)
-	// 	return
-	// }
-	// c.Redirect("/", http.StatusSeeOther)
 }

@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"log"
 	"regexp"
-	"strconv"
 
 	"github.com/astaxie/beego/context"
 	"github.com/badoux/checkmail"
@@ -43,28 +42,36 @@ type UserData struct {
 	ID            int    `json:"id"`
 	AccountTypeID int    `json:"accountType"`
 	Name          string `json:"name"`
-	ThirdPartyUID string `json:"thirdPartyUID"` // unique identifier from third party
+	ThirdPartyID  string `json:"thirdPartyID"` // unique identifier from third party
 	Email         string `json:"email"`
 	AuthTypeID    int    `json:"authTypeID"`
 	Password      string `json:"password"`
 	PictureURL    string `json:"pictureURL"`
 }
 
-func (u *UserData) Authenticate() (err error) {
+func (u *UserData) EmailAuth(c *context.Context) (err error) {
 	if u.checkAuthState() {
-		fmt.Println("login here", u.AuthTypeID)
-		switch u.AuthTypeID {
-		// case emailAuthTypeID:
-		// 	return u.emailLogin()
-		case fbAuthTypeID:
-			return u.facebookLogin()
-		default:
-			return u.emailLogin()
+		fmt.Println("email login here", u.AuthTypeID)
+		err = u.emailLogin()
+		if err != nil {
+			c.Output.SetStatus(400)
+			return
 		}
 	} else {
-		fmt.Println("registration here")
-		return u.registerNewUser()
+		fmt.Println("email registration here")
+		err = u.emailRegistration()
+		if err != nil {
+			c.Output.SetStatus(500)
+			return
+		}
 	}
+
+	err = u.CreateSession(c)
+	if err != nil {
+		c.Output.SetStatus(500)
+		return
+	}
+	return
 }
 
 // checkAuthState return true if user is already registred and false if not
@@ -80,30 +87,44 @@ func (u *UserData) checkAuthState() bool {
 	return true
 }
 
-func (u *UserData) registerNewUser() (err error) {
-	if u.AuthTypeID == emailAuthTypeID {
-		err = u.validateEmailRegistration()
-		if err != nil {
-			return err
-		}
+func (u *UserData) emailRegistration() (err error) {
+	if u.AuthTypeID != emailAuthTypeID {
+		return errors.New("This method is only for email registration")
 	}
 
 	var stmt *sql.Stmt
 	var hashedPassword []byte
-	stmt, err = Db.Prepare("INSERT INTO user_account (name, email, password, auth_type_id, uid) VALUES ($1, $2, $3, $4, $5) RETURNING user_id")
+	stmt, err = Db.Prepare("INSERT INTO user_account (name, email, password, auth_type_id, third_party_id) VALUES ($1, $2, $3, $4, $5) RETURNING user_id")
 	if err != nil {
 		return
 	}
 	defer stmt.Close()
 
-	if u.AuthTypeID == emailAuthTypeID {
-		hashedPassword, err = bcrypt.GenerateFromPassword([]byte(u.Password), 14)
-		if err != nil {
-			return
-		}
+	hashedPassword, err = bcrypt.GenerateFromPassword([]byte(u.Password), 14)
+	if err != nil {
+		return
 	}
 
-	err = stmt.QueryRow(u.Name, u.Email, string(hashedPassword), u.AuthTypeID, string(u.ThirdPartyUID)).Scan(&u.ID)
+	err = stmt.QueryRow(u.Name, u.Email, string(hashedPassword), u.AuthTypeID, string(u.ThirdPartyID)).Scan(&u.ID)
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (u *UserData) oauth2Registration() (err error) {
+	if u.AuthTypeID == emailAuthTypeID {
+		return errors.New("This method is only for oauth registration")
+	}
+
+	var stmt *sql.Stmt
+	stmt, err = Db.Prepare("INSERT INTO user_account (name, email, auth_type_id, third_party_id, profile_picture) VALUES ($1, $2, $3, $4, $5) RETURNING user_id")
+	if err != nil {
+		return
+	}
+	defer stmt.Close()
+
+	err = stmt.QueryRow(u.Name, u.Email, u.AuthTypeID, string(u.ThirdPartyID), u.PictureURL).Scan(&u.ID)
 	if err != nil {
 		return
 	}
@@ -195,31 +216,42 @@ func GetGoogleUserData(code string) (user UserData, err error) {
 	}
 
 	gUser := struct {
+		Sub       string `json:"sub"`
 		Name      string `json:"name"`
 		GivenName string `json:"given_name"`
 		Email     string `json:"email"`
 		Picture   string `json:"picture"`
 	}{}
-
+	log.Println("google user = ", string(resBody))
 	err = json.Unmarshal(resBody, &gUser)
 	if err != nil {
 		return
 	}
 	user = UserData{
-		Name:       gUser.GivenName,
-		Email:      gUser.Email,
-		PictureURL: gUser.Picture,
-		AuthTypeID: googleAuthTypeID,
+		Name:         gUser.GivenName,
+		Email:        gUser.Email,
+		PictureURL:   gUser.Picture,
+		AuthTypeID:   googleAuthTypeID,
+		ThirdPartyID: gUser.Sub,
 	}
 	// log.Println("Resp body: ", string(resBody))
 	return
 }
 
-func (u *UserData) GoogleLogin() (err error) {
-	if u.checkAuthState() {
+func (u *UserData) Oauth2Login(c *context.Context) (err error) {
+	if !u.checkAuthState() {
+		err = u.oauth2Registration()
+		if err != nil {
+			return
+		}
+	}
+
+	err = u.CreateSession(c)
+	if err != nil {
+		c.Output.SetStatus(500)
 		return
 	}
-	return u.registerNewUser()
+	return
 }
 
 func GetFbkLoginURL(state string) string {
@@ -253,18 +285,14 @@ func GetFbkUserData(code string) (fbUser UserData, err error) {
 	if err != nil {
 		return
 	}
-	fbUser.ID, _ = strconv.Atoi(u.ID)
-	fbUser.Name = u.Name
-	fbUser.Email = u.Email
-	fbUser.PictureURL = "https://graph.facebook.com/" + u.ID + "/picture?type=normal"
-	return
-}
-
-func (u *UserData) facebookLogin() (err error) {
-	if u.checkAuthState() {
-		return
+	fbUser = UserData{
+		Name:         u.Name,
+		Email:        u.Email,
+		ThirdPartyID: u.ID,
+		PictureURL:   "https://graph.facebook.com/" + u.ID + "/picture?type=normal",
+		AuthTypeID:   fbAuthTypeID,
 	}
-	return u.registerNewUser()
+	return
 }
 
 func (u *UserData) CreateSession(c *context.Context) (err error) {
@@ -288,14 +316,20 @@ func (u *UserData) Get(accessToken string) (err error) {
 	if err != nil {
 		return
 	}
-	err = Db.QueryRow("SELECT name, email, profile_picture FROM user_account WHERE user_id=$1", u.ID).Scan(&u.Name, &u.ThirdPartyUID, &u.PictureURL)
+	err = Db.QueryRow("SELECT name, email, profile_picture FROM user_account WHERE user_id=$1", u.ID).Scan(&u.Name, &u.Email, &u.PictureURL)
 	if err != nil {
 		return
 	}
 	return
 }
 
+// must be also delete session row on database
 func DestroySession(c *context.Context) {
+	userCookieValue, _ := c.GetSecureCookie(CookieSecret, UserCookie)
+	err := Db.QueryRow("DELETE FROM session WHERE access_token=$1;", userCookieValue).Scan()
+	if err != nil {
+		log.Println("Failled to delete session: ", err)
+	}
 	c.SetSecureCookie(CookieSecret, UserCookie, "")
 }
 

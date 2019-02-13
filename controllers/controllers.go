@@ -28,7 +28,7 @@ type SubCategoryControler struct {
 // 	beego.Controller
 // }
 
-type AuthController struct {
+type EmailAuthController struct {
 	beego.Controller
 }
 
@@ -59,7 +59,6 @@ type ProfileAlertsControler struct {
 type AdvertiserControler struct {
 	beego.Controller
 }
-
 
 type FetchCategoryController struct {
 	beego.Controller
